@@ -16,11 +16,12 @@ export default function Header() {
         <Image
   src="/branding/tempely-logo.png"
   alt="Tempely Logo"
-  className="h-10 sm:h-12 w-auto"
-  width={180} // you can bump this up to 200+ if needed
-  height={60}
+  className="h-14 sm:h-16 w-auto"
+  width={220}
+  height={70}
   priority
 />
+
 
         </Link>
 
