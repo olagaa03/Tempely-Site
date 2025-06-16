@@ -1,45 +1,46 @@
 export default function Tracked() {
   return (
-    <main className="min-h-screen bg-white text-gray-900 font-sans px-4 py-12">
-      <section className="max-w-6xl mx-auto flex flex-row flex-wrap md:flex-nowrap items-center gap-6 text-left">
-        {/* Cover Image */}
-        <div className="w-full md:w-1/2 flex justify-center">
+    <main className="min-h-screen bg-white text-gray-900 font-sans">
+      <section className="max-w-6xl mx-auto flex flex-col items-center gap-6 text-left px-4 pt-6">
+
+        {/* Product Image - Mobile optimized */}
+        <div className="w-full max-h-[50vh] overflow-hidden rounded-xl shadow-md">
           <img
             src="/screenshots/tracked-cover.png"
             alt="Tracked product preview"
-            className="w-full max-w-sm rounded-xl shadow-md"
+            className="w-full object-cover"
           />
         </div>
 
-        {/* Description & Buy Button */}
-        <div className="w-full md:w-1/2">
-          <h1 className="text-3xl md:text-5xl font-bold mb-4 text-center md:text-left">Tracked.</h1>
-          <p className="text-lg text-gray-700 mb-6 text-center md:text-left">
-            Tracked. is a fully functional Notion dashboard built to help you <strong>log, track, and optimize</strong> your content performance with precision.
+        {/* Description + Buy Button */}
+        <div className="w-full">
+          <h1 className="text-3xl md:text-5xl font-bold text-center md:text-left mt-4">Tracked.</h1>
+          <p className="text-lg md:text-xl text-gray-800 mb-4 text-center md:text-left">
+            Tracked is your performance command center — a Notion dashboard that helps you <strong>analyze, improve, and double down</strong> on what’s working.
           </p>
 
-          <ul className="list-disc pl-5 text-gray-700 space-y-2 mb-6">
-            <li><strong>Weekly Performance Log</strong> to measure the real impact of your content</li>
-            <li><strong>Follower Growth Tracker</strong> to monitor account growth week-by-week</li>
-            <li>See <strong>views, saves, comments, and performance scores</strong> all in one place</li>
-            <li>Includes smart filters to find <strong>top content</strong> or what to <strong>improve next</strong></li>
-            <li>Comes with a quick-start guide, content formulas, and growth tips</li>
+          <ul className="list-disc list-inside text-gray-700 space-y-2 mb-6">
+            <li><strong>Content Tracker</strong> for views, likes, comments, shares, saves</li>
+            <li><strong>Performance Snapshots</strong> by week and platform</li>
+            <li><strong>Trending Insights</strong> so you can double down on what works</li>
+            <li><strong>ROI calculator</strong> to track growth tied to products or goals</li>
+            <li><strong>Built-in prompts</strong> to help you reflect and improve</li>
           </ul>
 
-          <p className="mt-4 text-gray-600 text-center md:text-left">
-            Use it to track what works — and do more of it.
+          <p className="text-gray-700 mb-6 text-center md:text-left">
+            For creators who want to get strategic, not just post and hope.
           </p>
 
           <a
-            href="https://your-buy-link.com"
-            className="mt-6 inline-block bg-blue-600 text-white px-6 py-3 rounded-xl text-lg font-semibold shadow hover:bg-blue-700 transition w-full md:w-auto text-center"
+            href="https://your-payment-link.com/tracked"
+            className="block w-full md:w-auto text-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold text-lg shadow hover:opacity-90 transition"
           >
             Buy Tracked. for $19.99
           </a>
         </div>
       </section>
 
-      {/* Bundle Section */}
+      {/* Bundle Offer */}
       <section className="w-full mt-20 px-4 max-w-6xl mx-auto text-center">
         <h2 className="text-3xl font-bold mb-4">Get the Creator Bundle</h2>
         <p className="text-gray-600 max-w-2xl mx-auto mb-6">
@@ -85,4 +86,3 @@ export default function Tracked() {
     </main>
   );
 }
-
