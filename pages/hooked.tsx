@@ -5,7 +5,7 @@ export default function Hooked() {
 
 
         {/* Product Image - Mobile optimized */}
-        <div className="w-full md:w-1/2 max-h-[50vh] overflow-hidden rounded-xl shadow-md">
+        <div className="w-full md:w-1/2 max-h-[50vh] md:max-h-none overflow-hidden rounded-xl shadow-md">
           <img
             src="/screenshots/hooked-cover.png"
             alt="Hooked product preview"

@@ -4,7 +4,7 @@ export default function Bundle() {
       <section className="max-w-6xl mx-auto flex flex-col md:flex-row items-start gap-10 px-4 pt-6">
 
         {/* Product Image - Mobile optimized */}
-        <div className="w-full md:w-1/2 max-h-[50vh] overflow-hidden rounded-xl shadow-md">
+        <div className="w-full md:w-1/2 max-h-[50vh] md:max-h-none overflow-hidden rounded-xl shadow-md">
           <img
             src="/screenshots/bundle-cover.png"
             alt="Creator Bundle preview"
