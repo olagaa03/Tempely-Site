@@ -1,10 +1,10 @@
 export default function Posted() {
   return (
     <main className="min-h-screen bg-white text-gray-900 font-sans">
-      <section className="max-w-6xl mx-auto flex flex-col items-center gap-6 text-left px-4 pt-6">
+      <section className="max-w-6xl mx-auto flex flex-col md:flex-row items-start gap-10 px-4 pt-6">
 
         {/* Product Image - Mobile optimized */}
-        <div className="w-full max-h-[50vh] overflow-hidden rounded-xl shadow-md">
+        <div className="w-full md:w-1/2 max-h-[50vh] overflow-hidden rounded-xl shadow-md">
           <img
             src="/screenshots/posted-cover.png"
             alt="Posted product preview"
@@ -13,7 +13,7 @@ export default function Posted() {
         </div>
 
         {/* Description + Buy Button */}
-        <div className="w-full">
+        <div className="w-full md:w-1/2">
           <h1 className="text-3xl md:text-5xl font-bold text-center md:text-left mt-4">Posted.</h1>
           <p className="text-lg md:text-xl text-gray-800 mb-4 text-center md:text-left">
             Posted is your all-in-one content HQ — a Notion dashboard designed to help you <strong>plan, organize, script, and repurpose</strong> your ideas with clarity.

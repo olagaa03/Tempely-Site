@@ -1,10 +1,10 @@
 export default function Bundle() {
   return (
     <main className="min-h-screen bg-white text-gray-900 font-sans">
-      <section className="max-w-6xl mx-auto flex flex-col items-center gap-6 text-left px-4 pt-6">
+      <section className="max-w-6xl mx-auto flex flex-col md:flex-row items-start gap-10 px-4 pt-6">
 
         {/* Product Image - Mobile optimized */}
-        <div className="w-full max-h-[50vh] overflow-hidden rounded-xl shadow-md">
+        <div className="w-full md:w-1/2 max-h-[50vh] overflow-hidden rounded-xl shadow-md">
           <img
             src="/screenshots/bundle-cover.png"
             alt="Creator Bundle preview"
@@ -13,7 +13,7 @@ export default function Bundle() {
         </div>
 
         {/* Description + Buy Button */}
-        <div className="w-full">
+        <div className="w-full md:w-1/2">
           <h1 className="text-3xl md:text-5xl font-bold text-center md:text-left mt-4">Creator Bundle.</h1>
           <p className="text-lg md:text-xl text-gray-800 mb-4 text-center md:text-left">
             Get all three premium templates — <strong>Hooked</strong>, <strong>Posted</strong>, and <strong>Tracked</strong> — in one bundle and save big.
