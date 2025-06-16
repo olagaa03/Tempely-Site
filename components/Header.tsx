@@ -1,7 +1,9 @@
-// components/Header.tsx
 import Link from 'next/link';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import Image from 'next/image';
+
+// components/Header.tsx
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,8 +12,15 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-white border-b shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         {/* Logo / Brand */}
-        <Link href="/" className="text-xl font-bold text-gray-900">
-          Templa
+        <Link href="/" className="flex items-center">
+        <Image
+  src="/branding/tempely-logo.png"
+  alt="Tempely Logo"
+  className="h-8 sm:h-10 w-auto"
+  width={160}
+  height={50}
+  priority
+/>
         </Link>
 
         {/* Desktop Nav */}
