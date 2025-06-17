@@ -4,7 +4,7 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <p className="font-semibold text-neutral-800">Tempely</p>
-          <p className="mt-1">Operated by Tempely Gaarden, registered in Norway.</p>
+          <p className="mt-1">Operated by Tempely, registered in Norway.</p>
           <p>All rights reserved © Tempely 2025</p>
         </div>
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-neutral-500 underline text-sm">

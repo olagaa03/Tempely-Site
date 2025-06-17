@@ -1,4 +1,4 @@
-import Footer from '@/components/Footer';
+
 import NewsletterSignup from '@/components/NewsletterSignup';
 
 
@@ -92,7 +92,7 @@ export default function HomePage() {
       </section>
 
       <NewsletterSignup />
-      <Footer />
+      
   
     </main>
   );
