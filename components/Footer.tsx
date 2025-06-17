@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function Footer() {
   return (
     <footer className="bg-neutral-100 text-neutral-600 text-sm mt-12 border-t border-neutral-200">
@@ -8,10 +10,11 @@ export default function Footer() {
           <p>All rights reserved © Tempely 2025</p>
         </div>
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-neutral-500 underline text-sm">
-          <a href="/terms">Terms of Service</a>
-          <a href="/privacy">Privacy Policy</a>
-          <a href="/refund">Refund Policy</a>
-        </div>
+  <Link href="/legal/terms">Terms of Service</Link>
+  <Link href="/legal/privacy">Privacy Policy</Link>
+  <Link href="/legal/refund">Refund Policy</Link>
+</div>
+
       </div>
     </footer>
   );
