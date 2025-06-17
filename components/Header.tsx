@@ -16,9 +16,9 @@ export default function Header() {
             <Image
               src="/branding/tempely-logo-transparent.png"
               alt="Tempely Logo"
-              width={120}
-              height={32}
-              className="w-auto h-8"
+              width={140}
+              height={40}
+              className="w-auto h-10 sm:h-12"
             />
           </Link>
 
