@@ -14,7 +14,7 @@ export default function Header() {
         {/* Logo / Brand */}
         <Link href="/" className="flex items-center">
         <Image
-  src="/branding/tempely-logo.png"
+  src="/branding/tempely-logo-transparent.png"
   alt="Tempely Logo"
   className="h-16 sm:h-20 w-auto transition-transform duration-200 hover:scale-105"
   width={240}
