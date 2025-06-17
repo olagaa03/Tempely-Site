@@ -6,21 +6,22 @@ const products = [
     title: 'Hooked.',
     category: 'Writing',
     image: '/screenshots/hooked-cover.png',
-    link: '/hooked',
+    link: '/products/hooked', // ✅ was just '/hooked'
   },
   {
     title: 'Posted.',
     category: 'Planning',
     image: '/screenshots/posted-cover.png',
-    link: '/posted',
+    link: '/products/posted', // ✅
   },
   {
     title: 'Tracked.',
     category: 'Analytics',
     image: '/screenshots/tracked-cover.png',
-    link: '/tracked',
+    link: '/products/tracked', // ✅
   },
 ];
+
 
 const categories = ['All', 'Writing', 'Planning', 'Analytics'];
 
