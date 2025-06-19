@@ -93,11 +93,12 @@ export default function AiToolPage() {
   </ul>
 
   <a href="/ai-pro">
-  <Link href="/ai-pro-access" passHref>
+  <Link href="/ai-pro">
   <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded w-full">
   🔓 Unlock Full Power with GPT-4
   </button>
 </Link>
+
   </a>
 </div>
 
