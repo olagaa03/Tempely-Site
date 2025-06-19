@@ -9,7 +9,7 @@ export default function About() {
         Helping creators grow smarter with digital templates that actually work.
         </p>
         <p className="text-md mb-4">
-          Our goal is to help creators grow, stay organized, and build online without burning out. Whether you're scripting videos, tracking your growth, or planning a new launch — Templa has something for you.
+          Our goal is to help creators grow, stay organized, and build online without burning out. Whether you're scripting videos, tracking your growth, or planning a new launch — Tempely has something for you.
         </p>
         <div className="text-left space-y-4 mb-6">
           <div className="flex items-start gap-3">
@@ -33,7 +33,7 @@ export default function About() {
           <div className="flex items-start gap-3">
             <DollarSign className="w-5 h-5 mt-1 flex-shrink-0" />
             <p>
-              Our mission at <span className="font-semibold text-blue-700">Templa</span> is to help <span className="font-semibold">creators</span> and <span className="font-semibold">businesses</span> — new or established — skip expensive courses and get straight to what works. With our <span className="font-semibold">strategic templates</span>, you’ll create <span className="font-semibold">engaging, viral content</span> faster than ever.
+              Our mission at <span className="font-semibold text-blue-700">Tempely</span> is to help <span className="font-semibold">creators</span> and <span className="font-semibold">businesses</span> — new or established — skip expensive courses and get straight to what works. With our <span className="font-semibold">strategic templates</span>, you’ll create <span className="font-semibold">engaging, viral content</span> faster than ever.
             </p>
           </div>
         </div>
