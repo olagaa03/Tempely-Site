@@ -136,11 +136,53 @@ export default function AiToolPage() {
       {error && <p className="text-red-500 text-center mt-4">{error}</p>}
 
       {result && (
-        <div className="mt-8 bg-gray-100 p-6 rounded-xl whitespace-pre-wrap">
-          <h2 className="text-xl font-semibold mb-2">Your AI Content:</h2>
-          {result}
-        </div>
-      )}
+  <div className="mt-8 bg-white border border-gray-200 shadow-md p-6 rounded-xl space-y-6 transition-all duration-300">
+    <h2 className="text-2xl font-semibold text-blue-700 mb-2">🚀 Your AI-Powered Captions & Hooks</h2>
+
+    {/* Captions Block */}
+    <div>
+      <h3 className="text-lg font-semibold text-blue-600 mb-2">📢 Captions</h3>
+      <ul className="space-y-2">
+        {result
+          .split('Hooks:')[0]
+          .split('\n')
+          .filter(line =>
+            line.trim() &&
+            !/^\d+\.$/.test(line.trim()) && 
+            !/^Captions[:：]?$/i.test(line.trim())
+          )          
+          .map((line, idx) => (
+            <li
+              key={`caption-${idx}`}
+              className="bg-blue-50 border border-blue-200 p-3 rounded-md text-sm"
+            >
+              {line.trim()}
+            </li>
+          ))}
+      </ul>
+    </div>
+
+    {/* Hooks Block */}
+    <div>
+      <h3 className="text-lg font-semibold text-purple-600 mb-2">💡 Hooks</h3>
+      <ul className="space-y-2">
+        {result
+          .split('Hooks:')[1]
+          ?.split('\n')
+          .filter(line => line.trim() && !/^\d+\.$/.test(line.trim()))
+          .map((line, idx) => (
+            <li
+              key={`hook-${idx}`}
+              className="bg-purple-50 border border-purple-200 p-3 rounded-md text-sm"
+            >
+              {line.trim()}
+            </li>
+          ))}
+      </ul>
+    </div>
+  </div>
+)}
+
     </main>
   );
 }
