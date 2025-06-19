@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Link from 'next/link';
 
 export default function AiToolPage() {
   const [formData, setFormData] = useState({
@@ -92,9 +93,11 @@ export default function AiToolPage() {
   </ul>
 
   <a href="/ai-pro">
-    <button className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 text-sm font-semibold rounded-lg flex items-center gap-2 transition">
-      🔓 Unlock Full Power with GPT-4
-    </button>
+  <Link href="/ai-pro-access" passHref>
+  <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded w-full">
+    🚀 Unlock Full Power with GPT-4
+  </button>
+</Link>
   </a>
 </div>
 
