@@ -8,19 +8,20 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12 text-left">
         <div className="md:w-1/2">
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-            Go viral. <br /> Stay consistent. <br />
-            <span className="text-blue-600">Grow fast.</span>
-          </h1>
-          <p className="text-lg md:text-xl text-gray-800 mb-6">
-            A system built in Notion to help creators go from idea to growth — with less burnout and more results.
-          </p>
-          <a
-            href="/products"
-            className="inline-block bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold text-lg shadow hover:opacity-90 transition"
-          >
-            View Products
-          </a>
+        <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+  The Creator Growth System — Powered by AI
+</h1>
+<p className="text-lg md:text-xl text-gray-800 mb-6">
+  Plan smarter. Post consistently. Track what actually grows. Tempely is your content command center, built for creators who want to go viral and stay there.
+</p>
+
+<a
+  href="/ai-tool" // <- update this once your AI page exists
+  className="inline-block bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold text-lg shadow hover:opacity-90 transition"
+>
+  Try the Free AI Tool
+</a>
+
         </div>
         <div className="md:w-1/2 grid grid-cols-1 sm:grid-cols-3 gap-4">
   <a href="/hooked">

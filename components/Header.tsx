@@ -26,13 +26,16 @@ export default function Header() {
           <nav className="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-700">
             <Link href="/" className="hover:text-black transition">Home</Link>
             <Link href="/products" className="hover:text-black transition">Products</Link>
-            <Link href="/about" className="hover:text-black transition">About</Link>
-            <Link
-              href="/products"
-              className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition"
-            >
-              Shop Templates
-            </Link>
+<Link href="/about" className="hover:text-black transition">About</Link>
+<Link href="/ai-pro" className="hover:text-black transition">AI Pro</Link>
+
+<Link
+  href="/products"
+  className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition"
+>
+  Shop Templates
+</Link>
+
           </nav>
 
           {/* Mobile Nav Button */}
