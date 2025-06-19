@@ -70,7 +70,7 @@ export default function AiProPage() {
             <li>🔓 Unlimited submissions</li>
             <li>📥 Monthly premium templates drop</li>
           </ul>
-          <p className="mt-6 text-lg font-bold text-blue-700">$9/month</p>
+          <p className="mt-6 text-lg font-bold text-blue-700">$19.99/month</p>
           <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded w-full">
             Upgrade to Tempely Pro
           </button>
