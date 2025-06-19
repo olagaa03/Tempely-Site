@@ -6,8 +6,8 @@ export default function TempelySpinner() {
       <Image
         src="/branding/tempely-spinner.png"
         alt="Loading"
-        width={20}
-        height={20}
+        width={40}
+        height={40}
         className="opacity-80"
       />
     </div>
