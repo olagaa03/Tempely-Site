@@ -10,7 +10,7 @@ export default function Header() {
     <header className="border-b border-neutral-200 bg-white sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
-          
+
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <Image
@@ -26,16 +26,17 @@ export default function Header() {
           <nav className="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-700">
             <Link href="/" className="hover:text-black transition">Home</Link>
             <Link href="/products" className="hover:text-black transition">Products</Link>
-<Link href="/about" className="hover:text-black transition">About</Link>
-<Link href="/ai-pro" className="hover:text-black transition">AI Pro</Link>
-
-<Link
-  href="/products"
-  className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition"
->
-  Shop Templates
-</Link>
-
+            <Link href="/about" className="hover:text-black transition">About</Link>
+            <Link href="/ai-tool" className="hover:text-black transition">🤖 Free AI</Link>
+            <Link href="/ai-pro" className="hover:text-black transition flex items-center gap-1">
+              🚀 AI Pro <span className="bg-yellow-300 text-xs px-2 py-0.5 rounded-full font-semibold">GPT-4</span>
+            </Link>
+            <Link
+              href="/products"
+              className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition"
+            >
+              Shop Templates
+            </Link>
           </nav>
 
           {/* Mobile Nav Button */}
@@ -55,6 +56,8 @@ export default function Header() {
           <Link href="/" className="block">Home</Link>
           <Link href="/products" className="block">Products</Link>
           <Link href="/about" className="block">About</Link>
+          <Link href="/ai-tool" className="block">🤖 Free AI</Link>
+          <Link href="/ai-pro" className="block">🚀 AI Pro <span className="bg-yellow-300 text-xs px-2 py-0.5 rounded-full font-semibold">GPT-4</span></Link>
           <Link
             href="/products"
             className="block bg-black text-white text-center py-2 rounded-md"
