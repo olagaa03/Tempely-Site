@@ -4,7 +4,7 @@ export default function About() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white px-6 py-16 text-gray-800 font-sans">
       <div className="max-w-3xl mx-auto text-center">
-        <h1 className="text-5xl font-bold mb-6 text-blue-700 tracking-tight">About Templa</h1>
+        <h1 className="text-5xl font-bold mb-6 text-blue-700 tracking-tight">About Tempely</h1>
         <p className="text-lg mb-6 text-gray-700">
         Helping creators grow smarter with digital templates that actually work.
         </p>
