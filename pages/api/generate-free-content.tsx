@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import OpenAI from 'openai';
 
-// Simple in-memory rate limiter (per IP)
+// In-memory rate limiter (per IP)
 type UsageStore = {
   [ip: string]: {
     count: number;
@@ -33,45 +33,53 @@ function isRateLimited(ip: string): boolean {
   return false;
 }
 
-// Init OpenAI
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!,
-});
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-  console.log("🔥 API hit");
+  try {
+    if (req.method !== 'POST') {
+      return res.status(405).json({ error: 'Method not allowed' });
+    }
 
-  const {
-    niche,
-    platform,
-    audience,
-    tone,
-    goal,
-  }: {
-    niche: string;
-    platform: string;
-    audience: string;
-    tone: string;
-    goal: string;
-  } = req.body;
+    const {
+      niche,
+      platform,
+      audience,
+      tone,
+      goal,
+    }: {
+      niche: string;
+      platform: string;
+      audience: string;
+      tone: string;
+      goal: string;
+    } = req.body;
 
-  // Check required fields
-  if (!niche || !platform || !audience || !tone || !goal) {
-    return res.status(400).json({ error: 'Missing required fields' });
-  }
+    if (!niche || !platform || !audience || !tone || !goal) {
+      console.warn('Missing input fields');
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
 
-  // Rate limit check
-  const ip = (req.headers['x-forwarded-for'] || req.socket.remoteAddress || '') as string;
-  if (isRateLimited(ip)) {
-    return res.status(429).json({
-      error: 'Free usage limit reached. Try again tomorrow or upgrade to Temply Pro for unlimited access.',
+    const ip =
+      (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() ||
+      req.socket.remoteAddress ||
+      'unknown';
+
+    if (isRateLimited(ip)) {
+      console.log(`Rate limit exceeded for IP: ${ip}`);
+      return res.status(429).json({
+        error: 'Free usage limit reached. Try again tomorrow or upgrade to Temply Pro.',
+      });
+    }
+
+    if (!process.env.OPENAI_API_KEY) {
+      console.error('Missing OPENAI_API_KEY');
+      return res.status(500).json({ error: 'Server misconfiguration: API key missing' });
+    }
+
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
     });
-  }
 
-  const prompt = `
+    const prompt = `
 Generate 2 scroll-stopping captions and 2 engaging hook ideas for content on ${platform}.
 Make sure they’re aligned with the following:
 
@@ -90,18 +98,11 @@ Hooks:
 2. ...
 `.trim();
 
-  try {
     const response = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
-        {
-          role: 'system',
-          content: 'You are a skilled content strategist and copywriter.',
-        },
-        {
-          role: 'user',
-          content: prompt,
-        },
+        { role: 'system', content: 'You are a skilled content strategist and copywriter.' },
+        { role: 'user', content: prompt },
       ],
       temperature: 0.75,
       max_tokens: 500,
@@ -110,12 +111,14 @@ Hooks:
     const output = response.choices[0]?.message?.content?.trim();
 
     if (!output) {
+      console.error('No content returned from OpenAI');
       return res.status(500).json({ error: 'No content returned' });
     }
 
+    console.log('Content generated successfully');
     return res.status(200).json({ result: output });
   } catch (error: any) {
-    console.error('[OpenAI Error]', error?.message || error);
-    return res.status(500).json({ error: 'Something went wrong with OpenAI' });
+    console.error('[Server Error]', error?.message || error);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
