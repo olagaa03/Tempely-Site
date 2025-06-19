@@ -52,8 +52,8 @@ export default function AiProPage() {
           <ul className="text-sm space-y-2 text-gray-600">
             <li>✅ ChatGPT 3.5</li>
             <li>✅ Basic content ideas</li>
-            <li>✅ 3 viral hook suggestions</li>
-            <li>✅ 1 caption example</li>
+            <li>✅ 2 viral hook suggestions</li>
+            <li>✅ 2 caption example</li>
             <li>✅ Limited form access</li>
           </ul>
           <p className="mt-6 text-lg font-bold">Free Forever</p>

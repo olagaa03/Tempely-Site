@@ -64,7 +64,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const openai = new OpenAI({ apiKey });
 
   const prompt = `
-Generate 2 scroll-stopping captions and 2 engaging hook ideas for content on ${platform}.
+Generate 2 scroll-stopping captions, 2 engaging hook ideas, and 1 basic content idea for content on ${platform}.
 Make sure they’re aligned with the following:
 
 Niche: ${niche}
@@ -73,6 +73,9 @@ Tone: ${tone}
 Goal: ${goal}
 
 Structure:
+Content Idea:
+- ...
+
 Captions:
 1. ...
 2. ...
