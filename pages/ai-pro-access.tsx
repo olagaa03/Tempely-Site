@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Image from 'next/image';
 import {
   Sparkles,
   Info,
@@ -12,6 +13,7 @@ import {
   LayoutGrid,
 } from 'lucide-react';
 import ResultSection from '@/components/ResultSection';
+import TempelySpinner from '@/components/TempelySpinner';
 
 type SectionKey = 'captions' | 'hooks' | 'tip' | 'why';
 
@@ -56,8 +58,6 @@ export default function AiProAccessPage() {
       });
 
       const data = await res.json();
-      console.log('[DEBUG] Full Response:', data);
-
       if (!res.ok || !data.result || typeof data.result !== 'string' || data.result.trim() === '') {
         setError(data.error || 'No valid result returned from OpenAI.');
         return;
@@ -65,9 +65,7 @@ export default function AiProAccessPage() {
 
       setResult(data.result);
       parseSections(data.result);
-
     } catch (err) {
-      console.error('Fetch error:', err);
       setError('Failed to connect to OpenAI');
     } finally {
       setLoading(false);
@@ -101,8 +99,7 @@ export default function AiProAccessPage() {
       <div className="bg-gray-50 p-8 rounded-xl border border-gray-200 shadow-sm mb-10">
         <h1 className="text-4xl font-extrabold text-center text-blue-600 mb-3">Temply Pro Assistant</h1>
         <p className="text-center text-gray-500 text-base max-w-2xl mx-auto">
-          Unlock premium content creation powered by <strong>GPT-4</strong>. Tailored hooks, captions, and
-          marketing content crafted specifically for your brand.
+          Unlock premium content creation powered by <strong>GPT-4</strong>. Tailored hooks, captions, and marketing content crafted specifically for your brand.
         </p>
       </div>
 
@@ -120,54 +117,49 @@ export default function AiProAccessPage() {
                 <LayoutGrid className="w-4 h-4 text-gray-500" /> Content Format
               </label>
               <select
-  name="format"
-  id="format"
-  value={formData.format}
-  onChange={handleChange}
-  className="w-full p-3 border rounded-lg focus:outline-blue-500 bg-gray-50 shadow-sm"
->
-  <optgroup label="📱 Social Media">
-    <option>Instagram Caption</option>
-    <option>Instagram Carousel</option>
-    <option>Instagram Reel Script</option>
-    <option>Facebook Post</option>
-    <option>Threads Post</option>
-    <option>Tweet Thread</option>
-    <option>LinkedIn Post</option>
-    <option>Pinterest Pin Description</option>
-    <option>Reddit Post</option>
-  </optgroup>
-
-  <optgroup label="🎬 Video & Audio">
-    <option>YouTube Title & Description</option>
-    <option>YouTube Script</option>
-    <option>TikTok Script</option>
-    <option>Podcast Episode Outline</option>
-    <option>Instagram Story Sequence</option>
-  </optgroup>
-
-  <optgroup label="📧 Email & Blog">
-    <option>Email Subject Line + Preview Text</option>
-    <option>Newsletter Blurb</option>
-    <option>Blog Post Intro</option>
-    <option>Website Hero Copy</option>
-  </optgroup>
-
-  <optgroup label="💰 Ads & Sales Copy">
-    <option>Google Ad Headline + Description</option>
-    <option>Facebook Ad Copy</option>
-    <option>Product Landing Page Copy</option>
-    <option>Elevator Pitch</option>
-  </optgroup>
-
-  <optgroup label="🧠 Strategy & CTA">
-    <option>Call to Action (CTA) Ideas</option>
-    <option>FAQ Snippets</option>
-    <option>Lead Magnet Outline</option>
-    <option>Content Upgrade CTA</option>
-  </optgroup>
-</select>
-
+                name="format"
+                id="format"
+                value={formData.format}
+                onChange={handleChange}
+                className="w-full p-3 border rounded-lg focus:outline-blue-500 bg-gray-50 shadow-sm"
+              >
+                <optgroup label="📱 Social Media">
+                  <option>Instagram Caption</option>
+                  <option>Instagram Carousel</option>
+                  <option>Instagram Reel Script</option>
+                  <option>Facebook Post</option>
+                  <option>Threads Post</option>
+                  <option>Tweet Thread</option>
+                  <option>LinkedIn Post</option>
+                  <option>Pinterest Pin Description</option>
+                  <option>Reddit Post</option>
+                </optgroup>
+                <optgroup label="🎬 Video & Audio">
+                  <option>YouTube Title & Description</option>
+                  <option>YouTube Script</option>
+                  <option>TikTok Script</option>
+                  <option>Podcast Episode Outline</option>
+                  <option>Instagram Story Sequence</option>
+                </optgroup>
+                <optgroup label="📧 Email & Blog">
+                  <option>Email Subject Line + Preview Text</option>
+                  <option>Newsletter Blurb</option>
+                  <option>Blog Post Intro</option>
+                  <option>Website Hero Copy</option>
+                </optgroup>
+                <optgroup label="💰 Ads & Sales Copy">
+                  <option>Google Ad Headline + Description</option>
+                  <option>Facebook Ad Copy</option>
+                  <option>Product Landing Page Copy</option>
+                  <option>Elevator Pitch</option>
+                </optgroup>
+                <optgroup label="🧠 Strategy & CTA">
+                  <option>Call to Action (CTA) Ideas</option>
+                  <option>FAQ Snippets</option>
+                  <option>Lead Magnet Outline</option>
+                  <option>Content Upgrade CTA</option>
+                </optgroup>
+              </select>
             </div>
           </div>
         </section>
@@ -185,10 +177,23 @@ export default function AiProAccessPage() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-xl transition"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-xl transition flex justify-center items-center gap-2"
         >
-          {loading ? 'Generating...' : '✨ Generate AI Content'}
+          {loading ? (
+            <>
+              <TempelySpinner />
+              Generating...
+            </>
+          ) : (
+            <>✨ Generate AI Content</>
+          )}
         </button>
+
+        {loading && (
+          <p className="mt-3 text-sm text-gray-500 text-center italic">
+            This may take up to <strong>30–60 seconds</strong> depending on the request.
+          </p>
+        )}
       </form>
 
       {error && (
@@ -200,17 +205,16 @@ export default function AiProAccessPage() {
       {(sections.captions || sections.hooks || sections.tip || sections.why) && (
         <div className="mt-12">
           <ResultSection
-  rawText={result}
-  userInput={formData}
-  onUpdateSection={(key, content) => {
-    setSections(prev => ({ ...prev, [key]: content }));
-  }}
-  captions={sections.captions}
-  hooks={sections.hooks}
-  tip={sections.tip}
-  breakdown={sections.why}
-/>
-
+            rawText={result}
+            userInput={formData}
+            onUpdateSection={(key, content) => {
+              setSections(prev => ({ ...prev, [key]: content }));
+            }}
+            captions={sections.captions}
+            hooks={sections.hooks}
+            tip={sections.tip}
+            breakdown={sections.why}
+          />
         </div>
       )}
     </main>
