@@ -2,15 +2,15 @@ import Image from 'next/image';
 
 export default function TempelySpinner() {
   return (
-    <div className="flex flex-col items-center justify-center py-10 text-center animate-pulse">
+    <div className="animate-spin">
       <Image
-        src="/branding/tempely-spinner.png"
-        alt="Loading..."
-        width={60}
-        height={60}
-        className="animate-spin"
+        src="/branding/tempely-logo-transparent.png"
+        alt="Loading"
+        width={20}
+        height={20}
+        className="opacity-80"
       />
-      <p className="text-sm text-gray-500 mt-4">Generating magic... this may take 30–60 seconds ⏳</p>
     </div>
   );
 }
+
