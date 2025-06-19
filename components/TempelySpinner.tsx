@@ -4,7 +4,7 @@ export default function TempelySpinner() {
   return (
     <div className="animate-spin">
       <Image
-        src="/branding/tempely-logo-transparent.png"
+        src="/branding/tempely-spinner.png"
         alt="Loading"
         width={20}
         height={20}
