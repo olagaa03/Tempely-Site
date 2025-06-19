@@ -1,5 +1,9 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import OpenAI from 'openai';
+
+const openai = new OpenAI({
+  apiKey: process.env.TEMPLY_PRO_API_KEY,
+});
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -8,17 +12,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const { niche, platform, audience, tone, goal, product, pain, format } = req.body || {};
 
+  // Validate input
   if (!niche || !platform || !audience || !tone || !goal || !format) {
     return res.status(400).json({ error: 'Missing required fields in request body.' });
   }
 
-  const apiKey = process.env.TEMPLY_PRO_API_KEY;
-  if (!apiKey) {
-    console.error('❌ Missing TEMPLY_PRO_API_KEY in environment.');
+  // Check for API key
+  if (!process.env.TEMPLY_PRO_API_KEY) {
+    console.error('❌ TEMPLY_PRO_API_KEY is missing');
     return res.status(500).json({ error: 'Server misconfiguration: API key missing' });
   }
-
-  const openai = new OpenAI({ apiKey });
 
   const sanitizedFormat = typeof format === 'string' ? format.toLowerCase() : 'content';
 
@@ -30,7 +33,7 @@ Your task is to create marketing content that:
 - Is tailored to the user's niche, audience, and product
 - Explains the strategic reasoning behind each section
 
-FORMAT: ${format}
+FORMAT: ${sanitizedFormat}
 
 USER INPUT:
 Niche: ${niche}
@@ -56,7 +59,7 @@ Give one tactical tip to improve performance for this format. Focus on trends, t
 Explain why these examples work — reference psychology, copywriting principles, audience targeting, or structure. Speak like a strategist, not an AI.
 
 Make the content feel premium, insightful, and useful to a content creator or brand builder.
-  `.trim();
+  `;
 
   try {
     const response = await openai.chat.completions.create({
@@ -74,6 +77,8 @@ Make the content feel premium, insightful, and useful to a content creator or br
     return res.status(200).json({ result: output });
   } catch (error: any) {
     console.error('❌ OpenAI API Error:', error?.message || error);
-    return res.status(500).json({ error: 'Failed to connect to OpenAI. Check API key and request payload.' });
+    return res.status(500).json({
+      error: 'Failed to connect to OpenAI. Check your API key or model access.',
+    });
   }
 }
