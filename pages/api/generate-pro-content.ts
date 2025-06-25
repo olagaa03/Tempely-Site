@@ -1,25 +1,43 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import OpenAI from 'openai';
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { getAuth } from '@clerk/nextjs/server'
+import OpenAI from 'openai'
 
-const apiKey = process.env.TEMPLY_PRO_API_KEY;
+const apiKey = process.env.TEMPLY_PRO_API_KEY
 
 if (!apiKey) {
-  console.error('❌ TEMPLY_PRO_API_KEY missing in env!');
+  console.error('❌ TEMPLY_PRO_API_KEY missing in env!')
 }
 
 const openai = new OpenAI({
   apiKey: apiKey!,
-});
+})
+
+const MOCK_PRO_USER_IDS = new Set([
+  'user_123abc',
+  'user_456def',
+  'user_789ghi',
+])
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed. Use POST.' });
+    return res.status(405).json({ error: 'Method not allowed. Use POST.' })
   }
 
-  const { niche, platform, audience, tone, goal, product, pain, format } = req.body || {};
+  // Authenticate user with Clerk
+  const { userId } = getAuth(req)
+  if (!userId) {
+    return res.status(401).json({ error: 'Unauthorized: Please sign in.' })
+  }
+
+  // Check Pro status via mock list
+  if (!MOCK_PRO_USER_IDS.has(userId)) {
+    return res.status(403).json({ error: 'Forbidden: Pro access required.' })
+  }
+
+  const { niche, platform, audience, tone, goal, product, pain, format } = req.body || {}
 
   if (!niche || !platform || !audience || !tone || !goal || !format) {
-    return res.status(400).json({ error: 'Missing required fields in request body.' });
+    return res.status(400).json({ error: 'Missing required fields in request body.' })
   }
 
   const prompt = `
@@ -54,7 +72,7 @@ Give one tactical tip to improve performance for this format. Focus on trends, t
 
 4. **Why This Works**
 Explain why these examples work — reference psychology, copywriting principles, audience targeting, or structure. Speak like a strategist, not an AI.
-`;
+`
 
   try {
     const response = await openai.chat.completions.create({
@@ -62,17 +80,17 @@ Explain why these examples work — reference psychology, copywriting principles
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.75,
       max_tokens: 800,
-    });
+    })
 
-    const output = response.choices?.[0]?.message?.content?.trim();
+    const output = response.choices?.[0]?.message?.content?.trim()
 
     if (!output) {
-      return res.status(500).json({ error: 'No content returned from OpenAI.' });
+      return res.status(500).json({ error: 'No content returned from OpenAI.' })
     }
 
-    return res.status(200).json({ result: output });
+    return res.status(200).json({ result: output })
   } catch (error: any) {
-    console.error('❌ Pro API error:', error?.message || error);
-    return res.status(500).json({ error: 'Pro content generation failed. Check API key or logs.' });
+    console.error('❌ Pro API error:', error?.message || error)
+    return res.status(500).json({ error: 'Pro content generation failed. Check API key or logs.' })
   }
 }

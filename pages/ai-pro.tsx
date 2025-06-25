@@ -1,38 +1,23 @@
-import { useState } from 'react';
-import Link from 'next/link';
+import { getAuth } from "@clerk/nextjs/server";
+import { GetServerSideProps } from "next";
+import Link from "next/link";
 
-const TEMP_PASSWORD = "letmein"; // ← Change this to your own password
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { userId } = getAuth(ctx.req);
 
-export default function AiProPage() {
-  const [accessGranted, setAccessGranted] = useState(false);
-  const [password, setPassword] = useState("");
-
-  if (!accessGranted) {
-    return (
-      <main className="min-h-screen flex items-center justify-center">
-        <div className="bg-white shadow-xl p-6 rounded-xl text-center">
-          <h2 className="text-xl font-bold mb-4">Enter Tempely Pro Test Password</h2>
-          <input
-            type="password"
-            className="border p-2 rounded w-full mb-4"
-            placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button
-            onClick={() => {
-              if (password === TEMP_PASSWORD) setAccessGranted(true);
-              else alert("Wrong password!");
-            }}
-            className="bg-black text-white px-4 py-2 rounded"
-          >
-            Unlock
-          </button>
-        </div>
-      </main>
-    );
+  if (!userId) {
+    return {
+      redirect: {
+        destination: "/sign-in",
+        permanent: false,
+      },
+    };
   }
 
+  return { props: {} };
+};
+
+export default function AiProPage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-white to-gray-50 text-gray-900 font-sans">
       <section className="text-center px-4 py-12">
@@ -75,11 +60,11 @@ export default function AiProPage() {
             Upgrade to Tempely Pro
           </button>
           <Link
-  href="/ai-pro-access"
-  className="mt-2 inline-block text-center text-blue-600 font-medium hover:underline w-full"
->
-  Already upgraded? Access AI Pro Assistant →
-</Link>
+            href="/ai-pro-access"
+            className="mt-2 inline-block text-center text-blue-600 font-medium hover:underline w-full"
+          >
+            Already upgraded? Access AI Pro Assistant →
+          </Link>
         </div>
       </section>
     </main>
