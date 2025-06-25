@@ -6,7 +6,7 @@ import '@/styles/globals.css';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ClerkProvider>
+    <ClerkProvider frontendApi={process.env.NEXT_PUBLIC_CLERK_FRONTEND_API}>
       <div className="min-h-screen bg-white text-black flex flex-col">
         <Header />
         <main className="flex-grow">
