@@ -3,12 +3,13 @@ import { authMiddleware } from "@clerk/nextjs";
 export default authMiddleware({
   publicRoutes: [
     "/",
-    "/about",
-    "/products",
-    "/products/(.*)",
-    "/bundle",
     "/sign-in",
     "/sign-up",
+    "/about",
+    "/products",
+    "/bundle",
+    "/ai-tool", // ✅ Free AI Tool now uses modal
+    "/ai-pro",  // ✅ Pro info page also uses modal
   ],
 });
 
