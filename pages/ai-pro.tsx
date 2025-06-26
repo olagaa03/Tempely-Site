@@ -14,8 +14,13 @@ export default function AiProPage() {
           Temply Pro is exclusive to members. Please log in or sign up to unlock GPT-4 powered tools.
         </p>
         <SignInButton mode="modal" redirectUrl="/ai-pro">
-  <button className="...">Upgrade to AI Pro</button>
+  <div className="inline-block">
+    <button className="bg-yellow-400 hover:bg-yellow-500 text-black text-lg font-semibold px-6 py-3 rounded-full shadow-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-offset-2">
+      🔐 Access GPT-4 with Pro
+    </button>
+  </div>
 </SignInButton>
+
 
       </main>
     );
