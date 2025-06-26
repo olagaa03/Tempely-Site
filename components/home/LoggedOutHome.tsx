@@ -17,34 +17,58 @@ export default function LoggedOutHome() {
             Plan smarter. Post consistently. Track what actually grows. Tempely is your content command center, built for creators who want to go viral and stay there.
           </p>
           <SignInButton mode="modal" redirectUrl="/ai-tool">
-  <div className="inline-block">
-    <button className="bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold px-6 py-3 rounded-full shadow-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
-      Try the Free AI Tool
-    </button>
-  </div>
-</SignInButton>
-
+            <div className="inline-block">
+              <button className="bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold px-6 py-3 rounded-full shadow-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
+                Try the Free AI Tool
+              </button>
+            </div>
+          </SignInButton>
         </div>
       </section>
 
       {/* Features Overview */}
       <section className="py-20 px-6 bg-white">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-          <div>
-            <Image src="/screenshots/hooked-cover.png" alt="Hooked" width={300} height={180} className="mx-auto rounded-xl shadow-md" />
-            <h3 className="text-xl font-bold mt-4">Hooked</h3>
-            <p className="text-gray-600 mt-2 text-sm">Write viral-worthy hooks using proven formulas and scripts.</p>
-          </div>
-          <div>
-            <Image src="/screenshots/posted-cover.png" alt="Posted" width={300} height={180} className="mx-auto rounded-xl shadow-md" />
-            <h3 className="text-xl font-bold mt-4">Posted</h3>
-            <p className="text-gray-600 mt-2 text-sm">Plan content with clarity and avoid burnout with smart templates.</p>
-          </div>
-          <div>
-            <Image src="/screenshots/tracked-cover.png" alt="Tracked" width={300} height={180} className="mx-auto rounded-xl shadow-md" />
-            <h3 className="text-xl font-bold mt-4">Tracked</h3>
-            <p className="text-gray-600 mt-2 text-sm">See what’s working, what’s not, and evolve your content strategy.</p>
-          </div>
+          {[
+            {
+              title: 'Hooked',
+              desc: 'Write viral-worthy hooks using proven formulas and scripts.',
+              image: '/screenshots/hooked-cover.png',
+              href: '/products/hooked',
+            },
+            {
+              title: 'Posted',
+              desc: 'Plan content with clarity and avoid burnout with smart templates.',
+              image: '/screenshots/posted-cover.png',
+              href: '/products/posted',
+            },
+            {
+              title: 'Tracked',
+              desc: 'See what’s working, what’s not, and evolve your content strategy.',
+              image: '/screenshots/tracked-cover.png',
+              href: '/products/tracked',
+            },
+          ].map(({ title, desc, image, href }) => (
+            <Link
+              key={title}
+              href={href}
+              className="group block transform transition duration-300 hover:scale-105"
+            >
+              <div className="bg-white rounded-xl shadow-md hover:shadow-lg overflow-hidden">
+                <Image
+                  src={image}
+                  alt={title}
+                  width={300}
+                  height={180}
+                  className="mx-auto rounded-xl"
+                />
+                <div className="p-4">
+                  <h3 className="text-xl font-bold mt-2">{title}</h3>
+                  <p className="text-gray-600 mt-2 text-sm">{desc}</p>
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
       </section>
 
