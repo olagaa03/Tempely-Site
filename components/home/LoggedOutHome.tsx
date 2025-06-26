@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import NewsletterSignup from '@/components/NewsletterSignup';
-import { SignInButton } from "@clerk/nextjs"; 
+import { SignInButton } from '@clerk/nextjs';
 
 export default function LoggedOutHome() {
   return (
@@ -32,40 +32,34 @@ export default function LoggedOutHome() {
           {[
             {
               title: 'Hooked',
-              desc: 'Write viral-worthy hooks using proven formulas and scripts.',
               image: '/screenshots/hooked-cover.png',
-              href: '/products/hooked',
+              description: 'Write viral-worthy hooks using proven formulas and scripts.',
+              link: '/products/hooked',
             },
             {
               title: 'Posted',
-              desc: 'Plan content with clarity and avoid burnout with smart templates.',
               image: '/screenshots/posted-cover.png',
-              href: '/products/posted',
+              description: 'Plan content with clarity and avoid burnout with smart templates.',
+              link: '/products/posted',
             },
             {
               title: 'Tracked',
-              desc: 'See what’s working, what’s not, and evolve your content strategy.',
               image: '/screenshots/tracked-cover.png',
-              href: '/products/tracked',
+              description: 'See what’s working, what’s not, and evolve your content strategy.',
+              link: '/products/tracked',
             },
-          ].map(({ title, desc, image, href }) => (
-            <Link
-              key={title}
-              href={href}
-              className="group block transform transition duration-300 hover:scale-105"
-            >
-              <div className="bg-white rounded-xl shadow-md hover:shadow-lg overflow-hidden">
+          ].map((item) => (
+            <Link href={item.link} key={item.title} className="group block transition duration-300 hover:scale-105">
+              <div className="rounded-xl overflow-hidden">
                 <Image
-                  src={image}
-                  alt={title}
+                  src={item.image}
+                  alt={item.title}
                   width={300}
                   height={180}
-                  className="mx-auto rounded-xl"
+                  className="mx-auto rounded-xl shadow-md transition-transform duration-300 group-hover:scale-105"
                 />
-                <div className="p-4">
-                  <h3 className="text-xl font-bold mt-2">{title}</h3>
-                  <p className="text-gray-600 mt-2 text-sm">{desc}</p>
-                </div>
+                <h3 className="text-xl font-bold mt-4">{item.title}</h3>
+                <p className="text-gray-600 mt-2 text-sm">{item.description}</p>
               </div>
             </Link>
           ))}
