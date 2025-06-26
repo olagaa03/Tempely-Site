@@ -6,82 +6,55 @@ import Image from 'next/image';
 const products = [
   {
     title: 'Hooked',
-    category: 'Writing',
     image: '/screenshots/hooked-cover.png',
-    link: '/products/hooked',
     description: 'Write viral-worthy hooks using proven formulas and scripts.',
+    link: '/products/hooked',
+    accent: 'blue',
   },
   {
     title: 'Posted',
-    category: 'Planning',
     image: '/screenshots/posted-cover.png',
-    link: '/products/posted',
     description: 'Plan content with clarity and avoid burnout with smart templates.',
+    link: '/products/posted',
+    accent: 'purple',
   },
   {
     title: 'Tracked',
-    category: 'Analytics',
     image: '/screenshots/tracked-cover.png',
+    description: "See what's working, what's not, and evolve your content strategy.",
     link: '/products/tracked',
-    description: 'See what’s working, what’s not, and evolve your content strategy.',
+    accent: 'yellow',
   },
 ];
 
-const categories = ['All', 'Writing', 'Planning', 'Analytics'];
+const accentClass: Record<string, string> = {
+  blue: 'group-hover:text-blue-400',
+  purple: 'group-hover:text-purple-400',
+  yellow: 'group-hover:text-yellow-400',
+};
 
 export default function ProductsPage() {
-  const [selectedCategory, setSelectedCategory] = useState('All');
-
-  const filteredProducts =
-    selectedCategory === 'All'
-      ? products
-      : products.filter((product) => product.category === selectedCategory);
-
   return (
-    <main className="min-h-screen bg-white text-gray-900 px-6 py-12 font-sans">
-      <section className="max-w-6xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-bold text-center mb-10">All Templates</h1>
-
-        {/* Category Filter */}
-        <div className="flex justify-center gap-4 mb-8 flex-wrap">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat)}
-              className={`px-4 py-2 rounded-full border transition text-sm font-medium ${
-                selectedCategory === cat
-                  ? 'bg-blue-600 text-white border-blue-600'
-                  : 'text-gray-700 border-gray-300 hover:border-blue-400'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-
-        {/* Product Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-          {filteredProducts.map((product) => (
-            <Link
-              href={product.link}
-              key={product.title}
-              className="group block transform transition duration-300 hover:scale-105"
-            >
-              <div className="rounded-xl overflow-hidden text-center">
-                <Image
-                  src={product.image}
-                  alt={`${product.title} Cover`}
-                  width={300}
-                  height={180}
-                  className="mx-auto rounded-xl shadow-md transition-transform duration-300 group-hover:scale-105"
-                />
-                <h3 className="text-xl font-bold mt-4">{product.title}</h3>
-                <p className="text-gray-600 mt-2 text-sm">{product.description}</p>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
+    <main className="min-h-screen bg-gradient-to-b from-[#18181B] to-[#0F0F0F] font-sans px-4 py-20">
+      <h1 className="text-5xl font-extrabold text-center mb-12 text-white drop-shadow-lg">Explore Our Products</h1>
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+        {products.map((item) => (
+          <Link href={item.link} key={item.title} className="group block transition duration-300 hover:scale-105">
+            <div className="rounded-2xl overflow-hidden bg-white/10 backdrop-blur-md p-8 shadow-xl border border-white/10 hover:border-blue-500 hover:shadow-2xl transition flex flex-col items-center">
+              <Image
+                src={item.image}
+                alt={item.title}
+                width={300}
+                height={180}
+                className="mx-auto rounded-xl transition-transform duration-300 group-hover:scale-105"
+              />
+              <h3 className={`text-2xl font-bold mt-8 text-white transition ${accentClass[item.accent]}`}>{item.title}</h3>
+              <p className="text-gray-300 mt-4 text-base font-medium text-center">{item.description}</p>
+              <span className="mt-6 inline-block bg-blue-600 text-white px-6 py-2 rounded-full font-semibold shadow hover:bg-blue-500 transition-transform duration-200 hover:scale-105">View Product</span>
+            </div>
+          </Link>
+        ))}
+      </div>
     </main>
   );
 }

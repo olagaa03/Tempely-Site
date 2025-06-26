@@ -3,45 +3,80 @@ import Link from 'next/link';
 
 export default function LoggedInHome() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-white to-gray-100 font-sans px-6 py-16">
-      <section className="max-w-6xl mx-auto text-center mb-16">
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Welcome to Tempely 👋</h1>
-        <p className="text-lg md:text-xl text-gray-700 max-w-2xl mx-auto">
-          Your creator growth system is ready. Start generating, planning, and tracking what works — all powered by AI.
-        </p>
+    <main className="min-h-screen font-sans px-0 py-0 text-gray-100 bg-transparent">
+      {/* Hero */}
+      <section className="w-full max-w-5xl mx-auto pt-32 pb-20 px-8 flex flex-col items-start">
+        <div className="mb-8">
+          <div className="h-2 w-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mb-4"></div>
+          <h1 className="text-6xl font-extrabold mb-4 text-white drop-shadow-lg">Welcome back, Creator</h1>
+          <p className="text-xl text-gray-400 mb-8 max-w-xl">
+            Your growth system is ready. Start generating, planning, and tracking what works — all powered by AI.
+          </p>
+          <a href="/ai-tool" className="inline-block bg-blue-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-blue-500 shadow-lg transition-transform duration-200 hover:scale-105 text-lg">
+            🚀 Start Creating
+          </a>
+        </div>
       </section>
 
-      <section className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-24">
-        <Link href="/ai-tool" className="bg-white border rounded-2xl shadow-sm hover:shadow-md p-6 transition group">
-          <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition">🤖 Use Free AI Tool</h3>
-          <p className="text-gray-600 text-sm">Generate hooks and posts instantly. Limited to 5/day on Free plan.</p>
-        </Link>
-
-        <Link href="/ai-pro" className="bg-white border rounded-2xl shadow-sm hover:shadow-md p-6 transition group">
-          <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-purple-600 transition">🚀 Upgrade to AI Pro</h3>
-          <p className="text-gray-600 text-sm">Unlock GPT-4 access, unlimited generations, and advanced content tools.</p>
-        </Link>
-
-        <Link href="/products" className="bg-white border rounded-2xl shadow-sm hover:shadow-md p-6 transition group">
-          <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-black transition">🛍️ Explore Products</h3>
-          <p className="text-gray-600 text-sm">Browse our full product suite: Hooked, Posted, Tracked — and more.</p>
-        </Link>
+      {/* Features - staggered grid */}
+      <section className="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 px-8 mb-24">
+        {[
+          {
+            title: 'Free AI Tool',
+            icon: '🤖',
+            description: 'Generate hooks and posts instantly. 5/day on Free plan.',
+            link: '/ai-tool',
+            accent: 'from-blue-500 to-blue-400',
+          },
+          {
+            title: 'AI Pro',
+            icon: '🚀',
+            description: 'Unlock GPT-4, unlimited generations, and advanced tools.',
+            link: '/ai-pro',
+            accent: 'from-purple-500 to-purple-400',
+          },
+          {
+            title: 'Products',
+            icon: '📚',
+            description: 'Browse Hooked, Posted, Tracked, and more.',
+            link: '/products',
+            accent: 'from-yellow-400 to-yellow-300',
+          },
+        ].map((item, idx) => (
+          <a
+            href={item.link}
+            key={item.title}
+            className={`group flex flex-col items-start p-8 rounded-2xl bg-white/5 backdrop-blur-md shadow-lg border border-white/10 transition-transform duration-200 hover:-translate-y-2 hover:shadow-2xl hover:border-blue-500 ${idx === 1 ? 'md:mt-12' : ''}`}
+          >
+            <span className={`text-4xl mb-4 bg-gradient-to-r ${item.accent} bg-clip-text text-transparent`}>{item.icon}</span>
+            <h3 className="text-2xl font-bold text-white mb-2">{item.title}</h3>
+            <p className="text-gray-300 text-base font-medium">{item.description}</p>
+          </a>
+        ))}
       </section>
 
-      <section className="max-w-5xl mx-auto text-center mb-20">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">📦 The Creator Bundle</h2>
-        <p className="text-gray-700 max-w-2xl mx-auto mb-6">
-          Get all three core systems — <strong>Hooked</strong>, <strong>Posted</strong>, and <strong>Tracked</strong> — in one powerful bundle.
-        </p>
-        <Link
-          href="/bundle"
-          className="inline-block bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition"
-        >
-          View the Bundle
-        </Link>
+      {/* Bundle Callout */}
+      <section className="w-full py-16 px-8 flex justify-center">
+        <div className="w-full max-w-4xl bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/10 p-10 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div>
+            <h2 className="text-3xl font-bold text-white mb-2 flex items-center gap-2">
+              <span>📦</span> The Creator Bundle
+            </h2>
+            <p className="text-gray-300 mb-4">
+              Get all three core systems — <strong>Hooked</strong>, <strong>Posted</strong>, and <strong>Tracked</strong> — in one powerful bundle.
+            </p>
+          </div>
+          <a
+            href="/bundle"
+            className="inline-block bg-blue-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-500 shadow-lg transition-transform duration-200 hover:scale-105"
+          >
+            View the Bundle
+          </a>
+        </div>
       </section>
 
-      <div className="text-center text-sm text-gray-500">
+      {/* Free Plan Notice */}
+      <div className="text-right text-base text-gray-500 px-8 mt-8">
         Using the Free plan? You can generate 5 times per day. Upgrade any time.
       </div>
     </main>

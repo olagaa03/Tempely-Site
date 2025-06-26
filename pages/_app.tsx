@@ -7,7 +7,7 @@ import "@/styles/globals.css";
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
-      <div className="min-h-screen flex flex-col text-black bg-white">
+      <div className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-grow">
           <Component {...pageProps} />

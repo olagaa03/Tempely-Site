@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
 /* Light theme variables */
 :root {
@@ -24,12 +25,20 @@
 
 /* Base styles */
 body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #4B2067;
+  color: #F3F4F6;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Ensure Tailwind base styles apply */
-html {
-  @apply bg-white text-black;
+html, body {
+  /* @apply bg-white text-black; */
+  background: linear-gradient(135deg, #0F0F1C 0%, #18122B 40%, #4B2067 100%) !important;
+}
+
+::selection {
+  background: #3B82F6;
+  color: #fff;
 }

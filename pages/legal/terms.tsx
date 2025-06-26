@@ -1,17 +1,17 @@
 export default function Terms() {
-    return (
-      <main className="max-w-3xl mx-auto py-12 px-6">
-        <h1 className="text-2xl font-bold mb-6">Terms of Service</h1>
-        <p className="mb-4">Welcome to Tempely. By accessing or purchasing from our website, you agree to the following terms:</p>
-        <ul className="list-disc pl-5 space-y-2">
-          <li>We provide digital products, content, and tools delivered via our online platform.</li>
-          <li>All purchases are for personal use only. Redistribution is prohibited.</li>
-          <li>All prices are in USD. Payments are handled securely via Lemon Squeezy.</li>
-          <li>We’re not liable for any losses arising from the use of our content.</li>
-          <li>Terms may be updated at any time. Changes will be posted here.</li>
-          <li>Contact us at hello@tempely.com</li>
+  return (
+    <main className="min-h-screen bg-gradient-to-b from-[#18181B] to-[#0F0F0F] font-sans px-4 py-20 flex items-center justify-center">
+      <div className="max-w-2xl w-full bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl border border-white/10 p-10 text-left">
+        <h1 className="text-4xl md:text-5xl font-extrabold mb-6 text-white drop-shadow-lg">Terms of Service</h1>
+        <ul className="list-disc pl-6 space-y-2 text-gray-400 mb-8">
+          <li>By using Tempely, you agree to our terms and conditions.</li>
+          <li>All content and templates are for personal or business use only.</li>
+          <li>Do not redistribute or resell our products without permission.</li>
+          <li>We reserve the right to update these terms at any time.</li>
         </ul>
-      </main>
-    );
-  }
+        <div className="text-gray-500 text-sm">&copy; 2025 Tempely. All rights reserved.</div>
+      </div>
+    </main>
+  );
+}
   

@@ -6,24 +6,24 @@ import { SignInButton, SignUpButton } from '@clerk/nextjs';
 
 export default function LoggedOutHome() {
   return (
-    <main className="min-h-screen bg-white font-sans text-gray-900 flex flex-col">
+    <main className="min-h-screen font-sans text-gray-100 flex flex-col">
       {/* Hero Section */}
-      <section className="pt-24 pb-20 px-6 text-center bg-gradient-to-b from-white to-gray-50">
+      <section className="pt-32 pb-20 px-6 text-center">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+          <h1 className="text-5xl md:text-7xl font-extrabold mb-8 leading-tight tracking-tight text-white drop-shadow-lg">
             The Creator Growth System — Powered by AI
           </h1>
-          <p className="text-lg md:text-xl text-gray-700 mb-8">
+          <p className="text-xl md:text-2xl text-gray-400 mb-10 font-medium">
             Plan smarter. Post consistently. Track what actually grows. Tempely is your content command center, built for creators who want to go viral and stay there.
           </p>
-          <div className="flex justify-center gap-4">
+          <div className="flex justify-center gap-6">
             <SignInButton mode="modal" fallbackRedirectUrl="/ai-tool">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold px-6 py-3 rounded-full shadow-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
+              <button className="bg-blue-600 hover:bg-blue-500 text-white text-lg font-semibold px-8 py-3 rounded-full shadow-xl transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
                 Log In
               </button>
             </SignInButton>
             <SignUpButton mode="modal" fallbackRedirectUrl="/ai-tool">
-              <button className="bg-gray-900 hover:bg-gray-800 text-white text-lg font-semibold px-6 py-3 rounded-full shadow-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+              <button className="bg-white/10 hover:bg-white/20 text-white text-lg font-semibold px-8 py-3 rounded-full shadow-xl transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 border border-white/20">
                 Sign Up
               </button>
             </SignUpButton>
@@ -32,8 +32,8 @@ export default function LoggedOutHome() {
       </section>
 
       {/* Features Overview */}
-      <section className="py-20 px-6 bg-white">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+      <section className="py-20 px-6">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
           {[
             {
               title: 'Hooked',
@@ -50,21 +50,21 @@ export default function LoggedOutHome() {
             {
               title: 'Tracked',
               image: '/screenshots/tracked-cover.png',
-              description: 'See what’s working, what’s not, and evolve your content strategy.',
+              description: "See what's working, what's not, and evolve your content strategy.",
               link: '/products/tracked',
             },
           ].map((item) => (
-            <Link href={item.link} key={item.title} className="group block transition duration-300 hover:scale-105">
-              <div className="rounded-xl overflow-hidden bg-white p-4 shadow hover:shadow-lg">
+            <Link href={item.link} key={item.title} className="group block transition duration-300">
+              <div className="flex flex-col items-center group transition-transform duration-200 hover:scale-105">
                 <Image
                   src={item.image}
                   alt={item.title}
                   width={300}
                   height={180}
-                  className="mx-auto rounded-xl transition-transform duration-300 group-hover:scale-105"
+                  className="mx-auto rounded-xl transition-transform duration-300 group-hover:scale-[1.025] group-hover:shadow"
                 />
-                <h3 className="text-xl font-bold mt-4">{item.title}</h3>
-                <p className="text-gray-600 mt-2 text-sm">{item.description}</p>
+                <h3 className="text-2xl font-bold mt-6 text-white group-hover:text-blue-400 transition">{item.title}</h3>
+                <p className="text-gray-300 mt-3 text-base font-medium">{item.description}</p>
               </div>
             </Link>
           ))}
@@ -72,34 +72,34 @@ export default function LoggedOutHome() {
       </section>
 
       {/* Bundle Callout */}
-      <section className="py-20 px-6 bg-gray-50 text-center">
-        <h2 className="text-3xl font-bold mb-4">📦 Get the Creator Bundle</h2>
-        <p className="text-gray-700 max-w-2xl mx-auto mb-6">
+      <section className="py-20 px-6 bg-gradient-to-r from-[#232526]/80 to-[#414345]/80 text-center rounded-2xl mx-4 my-12 shadow-2xl border border-white/10">
+        <h2 className="text-4xl font-bold mb-4 text-white drop-shadow">📦 Get the Creator Bundle</h2>
+        <p className="text-gray-300 max-w-2xl mx-auto mb-8 text-lg">
           Hooked, Posted, and Tracked — everything you need to create, plan, and grow your content — bundled together.
         </p>
         <Link
           href="/bundle"
-          className="inline-block bg-black text-white px-6 py-3 rounded-full font-semibold hover:bg-gray-800 transition"
+          className="inline-block bg-blue-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-500 shadow-lg transition-transform duration-200 hover:scale-105"
         >
           View the Bundle
         </Link>
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 px-6 bg-white text-center">
-        <h2 className="text-3xl font-bold mb-12">What creators are saying</h2>
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-gray-50 border rounded-2xl p-6 shadow">
-            <p className="text-gray-700 italic text-sm">“Posted is the first planner I actually stick to – clean and super practical.”</p>
-            <p className="mt-4 font-medium text-gray-900 text-sm">— Jamie, Content Coach</p>
+      <section className="py-20 px-6 text-center">
+        <h2 className="text-3xl font-bold mb-12 text-white">What creators are saying</h2>
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="bg-white/10 border border-white/10 rounded-2xl p-8 shadow-xl backdrop-blur-md">
+            <p className="text-gray-200 italic text-lg">“Posted is the first planner I actually stick to – clean and super practical.”</p>
+            <p className="mt-6 font-medium text-gray-400 text-base">— Jamie, Content Coach</p>
           </div>
-          <div className="bg-gray-50 border rounded-2xl p-6 shadow">
-            <p className="text-gray-700 italic text-sm">“Hooked helped me finally go viral. The categories and examples are gold.”</p>
-            <p className="mt-4 font-medium text-gray-900 text-sm">— Alex, Copywriter</p>
+          <div className="bg-white/10 border border-white/10 rounded-2xl p-8 shadow-xl backdrop-blur-md">
+            <p className="text-gray-200 italic text-lg">“Hooked helped me finally go viral. The categories and examples are gold.”</p>
+            <p className="mt-6 font-medium text-gray-400 text-base">— Alex, Copywriter</p>
           </div>
-          <div className="bg-gray-50 border rounded-2xl p-6 shadow">
-            <p className="text-gray-700 italic text-sm">“Tracked showed me what actually works. My content is finally data-driven.”</p>
-            <p className="mt-4 font-medium text-gray-900 text-sm">— Sam, Creator</p>
+          <div className="bg-white/10 border border-white/10 rounded-2xl p-8 shadow-xl backdrop-blur-md">
+            <p className="text-gray-200 italic text-lg">“Tracked showed me what actually works. My content is finally data-driven.”</p>
+            <p className="mt-6 font-medium text-gray-400 text-base">— Sam, Creator</p>
           </div>
         </div>
       </section>

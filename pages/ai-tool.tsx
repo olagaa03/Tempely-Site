@@ -52,13 +52,13 @@ export default function AiToolPage() {
 
   if (!isSignedIn) {
     return (
-      <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50 text-center px-4">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4">Sign in to access the AI Tool</h1>
-        <p className="text-gray-600 mb-6 text-sm md:text-base max-w-md">
+      <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#18181B] to-[#0F0F0F] text-center px-4">
+        <h1 className="text-4xl md:text-5xl font-extrabold mb-4 text-white drop-shadow-lg">Sign in to access the AI Tool</h1>
+        <p className="text-gray-400 mb-8 text-lg max-w-md mx-auto">
           This tool is for signed-in users only. Please log in or create an account to continue.
         </p>
         <SignInButton mode="modal" fallbackRedirectUrl="/ai-tool">
-          <button className="bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold px-6 py-3 rounded-full shadow-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
+          <button className="bg-blue-600 hover:bg-blue-500 text-white text-lg font-semibold px-8 py-3 rounded-full shadow-xl transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
             Try the Free AI Tool
           </button>
         </SignInButton>
@@ -67,16 +67,16 @@ export default function AiToolPage() {
   }
 
   return (
-    <main className="max-w-3xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-center mb-4">
+    <main className="max-w-3xl mx-auto px-4 py-16 pt-32 min-h-screen bg-gradient-to-b from-[#18181B] to-[#0F0F0F]">
+      <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-6 text-white drop-shadow-lg">
         🔓 Start creating with AI — for free
       </h1>
-      <p className="text-center text-gray-600 mb-6">
+      <p className="text-center text-gray-400 mb-10 text-lg">
         Generate <strong>audience-ready content</strong> ideas, <strong>hooks</strong> & <strong>captions</strong> — instantly.<br />
-        Upgrade to <strong>Temply Pro</strong> to unlock <strong>GPT-4</strong> & <strong>strategic enhancements</strong>.
+        <span className="text-blue-400 font-semibold">Upgrade to Temply Pro to unlock GPT-4 & strategic enhancements.</span>
       </p>
 
-      <form onSubmit={handleSubmit} className="bg-white shadow-xl rounded-2xl p-6 space-y-4">
+      <form onSubmit={handleSubmit} className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl border border-white/10 p-8 space-y-6">
         {["niche", "platform", "audience", "tone", "goal"].map((name) => (
           <input
             key={name}
@@ -85,26 +85,26 @@ export default function AiToolPage() {
             placeholder={`Enter your ${name}`}
             value={formData[name as keyof typeof formData]}
             onChange={handleChange}
-            className="w-full p-3 border rounded-md bg-blue-50"
+            className="w-full p-4 bg-black/40 border border-white/20 text-white placeholder-gray-400 rounded-full shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
         ))}
 
-        <div className="bg-yellow-50 border border-yellow-300 text-yellow-900 text-sm rounded-xl p-5 space-y-3 shadow-sm mt-8">
-          <h3 className="text-lg font-bold flex items-center gap-2">
-            🚀 Upgrade to <span className="text-yellow-800">Temply Pro</span>
+        <div className="bg-yellow-100/10 border border-yellow-300/20 text-yellow-200 text-sm rounded-xl p-6 space-y-3 shadow-sm mt-8">
+          <h3 className="text-lg font-bold flex items-center gap-2 text-yellow-300">
+            🚀 Upgrade to <span className="text-yellow-200">Temply Pro</span>
             <span className="text-[10px] bg-yellow-400 text-white px-2 py-0.5 rounded-full font-bold">GPT-4</span>
           </h3>
-          <p className="text-sm">
+          <p className="text-sm text-yellow-100">
             Supercharge your content creation with <strong>Temply Pro</strong> and get access to our most powerful AI tools built on <strong>GPT-4</strong>.
           </p>
-          <ul className="list-disc list-inside space-y-1 text-sm">
+          <ul className="list-disc list-inside space-y-1 text-sm text-yellow-100">
             <li><strong>Hyper-relevant content</strong> tailored to your offer or product</li>
             <li><strong>Emotionally driven copy</strong> that speaks directly to your audience's pain points</li>
             <li><strong>Insider marketing insights</strong> and conversion-boosting content strategies</li>
           </ul>
           <Link href="/ai-pro">
-            <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded w-full">
+            <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-full w-full font-semibold hover:bg-blue-500 shadow transition-transform duration-200 hover:scale-105">
               🔓 Unlock Full Power with GPT-4
             </button>
           </Link>
@@ -113,8 +113,8 @@ export default function AiToolPage() {
         <button
           type="submit"
           disabled={loading}
-          className={`w-full py-3 rounded-lg font-semibold transition ${
-            loading ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 text-white'
+          className={`w-full py-4 rounded-full font-semibold transition text-lg shadow-lg ${
+            loading ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-500 text-white hover:scale-105'
           }`}
         >
           {loading ? (
@@ -143,16 +143,16 @@ export default function AiToolPage() {
         </button>
       </form>
 
-      {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+      {error && <p className="text-red-400 text-center mt-6 text-lg font-semibold bg-red-900/30 rounded-xl py-3 px-4 shadow">{error}</p>}
 
       {result && (
-        <div className="mt-8 bg-white border border-gray-200 shadow-md p-6 rounded-xl space-y-6 transition-all duration-300">
-          <h2 className="text-2xl font-semibold text-blue-700 mb-2">
+        <div className="mt-12 bg-white/10 border border-white/10 shadow-2xl p-8 rounded-2xl space-y-8 transition-all duration-300 backdrop-blur-md">
+          <h2 className="text-2xl font-bold text-blue-400 mb-2">
             🚀 Your AI-Powered Captions & Hooks
           </h2>
 
           <div>
-            <h3 className="text-lg font-semibold text-blue-600 mb-2">
+            <h3 className="text-lg font-semibold text-blue-300 mb-2">
               📢 Captions
             </h3>
             <ul className="space-y-2">
@@ -161,7 +161,7 @@ export default function AiToolPage() {
                 .split('\n')
                 .filter(line => line.trim() && !/^\d+\.$/.test(line.trim()) && !/^Captions[:：]?$/i.test(line.trim()))
                 .map((line, idx) => (
-                  <li key={`caption-${idx}`} className="bg-blue-50 border border-blue-200 p-3 rounded-md text-sm">
+                  <li key={`caption-${idx}`} className="bg-blue-900/30 border border-blue-400/20 p-3 rounded-md text-base text-white">
                     {line.trim()}
                   </li>
                 ))}
@@ -169,7 +169,7 @@ export default function AiToolPage() {
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-purple-600 mb-2">
+            <h3 className="text-lg font-semibold text-purple-300 mb-2">
               💡 Hooks
             </h3>
             <ul className="space-y-2">
@@ -177,7 +177,7 @@ export default function AiToolPage() {
                 .split('Hooks:')[1]?.split('\n')
                 .filter(line => line.trim() && !/^\d+\.$/.test(line.trim()))
                 .map((line, idx) => (
-                  <li key={`hook-${idx}`} className="bg-purple-50 border border-purple-200 p-3 rounded-md text-sm">
+                  <li key={`hook-${idx}`} className="bg-purple-900/30 border border-purple-400/20 p-3 rounded-md text-base text-white">
                     {line.trim()}
                   </li>
                 ))}

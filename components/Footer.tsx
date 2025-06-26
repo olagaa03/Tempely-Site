@@ -2,20 +2,13 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="bg-neutral-100 text-neutral-600 text-sm mt-12 border-t border-neutral-200">
-      <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <p className="font-semibold text-neutral-800">Tempely</p>
-          <p className="mt-1">Operated by Tempely, registered in Norway.</p>
-          <p>All rights reserved © Tempely 2025</p>
-        </div>
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-neutral-500 underline text-sm">
-  <Link href="/legal/terms">Terms of Service</Link>
-  <Link href="/legal/privacy">Privacy Policy</Link>
-  <Link href="/legal/refund">Refund Policy</Link>
-</div>
-
+    <footer className="py-10 text-center text-gray-400 border-t border-white/10 bg-black/40 font-sans">
+      <div className="space-x-6 mb-2">
+        <a href="/legal/terms" className="hover:text-white transition">Terms of Service</a>
+        <a href="/legal/privacy" className="hover:text-white transition">Privacy Policy</a>
+        <a href="/legal/refund" className="hover:text-white transition">Refund Policy</a>
       </div>
+      <div className="mt-2 text-xs">Operated by Tempely, registered in Norway.<br/>All rights reserved &copy; Tempely 2025</div>
     </footer>
   );
 }
