@@ -4,7 +4,26 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import { X, Menu } from 'lucide-react';
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
+import { SignedIn, SignedOut, SignInButton, UserButton, useClerk } from '@clerk/nextjs';
+
+function SignOutButton() {
+  const { signOut } = useClerk();
+
+  const handleSignOut = () => {
+    signOut(() => {
+      window.location.href = '/';
+    });
+  };
+
+  return (
+    <button
+      onClick={handleSignOut}
+      className="px-4 py-1.5 bg-red-600 text-white rounded-full hover:bg-red-700 transition text-sm font-semibold"
+    >
+      Sign Out
+    </button>
+  );
+}
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,7 +32,6 @@ export default function Header() {
     <header className="border-b border-neutral-200 bg-white sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-20">
-
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <Image
@@ -35,7 +53,7 @@ export default function Header() {
               🚀 AI Pro <span className="bg-yellow-300 text-xs px-2 py-0.5 rounded-full font-semibold">GPT-4</span>
             </Link>
 
-            {/* Premium Button Styling */}
+            {/* Shop + Auth Buttons */}
             <div className="flex items-center gap-3">
               <Link
                 href="/products"
@@ -53,7 +71,8 @@ export default function Header() {
               </SignedOut>
 
               <SignedIn>
-                <UserButton afterSignOutUrl="/" />
+                <UserButton />
+                <SignOutButton />
               </SignedIn>
             </div>
           </nav>
@@ -96,8 +115,9 @@ export default function Header() {
           </SignedOut>
 
           <SignedIn>
-            <div className="pt-2">
-              <UserButton afterSignOutUrl="/" />
+            <div className="pt-2 space-y-2">
+              <UserButton />
+              <SignOutButton />
             </div>
           </SignedIn>
         </div>

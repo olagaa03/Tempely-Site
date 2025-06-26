@@ -1,7 +1,7 @@
 'use client';
 
-import { useUser, SignInButton } from "@clerk/nextjs";
-import Link from "next/link";
+import { useUser, SignInButton } from '@clerk/nextjs';
+import Link from 'next/link';
 
 export default function AiProPage() {
   const { isSignedIn } = useUser();
@@ -9,16 +9,16 @@ export default function AiProPage() {
   if (!isSignedIn) {
     return (
       <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50 text-center px-4">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4">Sign in to access Temply Pro</h1>
+        <h1 className="text-3xl md:text-4xl font-bold mb-4">
+          Sign in to access Temply Pro
+        </h1>
         <p className="text-gray-600 mb-6 text-sm md:text-base max-w-md">
           Temply Pro is exclusive to members. Please log in or sign up to unlock GPT-4 powered tools.
         </p>
-        <SignInButton mode="modal" redirectUrl="/ai-pro">
-  <div className="inline-block">
-    <button className="bg-yellow-500 hover:bg-yellow-600 text-black text-lg font-semibold px-6 py-3 rounded-full shadow-lg transition duration-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2">
-      🛡️ Access GPT-4 with Pro
-    </button>
-  </div>
+        <SignInButton mode="modal" fallbackRedirectUrl="/ai-pro">
+  <button className="bg-yellow-500 hover:bg-yellow-600 text-black text-lg font-semibold px-6 py-2 rounded-full shadow">
+    🛡 Access GPT-4 with Pro
+  </button>
 </SignInButton>
 
 

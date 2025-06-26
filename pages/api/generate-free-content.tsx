@@ -1,9 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import OpenAI from 'openai';
+import { z } from 'zod';
+import { getAuth } from '@clerk/nextjs/server';
 
-// In-memory rate limiter (per IP)
+// In-memory rate limiter (per userId)
 type UsageStore = {
-  [ip: string]: {
+  [userId: string]: {
     count: number;
     lastReset: number;
   };
@@ -13,17 +15,17 @@ const usageStore: UsageStore = {};
 const MAX_REQUESTS = 5;
 const TIME_WINDOW = 24 * 60 * 60 * 1000; // 24 hours
 
-function isRateLimited(ip: string): boolean {
+function isRateLimited(userId: string): boolean {
   const now = Date.now();
-  const user = usageStore[ip];
+  const user = usageStore[userId];
 
   if (!user) {
-    usageStore[ip] = { count: 1, lastReset: now };
+    usageStore[userId] = { count: 1, lastReset: now };
     return false;
   }
 
   if (now - user.lastReset > TIME_WINDOW) {
-    usageStore[ip] = { count: 1, lastReset: now };
+    usageStore[userId] = { count: 1, lastReset: now };
     return false;
   }
 
@@ -33,42 +35,39 @@ function isRateLimited(ip: string): boolean {
   return false;
 }
 
+// Schema validation using Zod
+const InputSchema = z.object({
+  niche: z.string().min(1),
+  platform: z.string().min(1),
+  audience: z.string().min(1),
+  tone: z.string().min(1),
+  goal: z.string().min(1),
+});
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method !== 'POST') {
       return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    const {
-      niche,
-      platform,
-      audience,
-      tone,
-      goal,
-    }: {
-      niche: string;
-      platform: string;
-      audience: string;
-      tone: string;
-      goal: string;
-    } = req.body;
-
-    if (!niche || !platform || !audience || !tone || !goal) {
-      console.warn('Missing input fields');
-      return res.status(400).json({ error: 'Missing required fields' });
+    const { userId } = getAuth(req);
+    if (!userId) {
+      return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    const ip =
-      (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() ||
-      req.socket.remoteAddress ||
-      'unknown';
-
-    if (isRateLimited(ip)) {
-      console.log(`Rate limit exceeded for IP: ${ip}`);
+    if (isRateLimited(userId)) {
+      console.log(`Rate limit exceeded for user: ${userId}`);
       return res.status(429).json({
         error: 'Free usage limit reached. Try again tomorrow or upgrade to Temply Pro.',
       });
     }
+
+    const parse = InputSchema.safeParse(req.body);
+    if (!parse.success) {
+      return res.status(400).json({ error: 'Invalid input fields' });
+    }
+
+    const { niche, platform, audience, tone, goal } = parse.data;
 
     if (!process.env.TEMPLY_FREE_API_KEY) {
       console.error('Missing TEMPLY_FREE_API_KEY');
@@ -118,7 +117,7 @@ Hooks:
       return res.status(500).json({ error: 'No content returned' });
     }
 
-    console.log('Content generated successfully');
+    console.log(`[SUCCESS] Content generated for user ${userId}`);
     return res.status(200).json({ result: output });
   } catch (error: any) {
     console.error('[Server Error]', error?.message || error);

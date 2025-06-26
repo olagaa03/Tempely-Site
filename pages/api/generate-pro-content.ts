@@ -1,44 +1,55 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { getAuth } from '@clerk/nextjs/server'
-import OpenAI from 'openai'
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { getAuth } from '@clerk/nextjs/server';
+import OpenAI from 'openai';
+import { z } from 'zod';
 
-const apiKey = process.env.TEMPLY_PRO_API_KEY
+const apiKey = process.env.TEMPLY_PRO_API_KEY;
 
 if (!apiKey) {
-  console.error('❌ TEMPLY_PRO_API_KEY missing in env!')
+  console.error('❌ TEMPLY_PRO_API_KEY missing in env!');
 }
 
-const openai = new OpenAI({
-  apiKey: apiKey!,
-})
+const openai = new OpenAI({ apiKey });
 
+// Mock list of Pro users — this will be replaced later with real auth
 const MOCK_PRO_USER_IDS = new Set([
   'user_123abc',
   'user_456def',
   'user_789ghi',
-])
+]);
+
+// Validate request body
+const InputSchema = z.object({
+  niche: z.string().min(1),
+  platform: z.string().min(1),
+  audience: z.string().min(1),
+  tone: z.string().min(1),
+  goal: z.string().min(1),
+  product: z.string().optional(),
+  pain: z.string().optional(),
+  format: z.string().min(1),
+});
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed. Use POST.' })
+    return res.status(405).json({ error: 'Method not allowed. Use POST.' });
   }
 
-  // Authenticate user with Clerk
-  const { userId } = getAuth(req)
+  const { userId } = getAuth(req);
   if (!userId) {
-    return res.status(401).json({ error: 'Unauthorized: Please sign in.' })
+    return res.status(401).json({ error: 'Unauthorized: Please sign in.' });
   }
 
-  // Check Pro status via mock list
   if (!MOCK_PRO_USER_IDS.has(userId)) {
-    return res.status(403).json({ error: 'Forbidden: Pro access required.' })
+    return res.status(403).json({ error: 'Forbidden: Pro access required.' });
   }
 
-  const { niche, platform, audience, tone, goal, product, pain, format } = req.body || {}
-
-  if (!niche || !platform || !audience || !tone || !goal || !format) {
-    return res.status(400).json({ error: 'Missing required fields in request body.' })
+  const parsed = InputSchema.safeParse(req.body);
+  if (!parsed.success) {
+    return res.status(400).json({ error: 'Invalid or missing input fields.' });
   }
+
+  const { niche, platform, audience, tone, goal, product, pain, format } = parsed.data;
 
   const prompt = `
 You're a world-class brand strategist and content marketing expert.
@@ -72,7 +83,7 @@ Give one tactical tip to improve performance for this format. Focus on trends, t
 
 4. **Why This Works**
 Explain why these examples work — reference psychology, copywriting principles, audience targeting, or structure. Speak like a strategist, not an AI.
-`
+`.trim();
 
   try {
     const response = await openai.chat.completions.create({
@@ -80,17 +91,18 @@ Explain why these examples work — reference psychology, copywriting principles
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.75,
       max_tokens: 800,
-    })
+    });
 
-    const output = response.choices?.[0]?.message?.content?.trim()
+    const output = response.choices?.[0]?.message?.content?.trim();
 
     if (!output) {
-      return res.status(500).json({ error: 'No content returned from OpenAI.' })
+      return res.status(500).json({ error: 'No content returned from OpenAI.' });
     }
 
-    return res.status(200).json({ result: output })
+    console.log(`[PRO ✅] Content generated for user ${userId}`);
+    return res.status(200).json({ result: output });
   } catch (error: any) {
-    console.error('❌ Pro API error:', error?.message || error)
-    return res.status(500).json({ error: 'Pro content generation failed. Check API key or logs.' })
+    console.error('❌ Pro API error:', error?.message || error);
+    return res.status(500).json({ error: 'Pro content generation failed. Check API key or logs.' });
   }
 }

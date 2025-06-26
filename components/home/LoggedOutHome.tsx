@@ -2,11 +2,11 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import NewsletterSignup from '@/components/NewsletterSignup';
-import { SignInButton } from '@clerk/nextjs';
+import { SignInButton, SignUpButton } from '@clerk/nextjs';
 
 export default function LoggedOutHome() {
   return (
-    <main className="min-h-screen bg-white font-sans text-gray-900">
+    <main className="min-h-screen bg-white font-sans text-gray-900 flex flex-col">
       {/* Hero Section */}
       <section className="pt-24 pb-20 px-6 text-center bg-gradient-to-b from-white to-gray-50">
         <div className="max-w-4xl mx-auto">
@@ -16,13 +16,18 @@ export default function LoggedOutHome() {
           <p className="text-lg md:text-xl text-gray-700 mb-8">
             Plan smarter. Post consistently. Track what actually grows. Tempely is your content command center, built for creators who want to go viral and stay there.
           </p>
-          <SignInButton mode="modal" redirectUrl="/ai-tool">
-            <div className="inline-block">
+          <div className="flex justify-center gap-4">
+            <SignInButton mode="modal" fallbackRedirectUrl="/ai-tool">
               <button className="bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold px-6 py-3 rounded-full shadow-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
-                Try the Free AI Tool
+                Log In
               </button>
-            </div>
-          </SignInButton>
+            </SignInButton>
+            <SignUpButton mode="modal" fallbackRedirectUrl="/ai-tool">
+              <button className="bg-gray-900 hover:bg-gray-800 text-white text-lg font-semibold px-6 py-3 rounded-full shadow-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                Sign Up
+              </button>
+            </SignUpButton>
+          </div>
         </div>
       </section>
 
@@ -50,13 +55,13 @@ export default function LoggedOutHome() {
             },
           ].map((item) => (
             <Link href={item.link} key={item.title} className="group block transition duration-300 hover:scale-105">
-              <div className="rounded-xl overflow-hidden">
+              <div className="rounded-xl overflow-hidden bg-white p-4 shadow hover:shadow-lg">
                 <Image
                   src={item.image}
                   alt={item.title}
                   width={300}
                   height={180}
-                  className="mx-auto rounded-xl shadow-md transition-transform duration-300 group-hover:scale-105"
+                  className="mx-auto rounded-xl transition-transform duration-300 group-hover:scale-105"
                 />
                 <h3 className="text-xl font-bold mt-4">{item.title}</h3>
                 <p className="text-gray-600 mt-2 text-sm">{item.description}</p>

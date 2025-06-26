@@ -1,18 +1,22 @@
-import { authMiddleware } from "@clerk/nextjs";
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
-export default authMiddleware({
-  publicRoutes: [
-    "/",
-    "/sign-in",
-    "/sign-up",
-    "/about",
-    "/products",
-    "/bundle",
-    "/ai-tool", // ✅ Free AI Tool now uses modal
-    "/ai-pro",  // ✅ Pro info page also uses modal
-  ],
+const isPublicRoute = createRouteMatcher([
+  '/',
+  '/sign-in',
+  '/sign-up',
+  '/about',
+  '/products',
+  '/ai-tool',
+  '/ai-pro',
+  '/bundle',
+]);
+
+export default clerkMiddleware(async (auth, req) => {
+  // No need to call `.protect()` manually
+  if (isPublicRoute(req)) return;
+  await auth.protect();
 });
 
 export const config = {
-  matcher: ["/((?!_next|.*\\..*).*)"],
+  matcher: ['/((?!_next|.*\\..*).*)'],
 };

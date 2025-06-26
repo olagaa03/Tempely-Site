@@ -1,18 +1,18 @@
 'use client';
 
 import { useState } from 'react';
-import { useUser, SignInButton } from "@clerk/nextjs";
+import { useUser, SignInButton } from '@clerk/nextjs';
 import Link from 'next/link';
 
 export default function AiToolPage() {
-  const { isSignedIn, user } = useUser();
+  const { isSignedIn } = useUser();
 
   const [formData, setFormData] = useState({
     niche: '',
     platform: '',
     audience: '',
     tone: '',
-    goal: ''
+    goal: '',
   });
 
   const [result, setResult] = useState('');
@@ -43,7 +43,7 @@ export default function AiToolPage() {
       } else {
         setError(data.error || 'Something went wrong.');
       }
-    } catch (err) {
+    } catch {
       setError('Failed to reach server.');
     } finally {
       setLoading(false);
@@ -57,15 +57,11 @@ export default function AiToolPage() {
         <p className="text-gray-600 mb-6 text-sm md:text-base max-w-md">
           This tool is for signed-in users only. Please log in or create an account to continue.
         </p>
-        <SignInButton mode="modal" redirectUrl="/ai-tool">
-  <div className="inline-block">
-    <button className="bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold px-6 py-3 rounded-full shadow-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
-      Try the Free AI Tool
-    </button>
-  </div>
-</SignInButton>
-
-
+        <SignInButton mode="modal" fallbackRedirectUrl="/ai-tool">
+          <button className="bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold px-6 py-3 rounded-full shadow-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
+            Try the Free AI Tool
+          </button>
+        </SignInButton>
       </main>
     );
   }
@@ -81,18 +77,12 @@ export default function AiToolPage() {
       </p>
 
       <form onSubmit={handleSubmit} className="bg-white shadow-xl rounded-2xl p-6 space-y-4">
-        {[
-          { label: '📌 Enter your niche*', name: 'niche' },
-          { label: '📱 Enter your platform*', name: 'platform' },
-          { label: '🎯 Enter your audience*', name: 'audience' },
-          { label: '🎭 Enter your tone*', name: 'tone' },
-          { label: '🏁 Enter your goal*', name: 'goal' },
-        ].map(({ label, name }) => (
+        {["niche", "platform", "audience", "tone", "goal"].map((name) => (
           <input
             key={name}
             type="text"
             name={name}
-            placeholder={label}
+            placeholder={`Enter your ${name}`}
             value={formData[name as keyof typeof formData]}
             onChange={handleChange}
             className="w-full p-3 border rounded-md bg-blue-50"
@@ -100,23 +90,19 @@ export default function AiToolPage() {
           />
         ))}
 
-        {/* Upsell block for Temply Pro */}
         <div className="bg-yellow-50 border border-yellow-300 text-yellow-900 text-sm rounded-xl p-5 space-y-3 shadow-sm mt-8">
           <h3 className="text-lg font-bold flex items-center gap-2">
             🚀 Upgrade to <span className="text-yellow-800">Temply Pro</span>
             <span className="text-[10px] bg-yellow-400 text-white px-2 py-0.5 rounded-full font-bold">GPT-4</span>
           </h3>
-
           <p className="text-sm">
-            Supercharge your content creation with <strong>Temply Pro</strong> and get access to our most powerful AI tools built on <strong>GPT-4</strong> — the same model used by top marketers and creators.
+            Supercharge your content creation with <strong>Temply Pro</strong> and get access to our most powerful AI tools built on <strong>GPT-4</strong>.
           </p>
-
           <ul className="list-disc list-inside space-y-1 text-sm">
             <li><strong>Hyper-relevant content</strong> tailored to your offer or product</li>
-            <li><strong>Emotionally driven copy</strong> that speaks directly to your audience’s pain points</li>
+            <li><strong>Emotionally driven copy</strong> that speaks directly to your audience's pain points</li>
             <li><strong>Insider marketing insights</strong> and conversion-boosting content strategies</li>
           </ul>
-
           <Link href="/ai-pro">
             <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded w-full">
               🔓 Unlock Full Power with GPT-4
@@ -161,44 +147,37 @@ export default function AiToolPage() {
 
       {result && (
         <div className="mt-8 bg-white border border-gray-200 shadow-md p-6 rounded-xl space-y-6 transition-all duration-300">
-          <h2 className="text-2xl font-semibold text-blue-700 mb-2">🚀 Your AI-Powered Captions & Hooks</h2>
+          <h2 className="text-2xl font-semibold text-blue-700 mb-2">
+            🚀 Your AI-Powered Captions & Hooks
+          </h2>
 
-          {/* Captions Block */}
           <div>
-            <h3 className="text-lg font-semibold text-blue-600 mb-2">📢 Captions</h3>
+            <h3 className="text-lg font-semibold text-blue-600 mb-2">
+              📢 Captions
+            </h3>
             <ul className="space-y-2">
               {result
                 .split('Hooks:')[0]
                 .split('\n')
-                .filter(line =>
-                  line.trim() &&
-                  !/^\d+\.$/.test(line.trim()) && 
-                  !/^Captions[:：]?$/i.test(line.trim())
-                )
+                .filter(line => line.trim() && !/^\d+\.$/.test(line.trim()) && !/^Captions[:：]?$/i.test(line.trim()))
                 .map((line, idx) => (
-                  <li
-                    key={`caption-${idx}`}
-                    className="bg-blue-50 border border-blue-200 p-3 rounded-md text-sm"
-                  >
+                  <li key={`caption-${idx}`} className="bg-blue-50 border border-blue-200 p-3 rounded-md text-sm">
                     {line.trim()}
                   </li>
                 ))}
             </ul>
           </div>
 
-          {/* Hooks Block */}
           <div>
-            <h3 className="text-lg font-semibold text-purple-600 mb-2">💡 Hooks</h3>
+            <h3 className="text-lg font-semibold text-purple-600 mb-2">
+              💡 Hooks
+            </h3>
             <ul className="space-y-2">
               {result
-                .split('Hooks:')[1]
-                ?.split('\n')
+                .split('Hooks:')[1]?.split('\n')
                 .filter(line => line.trim() && !/^\d+\.$/.test(line.trim()))
                 .map((line, idx) => (
-                  <li
-                    key={`hook-${idx}`}
-                    className="bg-purple-50 border border-purple-200 p-3 rounded-md text-sm"
-                  >
+                  <li key={`hook-${idx}`} className="bg-purple-50 border border-purple-200 p-3 rounded-md text-sm">
                     {line.trim()}
                   </li>
                 ))}

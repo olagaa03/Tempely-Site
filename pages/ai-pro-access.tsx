@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server";
+import { getAuth } from "@clerk/nextjs/server";
 import type {
   GetServerSideProps,
   GetServerSidePropsContext,
@@ -32,10 +32,9 @@ const MOCK_PRO_USER_IDS = new Set([
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  // Cast req as IncomingMessage here to fix TS error
   const req = context.req as IncomingMessage;
+  const { userId } = getAuth(context.req as any); // 👈 bypasses the type mismatch
 
-  const { userId } = auth();
 
   if (!userId) {
     return {

@@ -1,8 +1,22 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import OpenAI from 'openai';
+import { z } from 'zod';
+import { getAuth } from '@clerk/nextjs/server';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
+});
+
+// Input validation schema
+const InputSchema = z.object({
+  niche: z.string().min(1),
+  platform: z.string().min(1),
+  audience: z.string().min(1),
+  tone: z.string().min(1),
+  goal: z.string().min(1),
+  section: z.string().min(1),
+  product: z.string().optional(),
+  pain: z.string().optional(),
 });
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -10,31 +24,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const {
-    niche,
-    platform,
-    audience,
-    tone,
-    goal,
-    product = 'Not specified',
-    pain = 'Not specified',
-    section,
-  }: {
-    niche: string;
-    platform: string;
-    audience: string;
-    tone: string;
-    goal: string;
-    product?: string;
-    pain?: string;
-    section: string;
-  } = req.body;
-
-  if (!niche || !platform || !audience || !tone || !goal || !section) {
-    return res.status(400).json({ error: 'Missing required fields' });
+  const { userId } = getAuth(req);
+  if (!userId) {
+    return res.status(401).json({ error: 'Unauthorized: Please sign in.' });
   }
 
-  // Generate dynamic prompt
+  const parsed = InputSchema.safeParse(req.body);
+  if (!parsed.success) {
+    return res.status(400).json({ error: 'Invalid or missing input fields' });
+  }
+
+  const { niche, platform, audience, tone, goal, product = 'Not specified', pain = 'Not specified', section } = parsed.data;
+
   const generatePrompt = (): string => {
     switch (section) {
       case 'captions':
@@ -48,19 +49,18 @@ Pain Point: ${pain}
 Goal: ${goal}
         `.trim();
 
-        case 'hooks':
-          return `
-        Write 3 attention-grabbing hooks for use as openers in Reels or TikToks. Leverage curiosity, pain points, or controversy.
-        
-        Niche: ${niche}
-        Platform: ${platform}
-        Audience: ${audience}
-        Tone: ${tone}
-        Goal: ${goal}
-        Product: ${product}
-        Pain Point: ${pain}
+      case 'hooks':
+        return `
+Write 3 attention-grabbing hooks for use as openers in Reels or TikToks. Leverage curiosity, pain points, or controversy.
+
+Niche: ${niche}
+Platform: ${platform}
+Audience: ${audience}
+Tone: ${tone}
+Goal: ${goal}
+Product: ${product}
+Pain Point: ${pain}
         `.trim();
-        
 
       case 'tip':
         return `
@@ -83,22 +83,21 @@ Pain Point: ${pain}
   };
 
   const prompt = generatePrompt();
-
   if (!prompt) {
     return res.status(400).json({ error: 'Invalid section name' });
   }
+
   const formatOutput = (raw: string, section: string): string => {
     if (section === 'captions' || section === 'hooks') {
       return raw
         .split('\n')
-        .filter(line => line.trim() && !/^\d+\.$/.test(line)) // removes "2." or "3."
-        .map(line => line.replace(/^[-•\d.]+\s*/, '').trim()) // removes "-", "•", "1.", etc.
+        .filter(line => line.trim() && !/^\d+\.$/.test(line)) // remove "1.", "2.", etc.
+        .map(line => line.replace(/^[-•\d.]+\s*/, '').trim()) // remove "-", "•", numbers
         .join('\n');
     }
-  
     return raw.trim();
   };
-  
+
   try {
     const response = await openai.chat.completions.create({
       model: 'gpt-4',
@@ -116,15 +115,13 @@ Pain Point: ${pain}
       max_tokens: 600,
     });
 
-    const output = response.choices[0]?.message?.content?.trim();
+    const output = response.choices?.[0]?.message?.content?.trim();
 
-if (!output) {
-  return res.status(500).json({ error: 'No content returned' });
-}
+    if (!output) {
+      return res.status(500).json({ error: 'No content returned' });
+    }
 
-// ✅ Apply formatting before sending to frontend
-return res.status(200).json({ result: formatOutput(output, section) }); // ✅ use cleaned output
-
+    return res.status(200).json({ result: formatOutput(output, section) });
   } catch (error: any) {
     console.error('[OpenAI Error]', error?.message || error);
     return res.status(500).json({ error: 'Something went wrong with OpenAI' });
