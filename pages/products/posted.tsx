@@ -81,7 +81,7 @@ export default function Posted() {
 
       {/* Footer */}
       <footer className="w-full text-center text-gray-500 text-sm mt-20">
-        <p>&copy; 2025 Templa. All rights reserved.</p>
+        <p>&copy; 2025 Tempely. All rights reserved.</p>
       </footer>
     </main>
   );
