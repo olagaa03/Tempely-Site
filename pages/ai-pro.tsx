@@ -1,28 +1,32 @@
-import { getAuth } from "@clerk/nextjs/server";
-import { GetServerSideProps } from "next";
+'use client';
+
+import { useUser, SignInButton } from "@clerk/nextjs";
 import Link from "next/link";
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { userId } = getAuth(ctx.req);
+export default function AiProPage() {
+  const { isSignedIn } = useUser();
 
-  if (!userId) {
-    return {
-      redirect: {
-        destination: "/sign-in",
-        permanent: false,
-      },
-    };
+  if (!isSignedIn) {
+    return (
+      <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50 text-center px-4">
+        <h1 className="text-3xl md:text-4xl font-bold mb-4">Sign in to access Temply Pro</h1>
+        <p className="text-gray-600 mb-6 text-sm md:text-base max-w-md">
+          Temply Pro is exclusive to members. Please log in or sign up to unlock GPT-4 powered tools.
+        </p>
+        <SignInButton mode="modal">
+          <button className="bg-blue-600 hover:bg-blue-700 text-white text-base px-6 py-3 rounded-full font-semibold shadow transition">
+            Log In / Sign Up
+          </button>
+        </SignInButton>
+      </main>
+    );
   }
 
-  return { props: {} };
-};
-
-export default function AiProPage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-white to-gray-50 text-gray-900 font-sans">
       <section className="text-center px-4 py-12">
         <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
-          Unlock GPT-4 Power with <span className="text-blue-600">Tempely Pro</span>
+          Unlock GPT-4 Power with <span className="text-blue-600">Temply Pro</span>
         </h1>
         <p className="mt-4 max-w-xl mx-auto text-lg text-gray-600">
           Get longer, smarter content ideas. Access exclusive viral templates, tools, and strategy packs.
@@ -38,7 +42,7 @@ export default function AiProPage() {
             <li>✅ ChatGPT 3.5</li>
             <li>✅ Basic content ideas</li>
             <li>✅ 2 viral hook suggestions</li>
-            <li>✅ 2 caption example</li>
+            <li>✅ 2 caption examples</li>
             <li>✅ Limited form access</li>
           </ul>
           <p className="mt-6 text-lg font-bold">Free Forever</p>
