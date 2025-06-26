@@ -15,11 +15,12 @@ export default function AiProPage() {
         </p>
         <SignInButton mode="modal" redirectUrl="/ai-pro">
   <div className="inline-block">
-    <button className="bg-yellow-400 hover:bg-yellow-500 text-black text-lg font-semibold px-6 py-3 rounded-full shadow-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-offset-2">
-      🔐 Access GPT-4 with Pro
+    <button className="bg-yellow-500 hover:bg-yellow-600 text-black text-lg font-semibold px-6 py-3 rounded-full shadow-lg transition duration-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2">
+      🛡️ Access GPT-4 with Pro
     </button>
   </div>
 </SignInButton>
+
 
 
       </main>
