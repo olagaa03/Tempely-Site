@@ -57,11 +57,10 @@ export default function AiToolPage() {
         <p className="text-gray-600 mb-6 text-sm md:text-base max-w-md">
           This tool is for signed-in users only. Please log in or create an account to continue.
         </p>
-        <SignInButton mode="modal">
-          <button className="bg-blue-600 hover:bg-blue-700 text-white text-base px-6 py-3 rounded-full font-semibold shadow transition">
-            Log In / Sign Up
-          </button>
-        </SignInButton>
+        <SignInButton mode="modal" redirectUrl="/ai-tool">
+  <button className="...">Try the Free AI Tool</button>
+</SignInButton>
+
       </main>
     );
   }
