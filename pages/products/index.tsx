@@ -1,27 +1,31 @@
+'use client';
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const products = [
   {
-    title: 'Hooked.',
+    title: 'Hooked',
     category: 'Writing',
     image: '/screenshots/hooked-cover.png',
-    link: '/products/hooked', // ✅ was just '/hooked'
+    link: '/products/hooked',
+    description: 'Write viral-worthy hooks using proven formulas and scripts.',
   },
   {
-    title: 'Posted.',
+    title: 'Posted',
     category: 'Planning',
     image: '/screenshots/posted-cover.png',
-    link: '/products/posted', // ✅
+    link: '/products/posted',
+    description: 'Plan content with clarity and avoid burnout with smart templates.',
   },
   {
-    title: 'Tracked.',
+    title: 'Tracked',
     category: 'Analytics',
     image: '/screenshots/tracked-cover.png',
-    link: '/products/tracked', // ✅
+    link: '/products/tracked',
+    description: 'See what’s working, what’s not, and evolve your content strategy.',
   },
 ];
-
 
 const categories = ['All', 'Writing', 'Planning', 'Analytics'];
 
@@ -38,6 +42,7 @@ export default function ProductsPage() {
       <section className="max-w-6xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-bold text-center mb-10">All Templates</h1>
 
+        {/* Category Filter */}
         <div className="flex justify-center gap-4 mb-8 flex-wrap">
           {categories.map((cat) => (
             <button
@@ -54,20 +59,24 @@ export default function ProductsPage() {
           ))}
         </div>
 
+        {/* Product Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
           {filteredProducts.map((product) => (
             <Link
               href={product.link}
               key={product.title}
-              className="group transform transition duration-300 hover:scale-105"
+              className="group block transform transition duration-300 hover:scale-105"
             >
-              <div className="bg-white rounded-xl shadow hover:shadow-lg overflow-hidden">
-                <img
+              <div className="rounded-xl overflow-hidden text-center">
+                <Image
                   src={product.image}
-                  alt={product.title + ' Cover'}
-                  className="w-full h-auto"
+                  alt={`${product.title} Cover`}
+                  width={300}
+                  height={180}
+                  className="mx-auto rounded-xl shadow-md transition-transform duration-300 group-hover:scale-105"
                 />
-                <div className="p-4 text-center font-semibold">{product.title}</div>
+                <h3 className="text-xl font-bold mt-4">{product.title}</h3>
+                <p className="text-gray-600 mt-2 text-sm">{product.description}</p>
               </div>
             </Link>
           ))}
