@@ -1,4 +1,7 @@
+import { useUser, SignInButton } from '@clerk/nextjs';
+
 export default function Tracked() {
+  const { isSignedIn } = useUser();
   return (
     <main className="min-h-screen bg-white text-gray-900 font-sans">
       <section className="max-w-6xl mx-auto flex flex-col md:flex-row items-start gap-10 px-4 pt-6">
@@ -16,7 +19,7 @@ export default function Tracked() {
         <div className="w-full md:w-1/2">
           <h1 className="text-3xl md:text-5xl font-bold text-center md:text-left mt-4">Tracked.</h1>
           <p className="text-lg md:text-xl text-gray-800 mb-4 text-center md:text-left">
-            Tracked is your performance command center — a Notion dashboard that helps you <strong>analyze, improve, and double down</strong> on what’s working.
+            Tracked is your performance command center — a Notion dashboard that helps you <strong>analyze, improve, and double down</strong> on what's working.
           </p>
 
           <ul className="list-disc list-inside text-gray-700 space-y-2 mb-6">
@@ -31,12 +34,20 @@ export default function Tracked() {
             For creators who want to get strategic, not just post and hope.
           </p>
 
-          <a
-            href="https://tempely.lemonsqueezy.com/buy/bc3fc2b8-6d58-46f9-85ae-aa664d9ea48a"
-            className="block w-full md:w-auto text-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold text-lg shadow hover:opacity-90 transition"
-          >
-            Buy Tracked. for $19.99
-          </a>
+          {isSignedIn ? (
+            <a
+              href="https://tempely.lemonsqueezy.com/buy/bc3fc2b8-6d58-46f9-85ae-aa664d9ea48a"
+              className="block w-full md:w-auto text-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold text-lg shadow hover:opacity-90 transition"
+            >
+              Buy Tracked. for $19.99
+            </a>
+          ) : (
+            <SignInButton mode="modal" fallbackRedirectUrl="https://tempely.lemonsqueezy.com/buy/bc3fc2b8-6d58-46f9-85ae-aa664d9ea48a">
+              <button className="block w-full md:w-auto text-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold text-lg shadow hover:opacity-90 transition">
+                Buy Tracked. for $19.99
+              </button>
+            </SignInButton>
+          )}
         </div>
       </section>
 
@@ -60,19 +71,19 @@ export default function Tracked() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white border rounded-2xl p-6 shadow-md">
             <p className="text-gray-700 italic text-sm">
-              “Posted is the first content planner I actually stick to — clean and super practical.”
+              "Posted is the first content planner I actually stick to — clean and super practical."
             </p>
             <p className="mt-4 font-medium text-gray-900 text-sm">— Jamie, Content Coach</p>
           </div>
           <div className="bg-white border rounded-2xl p-6 shadow-md">
             <p className="text-gray-700 italic text-sm">
-              “Hooked helped me finally go viral. The categories and examples are gold.”
+              "Hooked helped me finally go viral. The categories and examples are gold."
             </p>
             <p className="mt-4 font-medium text-gray-900 text-sm">— Alex, Copywriter</p>
           </div>
           <div className="bg-white border rounded-2xl p-6 shadow-md">
             <p className="text-gray-700 italic text-sm">
-              “Tracked showed me what actually works. My content is finally data-driven.”
+              "Tracked showed me what actually works. My content is finally data-driven."
             </p>
             <p className="mt-4 font-medium text-gray-900 text-sm">— Sam, Creator</p>
           </div>

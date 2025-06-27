@@ -1,4 +1,7 @@
+import { useUser, SignInButton } from '@clerk/nextjs';
+
 export default function Hooked() {
+  const { isSignedIn } = useUser();
   return (
     <main className="min-h-screen bg-white text-gray-900 font-sans">
       <section className="max-w-6xl mx-auto flex flex-col md:flex-row items-start gap-10 px-4 pt-6">
@@ -33,12 +36,20 @@ export default function Hooked() {
             Delivered as a fully functional PDF — swipeable, strategic, and designed to help you create content that performs.
           </p>
 
-          <a
-            href="https://tempely.lemonsqueezy.com/buy/5a13a2b9-b4e6-4bcc-8fcf-5229dab2dce8"
-            className="block w-full md:w-auto text-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold text-lg shadow hover:opacity-90 transition"
-          >
-            Buy Hooked. for $9.99
-          </a>
+          {isSignedIn ? (
+            <a
+              href="https://tempely.lemonsqueezy.com/buy/5a13a2b9-b4e6-4bcc-8fcf-5229dab2dce8"
+              className="block w-full md:w-auto text-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold text-lg shadow hover:opacity-90 transition"
+            >
+              Buy Hooked. for $9.99
+            </a>
+          ) : (
+            <SignInButton mode="modal" fallbackRedirectUrl="https://tempely.lemonsqueezy.com/buy/5a13a2b9-b4e6-4bcc-8fcf-5229dab2dce8">
+              <button className="block w-full md:w-auto text-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold text-lg shadow hover:opacity-90 transition">
+                Buy Hooked. for $9.99
+              </button>
+            </SignInButton>
+          )}
         </div>
       </section>
 

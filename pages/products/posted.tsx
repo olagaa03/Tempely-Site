@@ -1,4 +1,7 @@
+import { useUser, SignInButton } from '@clerk/nextjs';
+
 export default function Posted() {
+  const { isSignedIn } = useUser();
   return (
     <main className="min-h-screen bg-white text-gray-900 font-sans">
       <section className="max-w-6xl mx-auto flex flex-col md:flex-row items-start gap-10 px-4 pt-6">
@@ -31,12 +34,20 @@ export default function Posted() {
             Use it to stay consistent, think clearly, and publish without stress.
           </p>
 
-          <a
-            href="https://tempely.lemonsqueezy.com/buy/92b33056-7bc1-43c8-a3c6-06c6df097a30"
-            className="block w-full md:w-auto text-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold text-lg shadow hover:opacity-90 transition"
-          >
-            Buy Posted. for $14.99
-          </a>
+          {isSignedIn ? (
+            <a
+              href="https://tempely.lemonsqueezy.com/buy/92b33056-7bc1-43c8-a3c6-06c6df097a30"
+              className="block w-full md:w-auto text-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold text-lg shadow hover:opacity-90 transition"
+            >
+              Buy Posted. for $14.99
+            </a>
+          ) : (
+            <SignInButton mode="modal" fallbackRedirectUrl="https://tempely.lemonsqueezy.com/buy/92b33056-7bc1-43c8-a3c6-06c6df097a30">
+              <button className="block w-full md:w-auto text-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold text-lg shadow hover:opacity-90 transition">
+                Buy Posted. for $14.99
+              </button>
+            </SignInButton>
+          )}
         </div>
       </section>
 

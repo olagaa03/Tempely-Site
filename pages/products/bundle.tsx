@@ -1,4 +1,7 @@
+import { useUser, SignInButton } from '@clerk/nextjs';
+
 export default function Bundle() {
+  const { isSignedIn } = useUser();
   return (
     <main className="min-h-screen bg-white text-gray-900 font-sans">
       <section className="max-w-6xl mx-auto flex flex-col md:flex-row items-start gap-10 px-4 pt-6">
@@ -31,12 +34,20 @@ export default function Bundle() {
             Whether you're starting from scratch or scaling your creative output, this bundle gives you everything you need to show up like a pro.
           </p>
 
-          <a
-            href="https://tempely.lemonsqueezy.com/buy/ac691241-ed9c-4150-9818-fba70ac8402c"
-            className="block w-full md:w-auto text-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold text-lg shadow hover:opacity-90 transition"
-          >
-            Buy the Bundle for $24.99 (Save 40%)
-          </a>
+          {isSignedIn ? (
+            <a
+              href="https://tempely.lemonsqueezy.com/buy/ac691241-ed9c-4150-9818-fba70ac8402c"
+              className="block w-full md:w-auto text-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold text-lg shadow hover:opacity-90 transition"
+            >
+              Buy the Bundle for $24.99 (Save 40%)
+            </a>
+          ) : (
+            <SignInButton mode="modal" fallbackRedirectUrl="https://tempely.lemonsqueezy.com/buy/ac691241-ed9c-4150-9818-fba70ac8402c">
+              <button className="block w-full md:w-auto text-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold text-lg shadow hover:opacity-90 transition">
+                Buy the Bundle for $24.99 (Save 40%)
+              </button>
+            </SignInButton>
+          )}
         </div>
       </section>
 
