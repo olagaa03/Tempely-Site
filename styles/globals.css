@@ -42,3 +42,12 @@ html, body {
   background: #3B82F6;
   color: #fff;
 }
+
+/* Header nav-link pop-up effect */
+.nav-link {
+  @apply text-gray-100 font-medium text-base px-2 py-1 transition relative transition-transform duration-150;
+}
+.nav-link:hover,
+.nav-link:focus {
+  @apply text-[var(--tempely-purple)] scale-[1.025] shadow-md;
+}

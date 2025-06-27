@@ -6,6 +6,16 @@ import { useState } from 'react';
 import { X, Menu } from 'lucide-react';
 import { SignedIn, SignedOut, SignInButton, UserButton, useClerk } from '@clerk/nextjs';
 
+const TEMPELY_PURPLE = '#7c3aed';
+
+function LightningBolt() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="animate-pulse">
+      <path d="M13 2L3 14H12L11 22L21 10H13L13 2Z" fill={TEMPELY_PURPLE} stroke="white" strokeWidth="1.5" filter="drop-shadow(0 0 6px #7c3aed99)"/>
+    </svg>
+  );
+}
+
 function SignOutButton() {
   const { signOut } = useClerk();
   return (
@@ -24,24 +34,27 @@ export default function Header() {
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-black/30 backdrop-blur-lg border-b border-white/10 shadow-sm font-sans">
       <div className="max-w-6xl mx-auto px-4 sm:px-8 flex items-center justify-between h-16">
-        <Link href="/" className="flex items-center space-x-2">
+        <Link href="/" className="flex items-center justify-center">
           <Image
             src="/branding/tempely-logo-transparent.png"
             alt="Tempely Logo"
-            width={320}
-            height={90}
-            className="w-auto h-24"
+            width={160}
+            height={45}
+            className="w-auto h-14 md:h-20 max-w-[180px] md:max-w-[320px] transition-all duration-300"
           />
         </Link>
         <nav className="hidden md:flex items-center space-x-7 text-base font-medium">
-          <Link href="/" className="hover:text-blue-400 text-gray-100 transition">Home</Link>
-          <Link href="/products" className="hover:text-blue-400 text-gray-100 transition">Products</Link>
-          <Link href="/about" className="hover:text-blue-400 text-gray-100 transition">About</Link>
-          <Link href="/ai-tool" className="hover:text-blue-400 text-gray-100 transition">Free AI</Link>
-          <Link href="/ai-pro" className="hover:text-yellow-400 text-gray-100 transition flex items-center gap-1">
-            AI Pro <span className="bg-yellow-300 text-xs px-2 py-0.5 rounded-full font-semibold ml-1">GPT-4</span>
+          <Link href="/" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">Home</Link>
+          <Link href="/products" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">Products</Link>
+          <Link href="/about" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">About</Link>
+          <Link href="/ai-tool" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">Quick Hook Maker</Link>
+          <Link href="/ai-pro" className="nav-link flex items-center gap-1">
+            Content Engine
+            <span className="ml-1 bg-yellow-500 text-[10px] px-2 py-[3px] rounded font-bold text-black shadow-sm leading-none" style={{ verticalAlign: 'middle' }}>
+              GPT-4
+            </span>
           </Link>
-          <Link href="/bundle" className="hover:text-purple-400 text-gray-100 transition">Templates</Link>
+          <Link href="/bundle" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">Templates</Link>
           <SignedIn>
             <UserButton afterSignOutUrl="/" />
             <SignOutButton />
@@ -60,12 +73,17 @@ export default function Header() {
       </div>
       {isOpen && (
         <nav className="md:hidden bg-black/80 backdrop-blur-lg border-t border-white/10 px-6 py-4 space-y-4">
-          <Link href="/" className="block hover:text-blue-400 text-gray-100 transition">Home</Link>
-          <Link href="/products" className="block hover:text-blue-400 text-gray-100 transition">Products</Link>
-          <Link href="/about" className="block hover:text-blue-400 text-gray-100 transition">About</Link>
-          <Link href="/ai-tool" className="block hover:text-blue-400 text-gray-100 transition">Free AI</Link>
-          <Link href="/ai-pro" className="block hover:text-yellow-400 text-gray-100 transition">AI Pro <span className="bg-yellow-300 text-xs px-2 py-0.5 rounded-full font-semibold ml-1">GPT-4</span></Link>
-          <Link href="/bundle" className="block hover:text-purple-400 text-gray-100 transition">Templates</Link>
+          <Link href="/" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">Home</Link>
+          <Link href="/products" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">Products</Link>
+          <Link href="/about" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">About</Link>
+          <Link href="/ai-tool" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">Quick Hook Maker</Link>
+          <Link href="/ai-pro" className="nav-link flex items-center gap-1">
+            Content Engine
+            <span className="ml-1 bg-yellow-500 text-[10px] px-2 py-[3px] rounded font-bold text-black shadow-sm leading-none" style={{ verticalAlign: 'middle' }}>
+              GPT-4
+            </span>
+          </Link>
+          <Link href="/bundle" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">Templates</Link>
           <SignedIn>
             <UserButton afterSignOutUrl="/" />
             <SignOutButton />

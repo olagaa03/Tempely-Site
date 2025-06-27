@@ -40,17 +40,17 @@ export default function ProductsPage() {
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
         {products.map((item) => (
           <Link href={item.link} key={item.title} className="group block transition duration-300 hover:scale-105">
-            <div className="rounded-2xl overflow-hidden bg-white/10 backdrop-blur-md p-8 shadow-xl border border-white/10 hover:border-blue-500 hover:shadow-2xl transition flex flex-col items-center">
+            <div className="rounded-md overflow-hidden bg-white/10 backdrop-blur-md p-8 shadow-xl border border-white/10 hover:border-blue-500 hover:shadow-2xl transition flex flex-col items-center">
               <Image
                 src={item.image}
                 alt={item.title}
                 width={300}
                 height={180}
-                className="mx-auto rounded-xl transition-transform duration-300 group-hover:scale-105"
+                className="mx-auto rounded-md transition-transform duration-300 group-hover:scale-105"
               />
               <h3 className={`text-2xl font-bold mt-8 text-white transition ${accentClass[item.accent]}`}>{item.title}</h3>
               <p className="text-gray-300 mt-4 text-base font-medium text-center">{item.description}</p>
-              <span className="mt-6 inline-block bg-blue-600 text-white px-6 py-2 rounded-full font-semibold shadow hover:bg-blue-500 transition-transform duration-200 hover:scale-105">View Product</span>
+              <span className="mt-6 inline-block bg-blue-600 text-white px-6 py-2 rounded-md font-semibold shadow hover:bg-blue-500 transition-transform duration-200 hover:scale-105">View Product</span>
             </div>
           </Link>
         ))}

@@ -10,11 +10,11 @@ export default function LoggedOutHome() {
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-6 text-center">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-7xl font-extrabold mb-8 leading-tight tracking-tight text-white drop-shadow-lg">
-            The Creator Growth System — Powered by AI
+          <h1 className="text-5xl md:text-7xl font-extrabold leading-tight md:leading-[1.1] mb-12 tracking-tight text-white drop-shadow-lg max-w-3xl mx-auto">
+            Grow Your Audience. <span className="text-[var(--tempely-purple)]">Create Your Breakout Moment.</span>
           </h1>
-          <p className="text-xl md:text-2xl text-gray-400 mb-10 font-medium">
-            Plan smarter. Post consistently. Track what actually grows. Tempely is your content command center, built for creators who want to go viral and stay there.
+          <p className="text-xl md:text-2xl text-gray-300 mb-10 font-medium max-w-2xl mx-auto">
+            Tempely gives creators the power to <span className="text-white font-bold">stand out, scale up, and spark real growth</span> on social. Plan, create, and track with Notion templates and AI tools built for viral momentum.
           </p>
           <div className="flex justify-center gap-6">
             <SignInButton mode="modal" fallbackRedirectUrl="/ai-tool">
@@ -38,32 +38,32 @@ export default function LoggedOutHome() {
             {
               title: 'Hooked',
               image: '/screenshots/hooked-cover.png',
-              description: 'Write viral-worthy hooks using proven formulas and scripts.',
+              description: 'Unlock scroll-stopping hooks that grab attention and spark engagement. Proven formulas, instant inspiration.',
               link: '/products/hooked',
             },
             {
               title: 'Posted',
               image: '/screenshots/posted-cover.png',
-              description: 'Plan content with clarity and avoid burnout with smart templates.',
+              description: 'Never run out of ideas or lose your flow. Plan, script, and publish with clarity—no burnout, just results.',
               link: '/products/posted',
             },
             {
               title: 'Tracked',
               image: '/screenshots/tracked-cover.png',
-              description: "See what's working, what's not, and evolve your content strategy.",
+              description: 'See what\'s working, double down on your wins, and evolve your strategy with real creator data.',
               link: '/products/tracked',
             },
-          ].map((item) => (
+          ].map((item, idx) => (
             <Link href={item.link} key={item.title} className="group block transition duration-300">
-              <div className="flex flex-col items-center group transition-transform duration-200 hover:scale-105">
+              <div className="flex flex-col items-center group transition-transform duration-200 hover:scale-105 hover:shadow-[0_0_24px_0_rgba(124,58,237,0.25)] border border-transparent hover:border-[var(--tempely-purple)] rounded-md bg-white/5 p-6">
                 <Image
                   src={item.image}
                   alt={item.title}
                   width={300}
                   height={180}
-                  className="mx-auto rounded-xl transition-transform duration-300 group-hover:scale-[1.025] group-hover:shadow"
+                  className="mx-auto rounded-md transition-transform duration-300 group-hover:scale-[1.025] group-hover:shadow"
                 />
-                <h3 className="text-2xl font-bold mt-6 text-white group-hover:text-blue-400 transition">{item.title}</h3>
+                <h3 className="text-2xl font-bold mt-6 text-white group-hover:text-[var(--tempely-purple)] transition">{item.title}</h3>
                 <p className="text-gray-300 mt-3 text-base font-medium">{item.description}</p>
               </div>
             </Link>
@@ -85,21 +85,24 @@ export default function LoggedOutHome() {
         </Link>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-20 px-6 text-center">
-        <h2 className="text-3xl font-bold mb-12 text-white">What creators are saying</h2>
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white/10 border border-white/10 rounded-2xl p-8 shadow-xl backdrop-blur-md">
-            <p className="text-gray-200 italic text-lg">“Posted is the first planner I actually stick to – clean and super practical.”</p>
-            <p className="mt-6 font-medium text-gray-400 text-base">— Jamie, Content Coach</p>
+      {/* Testimonial Section Placeholder */}
+      <section className="py-16 px-6 text-center">
+        <h2 className="text-3xl font-bold mb-10 text-white">What creators are saying</h2>
+        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="bg-white/10 border border-[var(--tempely-purple)] rounded-md p-8 shadow-xl backdrop-blur-md flex flex-col items-center">
+            <Image src="/branding/tempely-logo.png" alt="Jamie avatar" width={48} height={48} className="rounded-full mb-4" />
+            <p className="text-gray-200 italic text-lg">“Posted is the first planner I actually stick to — clean and super practical.”</p>
+            <p className="mt-4 font-medium text-gray-400 text-base">Jamie, Content Coach</p>
           </div>
-          <div className="bg-white/10 border border-white/10 rounded-2xl p-8 shadow-xl backdrop-blur-md">
+          <div className="bg-white/10 border border-[var(--tempely-purple)] rounded-md p-8 shadow-xl backdrop-blur-md flex flex-col items-center">
+            <Image src="/branding/tempely-logo.png" alt="Alex avatar" width={48} height={48} className="rounded-full mb-4" />
             <p className="text-gray-200 italic text-lg">“Hooked helped me finally go viral. The categories and examples are gold.”</p>
-            <p className="mt-6 font-medium text-gray-400 text-base">— Alex, Copywriter</p>
+            <p className="mt-4 font-medium text-gray-400 text-base">Alex, Copywriter</p>
           </div>
-          <div className="bg-white/10 border border-white/10 rounded-2xl p-8 shadow-xl backdrop-blur-md">
+          <div className="bg-white/10 border border-[var(--tempely-purple)] rounded-md p-8 shadow-xl backdrop-blur-md flex flex-col items-center">
+            <Image src="/branding/tempely-logo.png" alt="Sam avatar" width={48} height={48} className="rounded-full mb-4" />
             <p className="text-gray-200 italic text-lg">“Tracked showed me what actually works. My content is finally data-driven.”</p>
-            <p className="mt-6 font-medium text-gray-400 text-base">— Sam, Creator</p>
+            <p className="mt-4 font-medium text-gray-400 text-base">Sam, Creator</p>
           </div>
         </div>
       </section>
