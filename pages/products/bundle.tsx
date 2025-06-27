@@ -3,7 +3,7 @@ import { useUser, SignInButton } from '@clerk/nextjs';
 export default function Bundle() {
   const { isSignedIn } = useUser();
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#18181B] to-[#0F0F0F] font-sans text-white pt-32 px-4">
+    <main className="min-h-screen bg-gradient-to-br from-[#7c3aed] via-[#18181B] to-[#0F0F0F] font-sans text-white pt-32 px-4">
       <section className="max-w-6xl mx-auto flex flex-col md:flex-row items-start gap-10 px-4 pt-6">
 
         {/* Product Image - Mobile optimized */}
@@ -17,12 +17,12 @@ export default function Bundle() {
 
         {/* Description + Buy Button */}
         <div className="w-full md:w-1/2">
-          <h1 className="text-3xl md:text-5xl font-bold text-center md:text-left mt-4">Creator Bundle.</h1>
-          <p className="text-lg md:text-xl text-gray-800 mb-4 text-center md:text-left">
+          <h1 className="text-3xl md:text-5xl font-bold text-center md:text-left mt-4 text-white">Creator Bundle.</h1>
+          <p className="text-lg md:text-xl text-white/90 mb-4 text-center md:text-left">
             Get all three premium templates — <strong>Hooked</strong>, <strong>Posted</strong>, and <strong>Tracked</strong> — in one bundle and save big.
           </p>
 
-          <ul className="list-disc list-inside text-gray-700 space-y-2 mb-6">
+          <ul className="list-disc list-inside text-white/80 space-y-2 mb-6">
             <li><strong>Hooked</strong>: A categorized hook bank for viral content ideas</li>
             <li><strong>Posted</strong>: A Notion planner to script, schedule, and stay consistent</li>
             <li><strong>Tracked</strong>: A dashboard to analyze performance and improve results</li>
@@ -30,7 +30,7 @@ export default function Bundle() {
             <li><strong>Save 45%</strong> vs buying separately</li>
           </ul>
 
-          <p className="text-gray-700 mb-6 text-center md:text-left">
+          <p className="text-white/80 mb-6 text-center md:text-left">
             Whether you're starting from scratch or scaling your creative output, this bundle gives you everything you need to show up like a pro.
           </p>
 

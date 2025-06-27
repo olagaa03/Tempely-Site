@@ -3,7 +3,7 @@ import { useUser, SignInButton } from '@clerk/nextjs';
 export default function Tracked() {
   const { isSignedIn } = useUser();
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#18181B] to-[#0F0F0F] font-sans text-white pt-32 px-4">
+    <main className="min-h-screen bg-gradient-to-br from-[#7c3aed] via-[#18181B] to-[#0F0F0F] font-sans text-white pt-32 px-4">
       <section className="max-w-6xl mx-auto flex flex-col md:flex-row items-start gap-10 px-4 pt-6">
 
         {/* Product Image - Mobile optimized */}
@@ -17,12 +17,12 @@ export default function Tracked() {
 
         {/* Description + Buy Button */}
         <div className="w-full md:w-1/2">
-          <h1 className="text-3xl md:text-5xl font-bold text-center md:text-left mt-4">Tracked.</h1>
-          <p className="text-lg md:text-xl text-gray-800 mb-4 text-center md:text-left">
+          <h1 className="text-3xl md:text-5xl font-bold text-center md:text-left mt-4 text-white">Tracked.</h1>
+          <p className="text-lg md:text-xl text-white/90 mb-4 text-center md:text-left">
             Tracked is your performance command center — a Notion dashboard that helps you <strong>analyze, improve, and double down</strong> on what's working.
           </p>
 
-          <ul className="list-disc list-inside text-gray-700 space-y-2 mb-6">
+          <ul className="list-disc list-inside text-white/80 space-y-2 mb-6">
             <li><strong>Content Tracker</strong> for views, likes, comments, shares, saves</li>
             <li><strong>Performance Snapshots</strong> by week and platform</li>
             <li><strong>Trending Insights</strong> so you can double down on what works</li>
@@ -30,7 +30,7 @@ export default function Tracked() {
             <li><strong>Built-in prompts</strong> to help you reflect and improve</li>
           </ul>
 
-          <p className="text-gray-700 mb-6 text-center md:text-left">
+          <p className="text-white/80 mb-6 text-center md:text-left">
             For creators who want to get strategic, not just post and hope.
           </p>
 
