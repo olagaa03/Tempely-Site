@@ -1,6 +1,7 @@
+/*
 // pages/api/lemon-webhook.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import clerkClient from '@clerk/clerk-sdk-node';
+import { users } from '@clerk/nextjs/api';
 import crypto from 'crypto';
 
 export const config = {
@@ -19,7 +20,7 @@ function buffer(readable: any) {
 }
 
 const getUserByEmail = async (email: string) => {
-  const { data: userList } = await clerkClient.users.getUserList({ emailAddress: [email] });
+  const { data: userList } = await users.getUserList({ emailAddress: [email] });
   return userList[0];
 };
 
@@ -57,7 +58,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!user) return res.status(404).json({ error: 'User not found' });
 
     // Set pro: true in Clerk public metadata
-    await clerkClient.users.updateUser(user.id, {
+    await users.updateUser(user.id, {
       publicMetadata: { pro: true }
     });
 
@@ -69,7 +70,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const email = event.data?.attributes?.user_email || event.data?.attributes?.email;
     const user = await getUserByEmail(email);
     if (user) {
-      await clerkClient.users.updateUser(user.id, {
+      await users.updateUser(user.id, {
         publicMetadata: { pro: false }
       });
     }
@@ -78,3 +79,4 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   res.status(200).json({ received: true });
 } 
+*/ 
