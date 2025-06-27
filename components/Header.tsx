@@ -67,30 +67,38 @@ export default function Header() {
             </SignInButton>
           </SignedOut>
         </nav>
-        <button className="md:hidden text-gray-100" onClick={() => setIsOpen(!isOpen)}>
+        <button className="md:hidden text-gray-100 focus:outline-none focus:ring-2 focus:ring-[var(--tempely-purple)]" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
       {isOpen && (
-        <nav className="md:hidden bg-black/80 backdrop-blur-lg border-t border-white/10 px-6 py-4 space-y-4">
-          <Link href="/" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">Home</Link>
-          <Link href="/products" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">Products</Link>
-          <Link href="/about" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">About</Link>
-          <Link href="/ai-tool" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">AI Hook Generator</Link>
-          <Link href="/ai-pro" className="nav-link flex items-center gap-1 hover:text-yellow-200 transition">
+        <nav className="md:hidden bg-gradient-to-br from-[#18122B]/80 to-[#4B2067]/80 backdrop-blur-lg border-t border-white/10 border-b border-white/10 px-6 py-4 space-y-3 text-base shadow-2xl rounded-b-2xl">
+          <Link href="/" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition block" onClick={() => setIsOpen(false)}>Home</Link>
+          <Link href="/products" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition block" onClick={() => setIsOpen(false)}>Products</Link>
+          <Link href="/about" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition block" onClick={() => setIsOpen(false)}>About</Link>
+          <Link href="/ai-tool" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition block" onClick={() => setIsOpen(false)}>AI Hook Generator</Link>
+          <Link href="/ai-pro" className="nav-link flex items-center gap-1 hover:text-yellow-200 transition block" onClick={() => setIsOpen(false)}>
             Content Engine Pro
-            <span className="ml-1 px-2 py-[3px] rounded-full font-bold text-xs shadow-sm leading-none glass" style={{ background: 'rgba(255, 221, 51, 0.18)', color: '#FFD600', border: '1px solid #FFD600', verticalAlign: 'middle', fontWeight: 700 }}>
+            <span className="ml-1 px-2 py-[2px] rounded-full font-bold text-xs shadow-sm leading-none glass" style={{ background: 'rgba(255, 221, 51, 0.18)', color: '#FFD600', border: '1px solid #FFD600', fontWeight: 700 }}>
               GPT-4
             </span>
           </Link>
-          <Link href="/bundle" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">Templates</Link>
+          <Link href="/bundle" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition block" onClick={() => setIsOpen(false)}>Templates</Link>
+          <hr className="my-2 border-white/10" />
           <SignedIn>
-            <UserButton afterSignOutUrl="/" />
-            <SignOutButton />
+            <div className="flex items-center gap-2 mt-2">
+              <UserButton afterSignOutUrl="/" />
+              <button
+                onClick={() => { setIsOpen(false); useClerk().signOut(() => { window.location.href = '/'; }); }}
+                className="px-3 py-1 bg-red-600 text-white rounded-full hover:bg-red-700 transition text-xs font-semibold shadow"
+              >
+                Sign Out
+              </button>
+            </div>
           </SignedIn>
           <SignedOut>
             <SignInButton mode="modal">
-              <button className="bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-full px-5 py-2 shadow transition-transform duration-200 hover:scale-105 w-full">
+              <button className="bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-full px-5 py-2 shadow transition-transform duration-200 hover:scale-105 w-full text-base mt-2">
                 Sign In
               </button>
             </SignInButton>

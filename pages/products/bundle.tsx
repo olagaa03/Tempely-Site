@@ -27,7 +27,7 @@ export default function Bundle() {
             <li><strong>Posted</strong>: A Notion planner to script, schedule, and stay consistent</li>
             <li><strong>Tracked</strong>: A dashboard to analyze performance and improve results</li>
             <li><strong>Bonus visuals</strong> and strategy tips included</li>
-            <li><strong>Save 45%</strong> vs buying separately</li>
+            <li><strong>Save 40%</strong> vs buying separately</li>
           </ul>
 
           <p className="text-white/80 mb-6 text-center md:text-left">

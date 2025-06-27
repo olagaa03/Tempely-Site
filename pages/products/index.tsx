@@ -37,9 +37,9 @@ export default function ProductsPage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-[#18181B] to-[#0F0F0F] font-sans px-4 py-20">
       <h1 className="text-5xl font-extrabold text-center mb-12 text-white drop-shadow-lg">Explore Our Products</h1>
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+      <div className="max-w-6xl mx-auto md:grid md:grid-cols-3 gap-12 flex overflow-x-auto md:overflow-visible flex-row md:flex-none space-x-6 md:space-x-0 snap-x md:snap-none pb-4 md:pb-0">
         {products.map((item) => (
-          <Link href={item.link} key={item.title} className="group block transition duration-300 hover:scale-105">
+          <Link href={item.link} key={item.title} className="group block transition duration-300 hover:scale-105 min-w-[85vw] max-w-xs md:min-w-0 md:max-w-none snap-center">
             <div className="rounded-md overflow-hidden bg-white/10 backdrop-blur-md p-8 shadow-xl border border-white/10 hover:border-blue-500 hover:shadow-2xl transition flex flex-col items-center">
               <Image
                 src={item.image}

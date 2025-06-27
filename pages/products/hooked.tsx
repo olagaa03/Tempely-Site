@@ -3,12 +3,11 @@ import { useUser, SignInButton } from '@clerk/nextjs';
 export default function Hooked() {
   const { isSignedIn } = useUser();
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#5b21b6] via-[#18181B] to-[#0F0F0F] font-sans text-white pt-32 px-4">
-      <section className="max-w-6xl mx-auto flex flex-col md:flex-row items-start gap-10 px-4 pt-6">
-
+    <main className="min-h-screen bg-gradient-to-br from-[#5b21b6] via-[#18181B] to-[#0F0F0F] font-sans text-white pt-28 pb-10 px-2 sm:px-4">
+      <section className="max-w-6xl mx-auto flex flex-col md:flex-row items-start gap-10 px-0 sm:px-4 pt-4 md:pt-6">
 
         {/* Product Image - Mobile optimized */}
-        <div className="w-full md:w-1/2 max-h-[50vh] md:max-h-none overflow-hidden rounded-md shadow-md">
+        <div className="w-full md:w-1/2 max-h-[50vh] md:max-h-none overflow-hidden rounded-md shadow-md mb-8 md:mb-0">
           <img
             src="/screenshots/hooked-cover.png"
             alt="Hooked product preview"
@@ -17,8 +16,8 @@ export default function Hooked() {
         </div>
 
         {/* Description + Buy Button */}
-        <div className="w-full md:w-1/2">
-          <h1 className="text-3xl md:text-5xl font-bold text-center md:text-left mt-4 text-white">Hooked.</h1>
+        <div className="w-full md:w-1/2 flex flex-col items-center md:items-start">
+          <h1 className="text-3xl md:text-5xl font-bold text-center md:text-left mt-2 md:mt-4 text-white mb-2">Hooked.</h1>
           <p className="text-lg md:text-xl text-white/90 mb-4 text-center md:text-left">
             Hooked is your content idea generator — a categorized hook system built to help you create content that grabs attention fast.
           </p>
@@ -32,52 +31,62 @@ export default function Hooked() {
             <li><em>Includes categories like</em> contrarian takes, curiosity builders, relatability, bold claims, and more</li>
           </ul>
 
-          <p className="text-white/80 mb-6 text-center md:text-left">
+          <p className="text-white/80 mb-8 text-center md:text-left">
             Delivered as a fully functional PDF — swipeable, strategic, and designed to help you create content that performs.
           </p>
 
           {isSignedIn ? (
-            <a
-              href="https://tempely.lemonsqueezy.com/buy/5a13a2b9-b4e6-4bcc-8fcf-5229dab2dce8"
-              className="block w-full md:w-auto text-center bg-blue-600 text-white px-6 py-3 rounded-md font-semibold text-lg shadow hover:opacity-90 transition"
-            >
-              Buy Hooked. for $9.99
-            </a>
-          ) : (
-            <SignInButton mode="modal" fallbackRedirectUrl="https://tempely.lemonsqueezy.com/buy/5a13a2b9-b4e6-4bcc-8fcf-5229dab2dce8">
-              <button className="block w-full md:w-auto text-center bg-blue-600 text-white px-6 py-3 rounded-md font-semibold text-lg shadow hover:opacity-90 transition">
+            <>
+              <a
+                href="https://tempely.lemonsqueezy.com/buy/5a13a2b9-b4e6-4bcc-8fcf-5229dab2dce8"
+                className="block w-full md:w-auto text-center bg-blue-600 text-white px-6 py-3 rounded-md font-semibold text-lg shadow hover:opacity-90 transition mb-2"
+              >
                 Buy Hooked. for $9.99
-              </button>
-            </SignInButton>
+              </a>
+              <div className="text-xs text-gray-400 mb-6">
+                Billed in NOK (Norwegian Krone) at checkout.
+              </div>
+            </>
+          ) : (
+            <>
+              <SignInButton mode="modal" fallbackRedirectUrl="https://tempely.lemonsqueezy.com/buy/5a13a2b9-b4e6-4bcc-8fcf-5229dab2dce8">
+                <button className="block w-full md:w-auto text-center bg-blue-600 text-white px-6 py-3 rounded-md font-semibold text-lg shadow hover:opacity-90 transition mb-2">
+                  Buy Hooked. for $9.99
+                </button>
+              </SignInButton>
+              <div className="text-xs text-gray-400 mb-6">
+                Billed in NOK (Norwegian Krone) at checkout.
+              </div>
+            </>
           )}
         </div>
       </section>
 
       {/* Bundle Offer */}
-      <section className="w-full mt-20 px-4 max-w-6xl mx-auto text-center">
+      <section className="w-full mt-16 sm:mt-20 px-0 sm:px-4 max-w-6xl mx-auto text-center">
         <h2 className="text-3xl font-bold mb-4">Get the Creator Bundle</h2>
-        <p className="text-gray-600 max-w-2xl mx-auto mb-6">
+        <p className="text-gray-400 max-w-2xl mx-auto mb-6">
           Buy <strong>Hooked</strong>, <strong>Posted</strong>, and <strong>Tracked</strong> together in one powerful bundle — and save while you're at it.
         </p>
         <a
           href="/#bundle"
-          className="inline-block bg-black text-white px-8 py-4 rounded-md text-lg font-semibold shadow hover:opacity-90 transition"
+          className="inline-block bg-black text-white px-8 py-4 rounded-md text-lg font-semibold shadow hover:opacity-90 transition mb-2"
         >
           Buy the Bundle
         </a>
       </section>
 
       {/* Testimonials */}
-      <section className="w-full mt-24 px-4 max-w-6xl mx-auto text-center">
-        <h2 className="text-3xl font-bold mb-12">What creators are saying</h2>
+      <section className="w-full mt-16 sm:mt-24 px-0 sm:px-4 max-w-6xl mx-auto text-center">
+        <h2 className="text-3xl font-bold mb-10 sm:mb-12">What creators are saying</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white border rounded-md p-6 shadow-md">
+          <div className="bg-white border rounded-md p-6 shadow-md mb-4 md:mb-0">
             <p className="text-gray-700 italic text-sm">
               “Posted is the first content planner I actually stick to — clean and super practical.”
             </p>
             <p className="mt-4 font-medium text-gray-900 text-sm">— Jamie, Content Coach</p>
           </div>
-          <div className="bg-white border rounded-md p-6 shadow-md">
+          <div className="bg-white border rounded-md p-6 shadow-md mb-4 md:mb-0">
             <p className="text-gray-700 italic text-sm">
               “Hooked helped me finally go viral. The categories and examples are gold.”
             </p>
@@ -93,7 +102,7 @@ export default function Hooked() {
       </section>
 
       {/* Footer */}
-      <footer className="w-full text-center text-gray-500 text-sm mt-20">
+      <footer className="w-full text-center text-gray-500 text-sm mt-16 sm:mt-20">
         <p>&copy; 2025 Tempely. All rights reserved.</p>
       </footer>
     </main>
