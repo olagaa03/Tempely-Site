@@ -27,7 +27,6 @@ export default function LoggedInHome() {
             description: 'Generate hooks and posts instantly. 5/day on Free plan.',
             link: '/ai-tool',
             accent: 'from-blue-500 to-blue-400',
-            checkoutUrl: 'https://tempely.lemonsqueezy.com/buy/5a13a2b9-b4e6-4bcc-8fcf-5229dab2dce8',
           },
           {
             title: 'AI Pro',
@@ -43,26 +42,40 @@ export default function LoggedInHome() {
             description: 'Browse Hooked, Posted, Tracked, and more.',
             link: '/products',
             accent: 'from-yellow-400 to-yellow-300',
-            checkoutUrl: 'https://tempely.lemonsqueezy.com/buy/bc3fc2b8-6d58-46f9-85ae-aa664d9ea48a',
           },
         ].map((item, idx) => (
-          <a
-            href={item.link}
+          <div
             key={item.title}
             className={`group flex flex-col items-start p-8 rounded-2xl bg-white/5 backdrop-blur-md shadow-lg border border-white/10 transition-transform duration-200 hover:-translate-y-2 hover:shadow-2xl hover:border-blue-500 ${idx === 1 ? 'md:mt-12' : ''}`}
           >
             <span className={`text-4xl mb-4 bg-gradient-to-r ${item.accent} bg-clip-text text-transparent`}>{item.icon}</span>
             <h3 className="text-2xl font-bold text-white mb-2">{item.title}</h3>
             <p className="text-gray-300 text-base font-medium">{item.description}</p>
-            <a
-              href={item.checkoutUrl}
-              className="mt-4 inline-block bg-blue-600 text-white px-5 py-2 rounded-full font-semibold hover:bg-blue-500 shadow transition-transform duration-200 hover:scale-105"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Buy Now
-            </a>
-          </a>
+            {item.title === 'AI Pro' ? (
+              <a
+                href={item.checkoutUrl}
+                className="mt-4 inline-block bg-blue-600 text-white px-5 py-2 rounded-full font-semibold hover:bg-blue-500 shadow transition-transform duration-200 hover:scale-105"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Buy Now
+              </a>
+            ) : item.title === 'Free AI Tool' ? (
+              <a
+                href={item.link}
+                className="mt-4 inline-block bg-blue-600 text-white px-5 py-2 rounded-full font-semibold hover:bg-blue-500 shadow transition-transform duration-200 hover:scale-105"
+              >
+                Go to Tool
+              </a>
+            ) : (
+              <a
+                href={item.link}
+                className="mt-4 inline-block bg-blue-600 text-white px-5 py-2 rounded-full font-semibold hover:bg-blue-500 shadow transition-transform duration-200 hover:scale-105"
+              >
+                Browse Products
+              </a>
+            )}
+          </div>
         ))}
       </section>
 
