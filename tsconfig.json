@@ -17,8 +17,7 @@
       "types": ["node"],
       "baseUrl": ".",
       "paths": {
-        "@/*": ["./*"],
-        "@clerk/nextjs": ["types/clerk.d.ts"]
+        "@/*": ["./*"]
       }
     },
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
