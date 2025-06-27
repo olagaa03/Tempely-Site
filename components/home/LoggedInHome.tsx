@@ -119,11 +119,6 @@ export default function LoggedInHome() {
         </div>
       </section>
 
-      {/* Free Plan Notice */}
-      <div className="text-right text-base text-gray-500 px-8 mt-8">
-        Using the Free plan? You can generate 5 times per day. Upgrade any time.
-      </div>
-
       {/* Testimonial Section Placeholder */}
       <section className="py-16 px-6 text-center">
         <h2 className="text-3xl font-bold mb-10 text-white">What creators are saying</h2>

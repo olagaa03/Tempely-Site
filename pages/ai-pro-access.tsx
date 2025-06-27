@@ -19,6 +19,8 @@ import {
 } from "lucide-react";
 import ResultSection from "@/components/ResultSection";
 import TempelySpinner from "@/components/TempelySpinner";
+import { Listbox } from '@headlessui/react';
+import { Fragment } from 'react';
 
 type SectionKey = "captions" | "hooks" | "tip" | "why";
 
@@ -33,8 +35,7 @@ export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   const req = context.req as IncomingMessage;
-  const { userId } = getAuth(context.req as any); // 👈 bypasses the type mismatch
-
+  const { userId } = getAuth(context.req as any);
 
   if (!userId) {
     return {
@@ -45,15 +46,7 @@ export const getServerSideProps: GetServerSideProps = async (
     };
   }
 
-  if (!MOCK_PRO_USER_IDS.has(userId)) {
-    return {
-      redirect: {
-        destination: "/ai-pro",
-        permanent: false,
-      },
-    };
-  }
-
+  // TEMP: Allow all signed-in users to access for testing
   return { props: {} };
 };
 
@@ -78,6 +71,7 @@ export default function AiProAccessPage() {
     tip: "",
     why: "",
   });
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -146,196 +140,271 @@ export default function AiProAccessPage() {
     });
   };
 
+  const copyToClipboard = async (text: string, key: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedKey(key);
+      setTimeout(() => setCopiedKey(null), 2000);
+    } catch (err) {
+      console.error("Failed to copy text: ", err);
+    }
+  };
+
   return (
-    <main className="max-w-3xl mx-auto px-6 py-14 bg-white">
-      <div className="bg-gray-50 p-8 rounded-xl border border-gray-200 shadow-sm mb-10">
-        <h1 className="text-4xl font-extrabold text-center text-blue-600 mb-3">
-          Temply Pro Assistant
-        </h1>
-        <p className="text-center text-gray-500 text-base max-w-2xl mx-auto">
-          Unlock premium content creation powered by <strong>GPT-4</strong>.
-          Tailored hooks, captions, and marketing content crafted specifically
-          for your brand.
-        </p>
+    <main className="min-h-screen bg-gradient-to-br from-[#0F0F1C] via-[#18122B] to-[#4B2067] relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 right-20 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 left-20 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-purple-500/5 to-blue-500/5 rounded-full blur-3xl animate-pulse delay-500"></div>
       </div>
 
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white shadow-2xl rounded-3xl p-10 space-y-10 border border-gray-100"
-      >
-        <section>
-          <h2 className="text-gray-600 text-xs font-bold uppercase mb-4 tracking-wider">
-            Required Details
-          </h2>
-          <div className="grid gap-6">
-            <InputField
-              icon={<Tag />}
-              name="niche"
-              label="Niche"
-              example="e.g. Fitness Coaching, Fashion Retailer"
-              value={formData.niche}
-              onChange={handleChange}
-            />
-            <InputField
-              icon={<Megaphone />}
-              name="platform"
-              label="Platform"
-              example="e.g. Instagram, TikTok, LinkedIn"
-              value={formData.platform}
-              onChange={handleChange}
-            />
-            <InputField
-              icon={<User />}
-              name="audience"
-              label="Audience"
-              example="e.g. Moms 30-45, Entrepreneurs, Students"
-              value={formData.audience}
-              onChange={handleChange}
-            />
-            <InputField
-              icon={<Mic />}
-              name="tone"
-              label="Tone"
-              example="e.g. Funny, Educational, Bold"
-              value={formData.tone}
-              onChange={handleChange}
-            />
-            <InputField
-              icon={<TrendingUp />}
-              name="goal"
-              label="Goal"
-              example="e.g. Increase engagement, grow to 10k followers"
-              value={formData.goal}
-              onChange={handleChange}
-            />
-            <div>
-              <label
-                htmlFor="format"
-                className="block font-medium text-gray-700 mb-1 flex items-center gap-2"
-              >
-                <LayoutGrid className="w-4 h-4 text-gray-500" /> Content Format
-              </label>
-              <select
-                name="format"
-                id="format"
-                value={formData.format}
+      <div className="relative z-10 max-w-4xl mx-auto px-6 py-16 pt-32">
+        {/* Header Section */}
+        <div className="text-center mb-12">
+          <h1 className="text-5xl md:text-6xl font-extrabold mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent drop-shadow-lg gradient-text">
+            Tempely Pro Content Engine
+          </h1>
+          <span className="inline-block bg-yellow-400/10 text-yellow-300 font-semibold px-4 py-1 rounded-full text-xs mb-4">Custom-Tuned for Marketers</span>
+          <p className="text-2xl text-gray-100 mb-3 max-w-2xl mx-auto leading-snug animate-fade-in">
+            Unlock <span className="font-bold text-blue-400">GPT-4</span> content creation: viral hooks, strategic captions, and <span className="font-bold text-green-300">marketing copy</span> for your brand.
+          </p>
+          <p className="text-sm text-gray-500 mb-8 max-w-2xl mx-auto leading-relaxed animate-fade-in">
+            Powered by a <span className="font-semibold">specially trained AI</span>—engineered for content marketing, not just another chatbot.
+          </p>
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400/20 to-pink-400/20 border border-yellow-400/30 rounded-full px-6 py-2 text-yellow-200 text-sm font-medium">
+            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+            Powered by GPT-4 • Pro Tier
+          </div>
+        </div>
+
+        {/* Main Form */}
+        <div className="glass-strong rounded-3xl shadow-2xl p-8 mb-8 animate-fade-in">
+          <form onSubmit={handleSubmit} className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <InputField
+                icon={<Tag className="text-pink-400" />}
+                name="niche"
+                label="Niche"
+                example="e.g. Fitness Coaching, Fashion Retailer"
+                value={formData.niche}
                 onChange={handleChange}
-                className="w-full p-3 border rounded-lg focus:outline-blue-500 bg-gray-50 shadow-sm"
-              >
-                <optgroup label="📱 Social Media">
-                  <option>Instagram Caption</option>
-                  <option>Instagram Carousel</option>
-                  <option>Instagram Reel Script</option>
-                  <option>Facebook Post</option>
-                  <option>Threads Post</option>
-                  <option>Tweet Thread</option>
-                  <option>LinkedIn Post</option>
-                  <option>Pinterest Pin Description</option>
-                  <option>Reddit Post</option>
-                </optgroup>
-                <optgroup label="🎬 Video & Audio">
-                  <option>YouTube Title & Description</option>
-                  <option>YouTube Script</option>
-                  <option>TikTok Script</option>
-                  <option>Podcast Episode Outline</option>
-                  <option>Instagram Story Sequence</option>
-                </optgroup>
-                <optgroup label="📧 Email & Blog">
-                  <option>Email Subject Line + Preview Text</option>
-                  <option>Newsletter Blurb</option>
-                  <option>Blog Post Intro</option>
-                  <option>Website Hero Copy</option>
-                </optgroup>
-                <optgroup label="💰 Ads & Sales Copy">
-                  <option>Google Ad Headline + Description</option>
-                  <option>Facebook Ad Copy</option>
-                  <option>Product Landing Page Copy</option>
-                  <option>Elevator Pitch</option>
-                </optgroup>
-                <optgroup label="🧠 Strategy & CTA">
-                  <option>Call to Action (CTA) Ideas</option>
-                  <option>FAQ Snippets</option>
-                  <option>Lead Magnet Outline</option>
-                  <option>Content Upgrade CTA</option>
-                </optgroup>
-              </select>
+              />
+              <InputField
+                icon={<Megaphone className="text-yellow-400" />}
+                name="platform"
+                label="Platform"
+                example="e.g. Instagram, TikTok, LinkedIn"
+                value={formData.platform}
+                onChange={(val: string) => setFormData({ ...formData, platform: val })}
+              />
+              <InputField
+                icon={<User className="text-blue-400" />}
+                name="audience"
+                label="Audience"
+                example="e.g. Moms 30-45, Entrepreneurs, Students"
+                value={formData.audience}
+                onChange={handleChange}
+              />
+              <InputField
+                icon={<Mic className="text-purple-400" />}
+                name="tone"
+                label="Tone"
+                example="e.g. Funny, Educational, Bold"
+                value={formData.tone}
+                onChange={(val: string) => setFormData({ ...formData, tone: val })}
+              />
+              <InputField
+                icon={<Target className="text-green-400" />}
+                name="goal"
+                label="Goal"
+                example="e.g. Grow to 10k followers, Launch a product"
+                value={formData.goal}
+                onChange={handleChange}
+              />
+              <InputField
+                icon={<LayoutGrid className="text-cyan-400" />}
+                name="format"
+                label="Content Format"
+                example="e.g. Instagram Caption, LinkedIn Post"
+                value={formData.format}
+                onChange={(val: string) => setFormData({ ...formData, format: val })}
+              />
+              <InputField
+                icon={<TrendingUp className="text-orange-400" />}
+                name="product"
+                label="Product/Offer"
+                example="e.g. Digital course, Coaching program"
+                value={formData.product}
+                onChange={handleChange}
+              />
+              <InputField
+                icon={<AlertCircle className="text-red-400" />}
+                name="pain"
+                label="Audience Pain Point"
+                example="e.g. Struggling with consistency"
+                value={formData.pain}
+                onChange={handleChange}
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full py-5 rounded-2xl font-bold text-xl shadow-2xl transition-all duration-300 hover-lift ${
+                loading
+                  ? "bg-gray-600 cursor-not-allowed"
+                  : "bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-500 hover:from-yellow-300 hover:to-purple-400 text-white hover:scale-[1.02] hover:shadow-yellow-400/25"
+              }`}
+            >
+              {loading ? (
+                <span className="flex justify-center items-center gap-3 text-white">
+                  <TempelySpinner />
+                  <span>Generating Pro Content...</span>
+                </span>
+              ) : (
+                <span className="flex items-center justify-center gap-3">
+                  <span className="text-2xl animate-pulse-glow">🚀</span>
+                  Generate Pro Content
+                  <span className="text-lg">→</span>
+                </span>
+              )}
+            </button>
+          </form>
+        </div>
+
+        {/* Error Display */}
+        {error && (
+          <div className="bg-red-500/10 border border-red-400/30 text-red-300 rounded-2xl p-6 mb-8 backdrop-blur-xl animate-fade-in">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">⚠️</span>
+              <div>
+                <h3 className="font-bold text-red-200 mb-1">Generation Failed</h3>
+                <p className="text-red-300">{error}</p>
+              </div>
             </div>
           </div>
-        </section>
-
-        <hr className="border-gray-200" />
-
-        <section>
-          <h2 className="text-gray-600 text-xs font-bold uppercase mb-4 tracking-wider">
-            Optional Enhancers
-          </h2>
-          <div className="grid gap-6">
-            <InputField
-              icon={<Target />}
-              name="product"
-              label="Product or Offer"
-              example="e.g. Digital course, Apparel drop"
-              value={formData.product}
-              onChange={handleChange}
-            />
-            <InputField
-              icon={<AlertCircle />}
-              name="pain"
-              label="Customer Pain Point"
-              example="e.g. Struggling with consistency, fear of failure"
-              value={formData.pain}
-              onChange={handleChange}
-            />
-          </div>
-        </section>
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-xl transition flex justify-center items-center gap-2"
-        >
-          {loading ? (
-            <>
-              <TempelySpinner />
-              Generating...
-            </>
-          ) : (
-            <>✨ Generate AI Content</>
-          )}
-        </button>
-
-        {loading && (
-          <p className="mt-3 text-sm text-gray-500 text-center italic">
-            This may take up to <strong>30–60 seconds</strong> depending on the
-            request.
-          </p>
         )}
-      </form>
 
-      {error && (
-        <p className="text-red-600 text-center mt-8 flex justify-center items-center gap-1">
-          <Info className="w-4 h-4" /> {error}
-        </p>
-      )}
-
-      {(sections.captions ||
-        sections.hooks ||
-        sections.tip ||
-        sections.why) && (
-        <div className="mt-12">
-          <ResultSection
-            rawText={result}
-            userInput={formData}
-            onUpdateSection={(key, content) => {
-              setSections((prev) => ({ ...prev, [key]: content }));
-            }}
-            captions={sections.captions}
-            hooks={sections.hooks}
-            tip={sections.tip}
-            breakdown={sections.why}
-          />
-        </div>
-      )}
+        {/* Results Section */}
+        {(sections.captions || sections.hooks || sections.tip || sections.why) && (
+          <div className="glass-strong rounded-3xl p-8 shadow-2xl space-y-8 animate-slide-in">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold text-yellow-300 mb-2 gradient-text">
+                ✨ Your Pro Content
+              </h2>
+              <p className="text-gray-400">Copy any piece with one click</p>
+            </div>
+            {/* Captions */}
+            {sections.captions && (
+              <div>
+                <h3 className="text-xl font-bold text-blue-400 mb-4 flex items-center gap-2">
+                  <span className="animate-pulse-glow">📢</span>
+                  Captions
+                </h3>
+                <div className="space-y-3">
+                  {sections.captions.split("\n").filter(Boolean).map((line, idx) => (
+                    <div key={`caption-${idx}`} className="group relative hover-lift">
+                      <div className="bg-blue-500/10 border border-blue-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-blue-400/40 hover:bg-blue-500/15">
+                        <p className="text-base leading-relaxed">{line.trim()}</p>
+                        <button
+                          onClick={() => copyToClipboard(line.trim(), `caption-${idx}`)}
+                          className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-blue-500/20 hover:bg-blue-500/40 p-2 rounded-lg hover:scale-110"
+                          title="Copy to clipboard"
+                        >
+                          {copiedKey === `caption-${idx}` ? (
+                            <span className="text-blue-400 text-sm animate-fade-in">✓</span>
+                          ) : (
+                            <span className="text-blue-400 text-sm">📋</span>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {/* Hooks */}
+            {sections.hooks && (
+              <div>
+                <h3 className="text-xl font-bold text-purple-400 mb-4 flex items-center gap-2">
+                  <span className="animate-pulse-glow">🎣</span>
+                  Hooks
+                </h3>
+                <div className="space-y-3">
+                  {sections.hooks.split("\n").filter(Boolean).map((line, idx) => (
+                    <div key={`hook-${idx}`} className="group relative hover-lift">
+                      <div className="bg-purple-500/10 border border-purple-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-purple-400/40 hover:bg-purple-500/15">
+                        <p className="text-base leading-relaxed">{line.trim()}</p>
+                        <button
+                          onClick={() => copyToClipboard(line.trim(), `hook-${idx}`)}
+                          className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-purple-500/20 hover:bg-purple-500/40 p-2 rounded-lg hover:scale-110"
+                          title="Copy to clipboard"
+                        >
+                          {copiedKey === `hook-${idx}` ? (
+                            <span className="text-purple-400 text-sm animate-fade-in">✓</span>
+                          ) : (
+                            <span className="text-purple-400 text-sm">📋</span>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {/* Content Strategy Tip */}
+            {sections.tip && (
+              <div>
+                <h3 className="text-xl font-bold text-green-400 mb-4 flex items-center gap-2">
+                  <span className="animate-pulse-glow">💡</span>
+                  Content Strategy Tip
+                </h3>
+                <div className="group relative hover-lift">
+                  <div className="bg-green-500/10 border border-green-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-green-400/40 hover:bg-green-500/15">
+                    <p className="text-base leading-relaxed">{sections.tip}</p>
+                    <button
+                      onClick={() => copyToClipboard(sections.tip, `tip`)}
+                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-green-500/20 hover:bg-green-500/40 p-2 rounded-lg hover:scale-110"
+                      title="Copy to clipboard"
+                    >
+                      {copiedKey === `tip` ? (
+                        <span className="text-green-400 text-sm animate-fade-in">✓</span>
+                      ) : (
+                        <span className="text-green-400 text-sm">📋</span>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+            {/* Why This Works */}
+            {sections.why && (
+              <div>
+                <h3 className="text-xl font-bold text-yellow-300 mb-4 flex items-center gap-2">
+                  <span className="animate-pulse-glow">🧠</span>
+                  Why This Works
+                </h3>
+                <div className="group relative hover-lift">
+                  <div className="bg-yellow-400/10 border border-yellow-300/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-yellow-300/40 hover:bg-yellow-400/15">
+                    <p className="text-base leading-relaxed">{sections.why}</p>
+                    <button
+                      onClick={() => copyToClipboard(sections.why, `why`)}
+                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-yellow-400/20 hover:bg-yellow-400/40 p-2 rounded-lg hover:scale-110"
+                      title="Copy to clipboard"
+                    >
+                      {copiedKey === `why` ? (
+                        <span className="text-yellow-300 text-sm animate-fade-in">✓</span>
+                      ) : (
+                        <span className="text-yellow-300 text-sm">📋</span>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </main>
   );
 }
@@ -347,47 +416,137 @@ function InputField({
   onChange,
   example,
   icon,
+  options,
 }: {
   name: string;
   label: string;
   value: string;
-  onChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
+  onChange: ((value: string) => void) | ((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void);
   example?: string;
   icon?: React.ReactNode;
+  options?: string[];
 }) {
+  const fieldClass =
+    "w-full min-h-[52px] p-4 border border-white/20 rounded-xl bg-black/40 text-white placeholder-white/70 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400/40 focus:border-blue-400/40 transition-all duration-300";
+
+  const isListbox = ["platform", "tone", "format"].includes(name);
+  const hasDatalist = [
+    "niche", "audience", "goal", "product", "pain"
+  ].includes(name);
+
+  // Listbox options for select fields
+  const selectOptions: Record<string, string[]> = {
+    platform: [
+      "Instagram", "TikTok", "LinkedIn", "Facebook", "YouTube", "Twitter", "Pinterest", "Threads", "Reddit"
+    ],
+    tone: [
+      "Educational", "Professional", "Friendly", "Motivational", "Bold", "Funny", "Witty", "Inspiring", "Conversational", "Casual"
+    ],
+    format: [
+      "Instagram Caption",
+      "Instagram Reel Script",
+      "Instagram Carousel",
+      "TikTok Script",
+      "TikTok Caption",
+      "LinkedIn Post",
+      "YouTube Script",
+      "YouTube Title & Description",
+      "Facebook Ad",
+      "Facebook Post",
+      "Tweet Thread",
+      "Pinterest Pin",
+      "Reddit Post",
+      "Blog Intro",
+      "Newsletter",
+      "Podcast Outline",
+      "Website Hero Copy",
+      "Google Ad Headline & Description",
+      "Product Landing Page Copy",
+      "Call to Action (CTA) Ideas"
+    ],
+  };
+
   return (
     <div>
       <label
         htmlFor={name}
-        className="block font-medium text-gray-700 mb-1 flex items-center gap-2"
+        className="block font-bold text-base mb-1 flex items-center gap-2 text-white drop-shadow"
       >
-        {icon && <span className="text-gray-500 w-4 h-4">{icon}</span>}
+        {icon && <span className="w-5 h-5">{icon}</span>}
         {label}
       </label>
       {example && (
-        <span className="block text-xs text-gray-400 font-normal mb-1">
+        <span className="block text-xs text-white/70 font-normal mb-1">
           {example}
         </span>
       )}
-      {name === "product" || name === "pain" ? (
-        <textarea
-          name={name}
-          id={name}
-          value={value}
-          onChange={onChange}
-          rows={3}
-          className="w-full p-3 border rounded-lg focus:outline-blue-500 bg-gray-50 shadow-sm"
-        />
+      {isListbox ? (
+        <Listbox value={value} onChange={onChange as (value: string) => void}>
+          <div className="relative">
+            <Listbox.Button className={fieldClass + " flex items-center justify-between cursor-pointer pr-10"}>
+              <span>{value || `Select ${label}`}</span>
+              <span className="pointer-events-none absolute right-4 top-1/2 transform -translate-y-1/2 text-white/70 text-xl">▼</span>
+            </Listbox.Button>
+            <Listbox.Options className="absolute z-20 mt-2 w-full bg-black/90 border border-white/20 rounded-xl shadow-2xl max-h-60 overflow-auto focus:outline-none">
+              {selectOptions[name]?.map(option => (
+                <Listbox.Option
+                  key={option}
+                  value={option}
+                  as={Fragment}
+                >
+                  {({ active, selected }) => (
+                    <li
+                      className={`px-5 py-3 cursor-pointer select-none text-base transition-all ${
+                        active ? 'bg-blue-500/30 text-white' : 'text-white/90'
+                      }`}
+                    >
+                      {option}
+                      {selected && <span className="ml-2 text-blue-400">✓</span>}
+                    </li>
+                  )}
+                </Listbox.Option>
+              ))}
+            </Listbox.Options>
+          </div>
+        </Listbox>
+      ) : hasDatalist ? (
+        <>
+          {name === "product" || name === "pain" ? (
+            <textarea
+              name={name}
+              id={name}
+              value={value}
+              onChange={onChange as (e: React.ChangeEvent<HTMLTextAreaElement>) => void}
+              rows={2}
+              className={fieldClass + " resize-none"}
+              style={{ minHeight: 80 }}
+            />
+          ) : (
+            <input
+              list={`${name}-list`}
+              type="text"
+              name={name}
+              id={name}
+              value={value}
+              onChange={onChange as (e: React.ChangeEvent<HTMLInputElement>) => void}
+              className={fieldClass}
+              required
+            />
+          )}
+          <datalist id={`${name}-list`}>
+            {selectOptions[name]?.map(option => (
+              <option value={option} key={option} />
+            ))}
+          </datalist>
+        </>
       ) : (
         <input
           type="text"
           name={name}
           id={name}
           value={value}
-          onChange={onChange}
-          className="w-full p-3 border rounded-lg focus:outline-blue-500 bg-gray-50 shadow-sm"
+          onChange={onChange as (e: React.ChangeEvent<HTMLInputElement>) => void}
+          className={fieldClass}
           required
         />
       )}

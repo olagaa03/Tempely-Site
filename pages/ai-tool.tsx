@@ -18,6 +18,7 @@ export default function AiToolPage() {
   const [result, setResult] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [copiedIndex, setCopiedIndex] = useState<number | string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -50,141 +51,328 @@ export default function AiToolPage() {
     }
   };
 
+  const copyToClipboard = async (text: string, index: number | string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedIndex(index);
+      setTimeout(() => setCopiedIndex(null), 2000);
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+  };
+
   if (!isSignedIn) {
     return (
-      <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#18181B] to-[#0F0F0F] text-center px-4">
-        <h1 className="text-4xl md:text-5xl font-extrabold mb-4 text-white drop-shadow-lg">Sign in to access the AI Tool</h1>
-        <p className="text-gray-400 mb-8 text-lg max-w-md mx-auto">
-          This tool is for signed-in users only. Please log in or create an account to continue.
-        </p>
-        <SignInButton mode="modal" fallbackRedirectUrl="/ai-tool">
-          <button className="bg-blue-600 hover:bg-blue-500 text-white text-lg font-semibold px-8 py-3 rounded-full shadow-xl transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
-            Try the Free AI Tool
-          </button>
-        </SignInButton>
+      <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#0F0F1C] via-[#18122B] to-[#4B2067] text-center px-4 relative overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        </div>
+        
+        <div className="relative z-10">
+          <div className="glass-strong rounded-3xl p-12 shadow-2xl animate-slide-in">
+            <h1 className="text-5xl md:text-6xl font-extrabold mb-6 text-white drop-shadow-lg gradient-text">
+              Unlock Your AI Power
+            </h1>
+            <p className="text-gray-300 mb-8 text-xl max-w-lg mx-auto leading-relaxed">
+              Create stunning content with our free AI tool. Sign in to start generating audience-ready captions and hooks instantly.
+            </p>
+            <SignInButton mode="modal" fallbackRedirectUrl="/ai-tool">
+              <button className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white text-xl font-bold px-10 py-4 rounded-2xl shadow-2xl transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-400/50 hover-lift">
+                <span className="flex items-center gap-3">
+                  <span className="text-2xl animate-float">🚀</span>
+                  Start Creating with AI
+                  <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
+                </span>
+              </button>
+            </SignInButton>
+          </div>
+        </div>
       </main>
     );
   }
 
   return (
-    <main className="max-w-3xl mx-auto px-4 py-16 pt-32 min-h-screen bg-gradient-to-b from-[#18181B] to-[#0F0F0F]">
-      <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-6 text-white drop-shadow-lg">
-        🔓 Start creating with AI — for free
-      </h1>
-      <p className="text-center text-gray-400 mb-10 text-lg">
-        Generate <strong>audience-ready content</strong> ideas, <strong>hooks</strong> & <strong>captions</strong> — instantly.<br />
-        <span className="text-blue-400 font-semibold">Upgrade to Temply Pro to unlock GPT-4 & strategic enhancements.</span>
-      </p>
+    <main className="min-h-screen bg-gradient-to-br from-[#0F0F1C] via-[#18122B] to-[#4B2067] relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-20 right-20 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 left-20 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-purple-500/5 to-blue-500/5 rounded-full blur-3xl animate-pulse delay-500"></div>
+      </div>
 
-      <form onSubmit={handleSubmit} className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl border border-white/10 p-8 space-y-6">
-        {["niche", "platform", "audience", "tone", "goal"].map((name) => (
-          <input
-            key={name}
-            type="text"
-            name={name}
-            placeholder={`Enter your ${name}`}
-            value={formData[name as keyof typeof formData]}
-            onChange={handleChange}
-            className="w-full p-4 bg-black/40 border border-white/20 text-white placeholder-gray-400 rounded-full shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        ))}
-
-        <div className="bg-yellow-100/10 border border-yellow-300/20 text-yellow-200 text-sm rounded-xl p-6 space-y-3 shadow-sm mt-8">
-          <h3 className="text-lg font-bold flex items-center gap-2 text-yellow-300">
-            🚀 Upgrade to <span className="text-yellow-200">Temply Pro</span>
-            <span className="text-[10px] bg-yellow-400 text-white px-2 py-0.5 rounded-full font-bold">GPT-4</span>
-          </h3>
-          <p className="text-sm text-yellow-100">
-            Supercharge your content creation with <strong>Temply Pro</strong> and get access to our most powerful AI tools built on <strong>GPT-4</strong>.
+      <div className="relative z-10 max-w-4xl mx-auto px-6 py-16 pt-32">
+        {/* Header Section */}
+        <div className="text-center mb-12">
+          <h1 className="text-5xl md:text-6xl font-extrabold mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent drop-shadow-lg">
+            ✨ AI Content Creator
+          </h1>
+          <p className="text-xl text-gray-300 mb-4 max-w-2xl mx-auto leading-relaxed">
+            Generate <span className="font-bold text-blue-400">audience-ready content</span> ideas, 
+            <span className="font-bold text-purple-400"> scroll-stopping hooks</span>, and 
+            <span className="font-bold text-pink-400"> engaging captions</span> — instantly.
           </p>
-          <ul className="list-disc list-inside space-y-1 text-sm text-yellow-100">
-            <li><strong>Hyper-relevant content</strong> tailored to your offer or product</li>
-            <li><strong>Emotionally driven copy</strong> that speaks directly to your audience's pain points</li>
-            <li><strong>Insider marketing insights</strong> and conversion-boosting content strategies</li>
-          </ul>
-          <Link href="/ai-pro">
-            <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-full w-full font-semibold hover:bg-blue-500 shadow transition-transform duration-200 hover:scale-105">
-              🔓 Unlock Full Power with GPT-4
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-400/30 rounded-full px-6 py-2 text-blue-300 text-sm font-medium">
+            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+            Powered by GPT-3.5 • Free Tier
+          </div>
+        </div>
+
+        {/* Main Form */}
+        <div className="glass-strong rounded-3xl shadow-2xl p-8 mb-8 animate-fade-in">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Your Niche</label>
+                <input
+                  type="text"
+                  name="niche"
+                  placeholder="e.g., Fitness, Tech, Fashion, Business"
+                  value={formData.niche}
+                  onChange={handleChange}
+                  className="w-full p-4 bg-black/30 border border-white/20 text-white placeholder-gray-400 rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-300 hover:border-white/30"
+                  required
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Platform</label>
+                <input
+                  type="text"
+                  name="platform"
+                  placeholder="e.g., Instagram, TikTok, LinkedIn"
+                  value={formData.platform}
+                  onChange={handleChange}
+                  className="w-full p-4 bg-black/30 border border-white/20 text-white placeholder-gray-400 rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-300 hover:border-white/30"
+                  required
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Target Audience</label>
+                <input
+                  type="text"
+                  name="audience"
+                  placeholder="e.g., Young professionals, Fitness enthusiasts"
+                  value={formData.audience}
+                  onChange={handleChange}
+                  className="w-full p-4 bg-black/30 border border-white/20 text-white placeholder-gray-400 rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-300 hover:border-white/30"
+                  required
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Content Tone</label>
+                <input
+                  type="text"
+                  name="tone"
+                  placeholder="e.g., Professional, Casual, Motivational"
+                  value={formData.tone}
+                  onChange={handleChange}
+                  className="w-full p-4 bg-black/30 border border-white/20 text-white placeholder-gray-400 rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-300 hover:border-white/30"
+                  required
+                />
+              </div>
+              
+              <div className="md:col-span-2 space-y-2">
+                <label className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Content Goal</label>
+                <input
+                  type="text"
+                  name="goal"
+                  placeholder="e.g., Drive engagement, Generate leads, Build brand awareness"
+                  value={formData.goal}
+                  onChange={handleChange}
+                  className="w-full p-4 bg-black/30 border border-white/20 text-white placeholder-gray-400 rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-300 hover:border-white/30"
+                  required
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full py-5 rounded-2xl font-bold text-xl shadow-2xl transition-all duration-300 hover-lift ${
+                loading 
+                  ? 'bg-gray-600 cursor-not-allowed' 
+                  : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white hover:scale-[1.02] hover:shadow-blue-500/25'
+              }`}
+            >
+              {loading ? (
+                <span className="flex justify-center items-center gap-3 text-white">
+                  <div className="relative">
+                    <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  </div>
+                  <span>Creating your content...</span>
+                </span>
+              ) : (
+                <span className="flex items-center justify-center gap-3">
+                  <span className="text-2xl animate-pulse-glow">✨</span>
+                  Generate AI Content
+                  <span className="text-lg">→</span>
+                </span>
+              )}
             </button>
-          </Link>
+          </form>
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className={`w-full py-4 rounded-full font-semibold transition text-lg shadow-lg ${
-            loading ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-500 text-white hover:scale-105'
-          }`}
-        >
-          {loading ? (
-            <span className="flex justify-center items-center gap-2 text-white">
-              <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24">
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="white"
-                  strokeWidth="4"
-                  fill="none"
-                />
-                <path
-                  className="opacity-75"
-                  fill="white"
-                  d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 010 16z"
-                />
-              </svg>
-              Generating...
-            </span>
-          ) : (
-            'Generate AI Content'
-          )}
-        </button>
-      </form>
-
-      {error && <p className="text-red-400 text-center mt-6 text-lg font-semibold bg-red-900/30 rounded-xl py-3 px-4 shadow">{error}</p>}
-
-      {result && (
-        <div className="mt-12 bg-white/10 border border-white/10 shadow-2xl p-8 rounded-2xl space-y-8 transition-all duration-300 backdrop-blur-md">
-          <h2 className="text-2xl font-bold text-blue-400 mb-2">
-            🚀 Your AI-Powered Captions & Hooks
-          </h2>
-
-          <div>
-            <h3 className="text-lg font-semibold text-blue-300 mb-2">
-              📢 Captions
-            </h3>
-            <ul className="space-y-2">
-              {result
-                .split('Hooks:')[0]
-                .split('\n')
-                .filter(line => line.trim() && !/^\d+\.$/.test(line.trim()) && !/^Captions[:：]?$/i.test(line.trim()))
-                .map((line, idx) => (
-                  <li key={`caption-${idx}`} className="bg-blue-900/30 border border-blue-400/20 p-3 rounded-md text-base text-white">
-                    {line.trim()}
-                  </li>
-                ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-semibold text-purple-300 mb-2">
-              💡 Hooks
-            </h3>
-            <ul className="space-y-2">
-              {result
-                .split('Hooks:')[1]?.split('\n')
-                .filter(line => line.trim() && !/^\d+\.$/.test(line.trim()))
-                .map((line, idx) => (
-                  <li key={`hook-${idx}`} className="bg-purple-900/30 border border-purple-400/20 p-3 rounded-md text-base text-white">
-                    {line.trim()}
-                  </li>
-                ))}
-            </ul>
+        {/* Upgrade Section */}
+        <div className="bg-gradient-to-r from-yellow-500/10 via-orange-500/10 to-red-500/10 border border-yellow-400/30 text-yellow-200 rounded-3xl p-8 mb-8 backdrop-blur-xl shadow-2xl">
+          <div className="flex items-start gap-4">
+            <div className="text-3xl">🚀</div>
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-4">
+                <h3 className="text-2xl font-bold text-yellow-300">Upgrade to Tempely Pro</h3>
+                <span className="bg-gradient-to-r from-yellow-400 to-orange-400 text-black text-xs px-3 py-1 rounded-full font-bold">GPT-4</span>
+              </div>
+              <p className="text-yellow-100 mb-4 leading-relaxed">
+                Supercharge your content creation with <strong>Tempely Pro</strong> and unlock our most powerful AI tools built on <strong>GPT-4</strong>.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="text-green-400">✓</span>
+                  <span>Hyper-relevant content</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="text-green-400">✓</span>
+                  <span>Emotionally driven copy</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="text-green-400">✓</span>
+                  <span>Conversion strategies</span>
+                </div>
+              </div>
+              <Link href="/ai-pro">
+                <button className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-400 hover:to-orange-400 text-black font-bold px-8 py-3 rounded-xl shadow-lg transition-all duration-300 hover:scale-105">
+                  🔓 Unlock Full Power with GPT-4
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
-      )}
+
+        {/* Error Display */}
+        {error && (
+          <div className="bg-red-500/10 border border-red-400/30 text-red-300 rounded-2xl p-6 mb-8 backdrop-blur-xl">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">⚠️</span>
+              <div>
+                <h3 className="font-bold text-red-200 mb-1">Generation Failed</h3>
+                <p className="text-red-300">{error}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Results Section */}
+        {result && (
+          <div className="glass-strong rounded-3xl p-8 shadow-2xl space-y-8 animate-slide-in">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold text-blue-400 mb-2 gradient-text">
+                ✨ Your AI-Powered Content
+              </h2>
+              <p className="text-gray-400">Copy any piece with one click</p>
+            </div>
+
+            {/* Content Ideas */}
+            <div>
+              <h3 className="text-xl font-bold text-green-400 mb-4 flex items-center gap-2">
+                <span className="animate-pulse-glow">💡</span>
+                Content Ideas
+              </h3>
+              <div className="space-y-3">
+                {result
+                  .split('Captions:')[0]
+                  .split('\n')
+                  .filter(line => line.trim() && !/^\d+\.$/.test(line.trim()) && !/^Content Idea[:：]?$/i.test(line.trim()))
+                  .map((line, idx) => (
+                    <div key={`idea-${idx}`} className="group relative hover-lift">
+                      <div className="bg-green-500/10 border border-green-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-green-400/40 hover:bg-green-500/15">
+                        <p className="text-base leading-relaxed">{line.trim()}</p>
+                        <button
+                          onClick={() => copyToClipboard(line.trim(), idx)}
+                          className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-green-500/20 hover:bg-green-500/40 p-2 rounded-lg hover:scale-110"
+                          title="Copy to clipboard"
+                        >
+                          {copiedIndex === idx ? (
+                            <span className="text-green-400 text-sm animate-fade-in">✓</span>
+                          ) : (
+                            <span className="text-green-400 text-sm">📋</span>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+
+            {/* Captions */}
+            <div>
+              <h3 className="text-xl font-bold text-blue-400 mb-4 flex items-center gap-2">
+                <span className="animate-pulse-glow">📢</span>
+                Captions
+              </h3>
+              <div className="space-y-3">
+                {result
+                  .split('Hooks:')[0]
+                  .split('Captions:')[1]
+                  ?.split('\n')
+                  .filter(line => line.trim() && !/^\d+\.$/.test(line.trim()))
+                  .map((line, idx) => (
+                    <div key={`caption-${idx}`} className="group relative hover-lift">
+                      <div className="bg-blue-500/10 border border-blue-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-blue-400/40 hover:bg-blue-500/15">
+                        <p className="text-base leading-relaxed">{line.trim()}</p>
+                        <button
+                          onClick={() => copyToClipboard(line.trim(), `caption-${idx}`)}
+                          className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-blue-500/20 hover:bg-blue-500/40 p-2 rounded-lg hover:scale-110"
+                          title="Copy to clipboard"
+                        >
+                          {copiedIndex === `caption-${idx}` ? (
+                            <span className="text-blue-400 text-sm animate-fade-in">✓</span>
+                          ) : (
+                            <span className="text-blue-400 text-sm">📋</span>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+
+            {/* Hooks */}
+            <div>
+              <h3 className="text-xl font-bold text-purple-400 mb-4 flex items-center gap-2">
+                <span className="animate-pulse-glow">🎣</span>
+                Hooks
+              </h3>
+              <div className="space-y-3">
+                {result
+                  .split('Hooks:')[1]
+                  ?.split('\n')
+                  .filter(line => line.trim() && !/^\d+\.$/.test(line.trim()))
+                  .map((line, idx) => (
+                    <div key={`hook-${idx}`} className="group relative hover-lift">
+                      <div className="bg-purple-500/10 border border-purple-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-purple-400/40 hover:bg-purple-500/15">
+                        <p className="text-base leading-relaxed">{line.trim()}</p>
+                        <button
+                          onClick={() => copyToClipboard(line.trim(), `hook-${idx}`)}
+                          className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-purple-500/20 hover:bg-purple-500/40 p-2 rounded-lg hover:scale-110"
+                          title="Copy to clipboard"
+                        >
+                          {copiedIndex === `hook-${idx}` ? (
+                            <span className="text-purple-400 text-sm animate-fade-in">✓</span>
+                          ) : (
+                            <span className="text-purple-400 text-sm">📋</span>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </main>
   );
 }

@@ -47,10 +47,10 @@ export default function Header() {
           <Link href="/" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">Home</Link>
           <Link href="/products" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">Products</Link>
           <Link href="/about" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">About</Link>
-          <Link href="/ai-tool" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">Quick Hook Maker</Link>
-          <Link href="/ai-pro" className="nav-link flex items-center gap-1">
-            Content Engine
-            <span className="ml-1 bg-yellow-500 text-[10px] px-2 py-[3px] rounded font-bold text-black shadow-sm leading-none" style={{ verticalAlign: 'middle' }}>
+          <Link href="/ai-tool" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">AI Hook Generator</Link>
+          <Link href="/ai-pro" className="nav-link flex items-center gap-1 hover:text-yellow-200 transition">
+            Content Engine Pro
+            <span className="ml-1 px-2 py-[3px] rounded-full font-bold text-xs shadow-sm leading-none glass" style={{ background: 'rgba(255, 221, 51, 0.18)', color: '#FFD600', border: '1px solid #FFD600', verticalAlign: 'middle', fontWeight: 700 }}>
               GPT-4
             </span>
           </Link>
@@ -76,10 +76,10 @@ export default function Header() {
           <Link href="/" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">Home</Link>
           <Link href="/products" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">Products</Link>
           <Link href="/about" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">About</Link>
-          <Link href="/ai-tool" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">Quick Hook Maker</Link>
-          <Link href="/ai-pro" className="nav-link flex items-center gap-1">
-            Content Engine
-            <span className="ml-1 bg-yellow-500 text-[10px] px-2 py-[3px] rounded font-bold text-black shadow-sm leading-none" style={{ verticalAlign: 'middle' }}>
+          <Link href="/ai-tool" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">AI Hook Generator</Link>
+          <Link href="/ai-pro" className="nav-link flex items-center gap-1 hover:text-yellow-200 transition">
+            Content Engine Pro
+            <span className="ml-1 px-2 py-[3px] rounded-full font-bold text-xs shadow-sm leading-none glass" style={{ background: 'rgba(255, 221, 51, 0.18)', color: '#FFD600', border: '1px solid #FFD600', verticalAlign: 'middle', fontWeight: 700 }}>
               GPT-4
             </span>
           </Link>
