@@ -34,7 +34,7 @@ export default function Hooked() {
           </p>
 
           <a
-            href="https://your-payment-link.com/hooked"
+            href="https://tempely.lemonsqueezy.com/buy/5a13a2b9-b4e6-4bcc-8fcf-5229dab2dce8"
             className="block w-full md:w-auto text-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold text-lg shadow hover:opacity-90 transition"
           >
             Buy Hooked. for $9.99

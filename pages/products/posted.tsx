@@ -32,7 +32,7 @@ export default function Posted() {
           </p>
 
           <a
-            href="https://your-payment-link.com/posted"
+            href="https://tempely.lemonsqueezy.com/buy/92b33056-7bc1-43c8-a3c6-06c6df097a30"
             className="block w-full md:w-auto text-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold text-lg shadow hover:opacity-90 transition"
           >
             Buy Posted. for $14.99

@@ -32,7 +32,7 @@ export default function Tracked() {
           </p>
 
           <a
-            href="https://your-payment-link.com/tracked"
+            href="https://tempely.lemonsqueezy.com/buy/bc3fc2b8-6d58-46f9-85ae-aa664d9ea48a"
             className="block w-full md:w-auto text-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold text-lg shadow hover:opacity-90 transition"
           >
             Buy Tracked. for $19.99

@@ -32,10 +32,10 @@ export default function Bundle() {
           </p>
 
           <a
-            href="https://your-payment-link.com/bundle"
+            href="https://tempely.lemonsqueezy.com/buy/ac691241-ed9c-4150-9818-fba70ac8402c"
             className="block w-full md:w-auto text-center bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold text-lg shadow hover:opacity-90 transition"
           >
-            Buy the Bundle for $24.99 (Save 45%)
+            Buy the Bundle for $24.99 (Save 40%)
           </a>
         </div>
       </section>
