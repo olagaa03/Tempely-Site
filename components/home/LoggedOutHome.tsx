@@ -1,7 +1,6 @@
 'use client';
 import Link from 'next/link';
 import Image from 'next/image';
-import NewsletterSignup from '@/components/NewsletterSignup';
 import { SignInButton, SignUpButton } from '@clerk/nextjs';
 
 export default function LoggedOutHome() {
@@ -106,8 +105,6 @@ export default function LoggedOutHome() {
           </div>
         </div>
       </section>
-
-      <NewsletterSignup />
     </main>
   );
 }
