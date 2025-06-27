@@ -27,6 +27,7 @@ export default function LoggedInHome() {
             description: 'Generate hooks and posts instantly. 5/day on Free plan.',
             link: '/ai-tool',
             accent: 'from-blue-500 to-blue-400',
+            checkoutUrl: 'https://tempely.lemonsqueezy.com/buy/5a13a2b9-b4e6-4bcc-8fcf-5229dab2dce8',
           },
           {
             title: 'AI Pro',
@@ -34,6 +35,7 @@ export default function LoggedInHome() {
             description: 'Unlock GPT-4, unlimited generations, and advanced tools.',
             link: '/ai-pro',
             accent: 'from-purple-500 to-purple-400',
+            checkoutUrl: 'https://tempely.lemonsqueezy.com/buy/92b33056-7bc1-43c8-a3c6-06c6df097a30',
           },
           {
             title: 'Products',
@@ -41,6 +43,7 @@ export default function LoggedInHome() {
             description: 'Browse Hooked, Posted, Tracked, and more.',
             link: '/products',
             accent: 'from-yellow-400 to-yellow-300',
+            checkoutUrl: 'https://tempely.lemonsqueezy.com/buy/bc3fc2b8-6d58-46f9-85ae-aa664d9ea48a',
           },
         ].map((item, idx) => (
           <a
@@ -51,6 +54,14 @@ export default function LoggedInHome() {
             <span className={`text-4xl mb-4 bg-gradient-to-r ${item.accent} bg-clip-text text-transparent`}>{item.icon}</span>
             <h3 className="text-2xl font-bold text-white mb-2">{item.title}</h3>
             <p className="text-gray-300 text-base font-medium">{item.description}</p>
+            <a
+              href={item.checkoutUrl}
+              className="mt-4 inline-block bg-blue-600 text-white px-5 py-2 rounded-full font-semibold hover:bg-blue-500 shadow transition-transform duration-200 hover:scale-105"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Buy Now
+            </a>
           </a>
         ))}
       </section>
@@ -66,12 +77,22 @@ export default function LoggedInHome() {
               Get all three core systems — <strong>Hooked</strong>, <strong>Posted</strong>, and <strong>Tracked</strong> — in one powerful bundle.
             </p>
           </div>
-          <a
-            href="/bundle"
-            className="inline-block bg-blue-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-500 shadow-lg transition-transform duration-200 hover:scale-105"
-          >
-            View the Bundle
-          </a>
+          <div className="flex flex-col gap-4 items-center md:items-end">
+            <a
+              href="/bundle"
+              className="inline-block bg-blue-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-500 shadow-lg transition-transform duration-200 hover:scale-105"
+            >
+              View the Bundle
+            </a>
+            <a
+              href="https://tempely.lemonsqueezy.com/buy/ac691241-ed9c-4150-9818-fba70ac8402c"
+              className="inline-block bg-yellow-500 text-black px-8 py-3 rounded-full font-semibold hover:bg-yellow-400 shadow-lg transition-transform duration-200 hover:scale-105"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Buy Bundle
+            </a>
+          </div>
         </div>
       </section>
 
