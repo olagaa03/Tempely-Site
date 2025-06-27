@@ -1,10 +1,8 @@
 // pages/api/lemon-webhook.ts
 // NOTE: You may need to install @clerk/clerk-sdk-node: npm install @clerk/clerk-sdk-node
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { Clerk } from '@clerk/clerk-sdk-node';
+import { clerkClient } from '@clerk/nextjs/server';
 import crypto from 'crypto';
-
-const clerk = new Clerk({ apiKey: process.env.CLERK_SECRET_KEY! });
 
 export const config = {
   api: {
@@ -20,6 +18,11 @@ function buffer(readable: any) {
     readable.on('error', reject);
   });
 }
+
+const getUserByEmail = async (email: string) => {
+  const userList = await clerkClient.users.getUserList({ emailAddress: [email] });
+  return userList[0];
+};
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).end();
@@ -51,12 +54,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!email) return res.status(400).json({ error: 'No email found' });
 
     // Find Clerk user by email
-    const users = await clerk.users.getUserList({ emailAddress: [email] });
-    const user = users[0];
+    const user = await getUserByEmail(email);
     if (!user) return res.status(404).json({ error: 'User not found' });
 
     // Set pro: true in Clerk public metadata
-    await clerk.users.updateUserMetadata(user.id, {
+    await clerkClient.users.updateUser(user.id, {
       publicMetadata: { pro: true }
     });
 
@@ -66,10 +68,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // Handle subscription cancellation (revoke Pro)
   if (event.event_name === 'subscription_cancelled') {
     const email = event.data?.attributes?.user_email || event.data?.attributes?.email;
-    const users = await clerk.users.getUserList({ emailAddress: [email] });
-    const user = users[0];
+    const user = await getUserByEmail(email);
     if (user) {
-      await clerk.users.updateUserMetadata(user.id, {
+      await clerkClient.users.updateUser(user.id, {
         publicMetadata: { pro: false }
       });
     }
