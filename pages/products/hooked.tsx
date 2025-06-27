@@ -3,7 +3,7 @@ import { useUser, SignInButton } from '@clerk/nextjs';
 export default function Hooked() {
   const { isSignedIn } = useUser();
   return (
-    <main className="min-h-screen bg-white text-gray-900 font-sans">
+    <main className="min-h-screen bg-gradient-to-b from-[#18181B] to-[#0F0F0F] font-sans text-white pt-32 px-4">
       <section className="max-w-6xl mx-auto flex flex-col md:flex-row items-start gap-10 px-4 pt-6">
 
 
