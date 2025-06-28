@@ -1,15 +1,18 @@
-/*
-// pages/api/lemon-webhook.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { users } from '@clerk/nextjs/api';
+import { createClerkClient } from '@clerk/backend';
 import crypto from 'crypto';
 
 export const config = {
   api: {
-    bodyParser: false, // We need the raw body for signature verification
+    bodyParser: false,
   },
 };
 
+// Init Clerk admin client
+const clerk = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY! });
+
+
+// 📦 Read raw body buffer
 function buffer(readable: any) {
   return new Promise<Buffer>((resolve, reject) => {
     const chunks: Buffer[] = [];
@@ -19,64 +22,58 @@ function buffer(readable: any) {
   });
 }
 
+// 🔍 Lookup user by email
 const getUserByEmail = async (email: string) => {
-  const { data: userList } = await users.getUserList({ emailAddress: [email] });
-  return userList[0];
+  try {
+    const { data: users } = await clerk.users.getUserList({ emailAddress: [email] });
+    return users[0];
+  } catch (err) {
+    console.error('Clerk email lookup failed:', err);
+    return null;
+  }
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).end();
 
-  // 1. Get raw body
   const rawBody = (await buffer(req)).toString('utf8');
-
-  // 2. Get signature from header
   const signature = req.headers['x-signature'] as string;
   const secret = process.env.LEMON_WEBHOOK_SECRET!;
 
-  // 3. Compute HMAC SHA256
-  const computed = crypto
+  const computedSignature = crypto
     .createHmac('sha256', secret)
     .update(rawBody)
     .digest('hex');
 
-  // 4. Compare
-  if (signature !== computed) {
+  if (signature !== computedSignature) {
     return res.status(401).json({ error: 'Invalid signature' });
   }
 
-  // 5. Parse the JSON body
   const event = JSON.parse(rawBody);
+  const eventName = event.event_name;
+  const email = event.data?.attributes?.user_email || event.data?.attributes?.email;
 
-  // Handle subscription or order creation (grant Pro)
-  if (event.event_name === 'subscription_created' || event.event_name === 'order_created') {
-    const email = event.data?.attributes?.user_email || event.data?.attributes?.email;
-    if (!email) return res.status(400).json({ error: 'No email found' });
+  if (!email) return res.status(400).json({ error: 'No email in payload' });
 
-    // Find Clerk user by email
-    const user = await getUserByEmail(email);
-    if (!user) return res.status(404).json({ error: 'User not found' });
+  const user = await getUserByEmail(email);
+  if (!user) return res.status(404).json({ error: 'User not found in Clerk' });
 
-    // Set pro: true in Clerk public metadata
-    await users.updateUser(user.id, {
-      publicMetadata: { pro: true }
+  // ✅ Grant Pro access
+  if (eventName === 'subscription_created' || eventName === 'order_created') {
+    await clerk.users.updateUser(user.id, {
+      publicMetadata: { pro: true },
     });
-
     return res.status(200).json({ success: true });
   }
 
-  // Handle subscription cancellation (revoke Pro)
-  if (event.event_name === 'subscription_cancelled') {
-    const email = event.data?.attributes?.user_email || event.data?.attributes?.email;
-    const user = await getUserByEmail(email);
-    if (user) {
-      await users.updateUser(user.id, {
-        publicMetadata: { pro: false }
-      });
-    }
+  // 🚫 Revoke Pro access
+  if (eventName === 'subscription_cancelled') {
+    await clerk.users.updateUser(user.id, {
+      publicMetadata: { pro: false },
+    });
     return res.status(200).json({ success: true });
   }
 
-  res.status(200).json({ received: true });
-} 
-*/ 
+  // 👌 Fallback
+  return res.status(200).json({ received: true });
+}
