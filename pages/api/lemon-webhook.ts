@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { clerkClient } from '@clerk/nextjs/server';
+import { clerkClient } from '@clerk/clerk-sdk-node';
 import crypto from 'crypto';
 
 export const config = {
