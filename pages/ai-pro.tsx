@@ -81,9 +81,14 @@ export default function AiProPage() {
               <li className="flex items-center gap-2"><DownloadCloud className="text-cyan-200 w-4 h-4" /> Monthly premium templates drop</li>
             </ul>
             <p className="mt-auto text-2xl font-semibold text-yellow-200 mb-4">$19.99<span className="text-lg font-medium text-yellow-100">/month</span></p>
-            <button className="w-full py-4 rounded-2xl font-bold text-lg bg-gradient-to-r from-yellow-200 via-pink-200 to-purple-300 hover:from-yellow-100 hover:to-purple-200 text-gray-900 shadow transition-all duration-300 hover:scale-105 hover-lift mb-2">
+            <a
+              href="https://tempely.lemonsqueezy.com/buy/9fcbd47a-9c87-4d31-9639-2e38b5a84326"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-4 rounded-2xl font-bold text-lg bg-gradient-to-r from-yellow-200 via-pink-200 to-purple-300 hover:from-yellow-100 hover:to-purple-200 text-gray-900 shadow transition-all duration-300 hover:scale-105 hover-lift mb-2 text-center block"
+            >
               Upgrade to Temply Pro
-            </button>
+            </a>
             <Link
               href="/ai-pro-access"
               className="mt-2 inline-block text-center text-yellow-100 font-medium hover:underline w-full"
