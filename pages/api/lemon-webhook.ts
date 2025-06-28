@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { createClerkClient } from '@clerk/backend';
+import { clerkClient } from '@clerk/nextjs/server';
 import crypto from 'crypto';
 
 export const config = {
@@ -7,10 +7,6 @@ export const config = {
     bodyParser: false,
   },
 };
-
-// Init Clerk admin client
-const clerk = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY! });
-
 
 // 📦 Read raw body buffer
 function buffer(readable: any) {
@@ -25,7 +21,7 @@ function buffer(readable: any) {
 // 🔍 Lookup user by email
 const getUserByEmail = async (email: string) => {
   try {
-    const { data: users } = await clerk.users.getUserList({ emailAddress: [email] });
+    const { data: users } = await clerkClient.users.getUserList({ emailAddress: [email] });
     return users[0];
   } catch (err) {
     console.error('Clerk email lookup failed:', err);
@@ -60,7 +56,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   // ✅ Grant Pro access
   if (eventName === 'subscription_created' || eventName === 'order_created') {
-    await clerk.users.updateUser(user.id, {
+    await clerkClient.users.updateUser(user.id, {
       publicMetadata: { pro: true },
     });
     return res.status(200).json({ success: true });
@@ -68,7 +64,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   // 🚫 Revoke Pro access
   if (eventName === 'subscription_cancelled') {
-    await clerk.users.updateUser(user.id, {
+    await clerkClient.users.updateUser(user.id, {
       publicMetadata: { pro: false },
     });
     return res.status(200).json({ success: true });

@@ -10,6 +10,7 @@ const isPublicRoute = createRouteMatcher([
   '/ai-tool',
   '/ai-pro',
   '/bundle',
+  '/api/lemon-webhook',
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
