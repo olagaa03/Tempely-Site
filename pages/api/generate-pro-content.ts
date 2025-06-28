@@ -36,6 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   // Check Clerk metadata for Pro access
   const user = await clerkClient.users.getUser(userId);
+  console.log('User metadata:', user.publicMetadata);
   if (!user.publicMetadata?.pro) {
     return res.status(403).json({ error: 'Forbidden: Pro access required.' });
   }

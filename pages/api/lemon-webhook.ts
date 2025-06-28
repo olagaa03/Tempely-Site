@@ -59,6 +59,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await clerkClient.users.updateUser(user.id, {
       publicMetadata: { pro: true },
     });
+    console.log('Pro access granted to user:', user.id);
     return res.status(200).json({ success: true });
   }
 
@@ -67,6 +68,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await clerkClient.users.updateUser(user.id, {
       publicMetadata: { pro: false },
     });
+    console.log('Pro access revoked for user:', user.id);
     return res.status(200).json({ success: true });
   }
 
