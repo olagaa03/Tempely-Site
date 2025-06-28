@@ -11,7 +11,7 @@ export default function LoggedOutHome() {
       <section className="pt-32 pb-20 px-6 text-center">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-5xl md:text-7xl font-extrabold leading-tight md:leading-[1.1] mb-12 tracking-tight text-white drop-shadow-lg max-w-3xl mx-auto">
-            Grow Your Audience. <span className="text-[var(--tempely-purple)]">Create Your Breakout Moment.</span> <span style={{fontSize: '0.7em'}}>(Deployed!)</span>
+            Grow Your Audience. <span className="text-[var(--tempely-purple)]">Create Your Breakout Moment.</span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-300 mb-10 font-medium max-w-2xl mx-auto">
             Tempely gives creators the power to <span className="text-white font-bold">stand out, scale up, and spark real growth</span> on social. Plan, create, and track with Notion templates and AI tools built for viral momentum.
