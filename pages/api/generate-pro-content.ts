@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getAuth } from '@clerk/nextjs/server';
+import { clerkClient } from '@clerk/clerk-sdk-node';
 import OpenAI from 'openai';
 import { z } from 'zod';
 
@@ -10,13 +11,6 @@ if (!apiKey) {
 }
 
 const openai = new OpenAI({ apiKey });
-
-// Mock list of Pro users — this will be replaced later with real auth
-const MOCK_PRO_USER_IDS = new Set([
-  'user_123abc',
-  'user_456def',
-  'user_789ghi',
-]);
 
 // Validate request body
 const InputSchema = z.object({
@@ -40,7 +34,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(401).json({ error: 'Unauthorized: Please sign in.' });
   }
 
-  if (!MOCK_PRO_USER_IDS.has(userId)) {
+  // Check Clerk metadata for Pro access
+  const user = await clerkClient.users.getUser(userId);
+  if (!user.publicMetadata?.pro) {
     return res.status(403).json({ error: 'Forbidden: Pro access required.' });
   }
 
