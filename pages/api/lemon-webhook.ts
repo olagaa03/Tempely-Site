@@ -21,7 +21,7 @@ function buffer(readable: any) {
 // 🔍 Lookup user by email
 const getUserByEmail = async (email: string) => {
   try {
-    const { data: users } = await clerkClient.users.getUserList({ emailAddress: [email] });
+    const users = await clerkClient.users.getUserList({ emailAddress: [email] });
     return users[0];
   } catch (err) {
     console.error('Clerk email lookup failed:', err);
