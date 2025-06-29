@@ -190,7 +190,7 @@ export default function AiProAccessPage() {
                 label="Niche"
                 example="e.g. Fitness Coaching, Fashion Retailer"
                 value={formData.niche}
-                onChange={handleChange}
+                onChange={(val: string) => setFormData({ ...formData, niche: val })}
               />
               <InputField
                 icon={<Megaphone className="text-yellow-400" />}
@@ -206,7 +206,7 @@ export default function AiProAccessPage() {
                 label="Audience"
                 example="e.g. Moms 30-45, Entrepreneurs, Students"
                 value={formData.audience}
-                onChange={handleChange}
+                onChange={(val: string) => setFormData({ ...formData, audience: val })}
               />
               <InputField
                 icon={<Mic className="text-purple-400" />}
@@ -222,7 +222,7 @@ export default function AiProAccessPage() {
                 label="Goal"
                 example="e.g. Grow to 10k followers, Launch a product"
                 value={formData.goal}
-                onChange={handleChange}
+                onChange={(val: string) => setFormData({ ...formData, goal: val })}
               />
               <InputField
                 icon={<LayoutGrid className="text-cyan-400" />}
@@ -238,7 +238,7 @@ export default function AiProAccessPage() {
                 label="Product/Offer"
                 example="e.g. Digital course, Coaching program"
                 value={formData.product}
-                onChange={handleChange}
+                onChange={(val: string) => setFormData({ ...formData, product: val })}
               />
               <InputField
                 icon={<AlertCircle className="text-red-400" />}
@@ -246,7 +246,7 @@ export default function AiProAccessPage() {
                 label="Audience Pain Point"
                 example="e.g. Struggling with consistency"
                 value={formData.pain}
-                onChange={handleChange}
+                onChange={(val: string) => setFormData({ ...formData, pain: val })}
               />
             </div>
             <button
