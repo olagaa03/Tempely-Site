@@ -562,7 +562,7 @@ function InputField({
           <div className="relative">
             <Listbox value={value} onChange={onChange as (value: string) => void}>
               <Listbox.Button className={fieldClass + " flex items-center justify-between cursor-pointer pr-10"}>
-                <span>{value || `Select ${label}`}</span>
+                <span>{value === "" ? "None" : value || `Select ${label}`}</span>
                 <span className="pointer-events-none absolute right-4 top-1/2 transform -translate-y-1/2 text-white/70 text-xl">▼</span>
               </Listbox.Button>
               <Listbox.Options className="absolute z-20 mt-2 w-full bg-black/90 border border-white/20 rounded-xl shadow-2xl max-h-60 overflow-auto focus:outline-none">
@@ -574,7 +574,7 @@ function InputField({
                         <Listbox.Option key={item} value={item} as={Fragment}>
                           {({ active, selected }) => (
                             <li className={`px-5 py-3 cursor-pointer select-none text-base transition-all ${active ? 'bg-blue-500/30 text-white' : 'text-white/90'}`}>
-                              {item}
+                              {item === "" ? "None" : item}
                               {selected && <span className="ml-2 text-blue-400">✓</span>}
                             </li>
                           )}
@@ -590,7 +590,7 @@ function InputField({
           <Listbox value={value} onChange={onChange as (value: string) => void}>
             <div className="relative">
               <Listbox.Button className={fieldClass + " flex items-center justify-between cursor-pointer pr-10"}>
-                <span>{value || `Select ${label}`}</span>
+                <span>{value === "" ? "None" : value || `Select ${label}`}</span>
                 <span className="pointer-events-none absolute right-4 top-1/2 transform -translate-y-1/2 text-white/70 text-xl">▼</span>
               </Listbox.Button>
               <Listbox.Options className="absolute z-20 mt-2 w-full bg-black/90 border border-white/20 rounded-xl shadow-2xl max-h-60 overflow-auto focus:outline-none">
@@ -606,7 +606,7 @@ function InputField({
                           active ? 'bg-blue-500/30 text-white' : 'text-white/90'
                         }`}
                       >
-                        {option}
+                        {option === "" ? "None" : option}
                         {selected && <span className="ml-2 text-blue-400">✓</span>}
                       </li>
                     )}
