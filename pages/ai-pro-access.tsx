@@ -461,21 +461,42 @@ function InputField({
   icon?: React.ReactNode;
   options?: string[];
 }) {
+  const [useCustomInput, setUseCustomInput] = useState(false);
+  
   const fieldClass =
     "w-full min-h-[52px] p-4 border border-white/20 rounded-xl bg-black/40 text-white placeholder-white/70 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400/40 focus:border-blue-400/40 transition-all duration-300";
 
-  const isListbox = ["platform", "tone", "format"].includes(name);
-  const hasDatalist = [
-    "niche", "audience", "goal", "product", "pain"
-  ].includes(name);
-
   // Listbox options for select fields
   const selectOptions: Record<string, string[]> = {
+    niche: [
+      "Fitness Coaching", "Fashion Retailer", "Tech Startup", "Food & Cooking", "Travel Blogger", 
+      "Business Coach", "Health & Wellness", "Education", "Entertainment", "Lifestyle", 
+      "Finance", "Parenting", "Beauty", "Gaming", "Sports", "Music", "Art & Design", 
+      "Photography", "Marketing", "Real Estate", "Fitness", "Nutrition", "Mental Health",
+      "Career Development", "Personal Development", "Relationships", "Home & Garden",
+      "Pets", "Automotive", "Fashion", "Beauty & Skincare"
+    ],
     platform: [
       "Instagram", "TikTok", "LinkedIn", "Facebook", "YouTube", "Twitter", "Pinterest", "Threads", "Reddit"
     ],
+    audience: [
+      "Moms 30-45", "Entrepreneurs", "Students", "Young Professionals", "Fitness Enthusiasts",
+      "Tech Professionals", "Small Business Owners", "Creative Professionals", "Parents",
+      "Health & Wellness Seekers", "Travelers", "Food Lovers", "Fashion Enthusiasts",
+      "Gamers", "Music Lovers", "Artists", "Photographers", "Marketers", "Real Estate Agents",
+      "Fitness Coaches", "Nutritionists", "Mental Health Professionals", "Career Coaches",
+      "Personal Development Seekers", "Relationship Coaches", "Homeowners", "Pet Owners",
+      "Car Enthusiasts", "Beauty Enthusiasts", "Skincare Lovers"
+    ],
     tone: [
       "Educational", "Professional", "Friendly", "Motivational", "Bold", "Funny", "Witty", "Inspiring", "Conversational", "Casual"
+    ],
+    goal: [
+      "Grow to 10k followers", "Launch a product", "Increase engagement", "Generate leads",
+      "Build brand awareness", "Drive website traffic", "Sell products/services", "Build community",
+      "Establish authority", "Create viral content", "Improve conversion rates", "Boost sales",
+      "Expand reach", "Increase brand loyalty", "Educate audience", "Entertain followers",
+      "Inspire action", "Build relationships", "Create partnerships", "Monetize content"
     ],
     format: [
       "Instagram Caption",
@@ -499,6 +520,20 @@ function InputField({
       "Product Landing Page Copy",
       "Call to Action (CTA) Ideas"
     ],
+    product: [
+      "Digital course on meal planning", "Coaching program", "Online workshop", "E-book",
+      "Membership site", "Consulting services", "Physical product", "Software tool",
+      "App", "Template bundle", "Masterclass", "Challenge", "Webinar", "Podcast",
+      "YouTube channel", "Blog", "Newsletter", "Community", "Event", "Retreat"
+    ],
+    pain: [
+      "Struggling with consistency and self-doubt", "Lack of time management", "Fear of failure",
+      "Imposter syndrome", "Overwhelm and burnout", "Lack of direction", "Financial stress",
+      "Relationship issues", "Health concerns", "Career stagnation", "Creative block",
+      "Social media pressure", "Comparison to others", "Perfectionism", "Procrastination",
+      "Lack of confidence", "Unclear goals", "Poor habits", "Stress and anxiety",
+      "Work-life balance", "Finding motivation", "Building discipline", "Overcoming obstacles"
+    ]
   };
 
   return (
@@ -515,7 +550,35 @@ function InputField({
           {example}
         </span>
       )}
-      {isListbox ? (
+      
+      {/* Toggle between dropdown and custom input */}
+      <div className="flex items-center gap-2 mb-2">
+        <button
+          type="button"
+          onClick={() => setUseCustomInput(false)}
+          className={`px-3 py-1 text-xs rounded-full transition-all duration-200 ${
+            !useCustomInput 
+              ? 'bg-blue-500/30 text-blue-300 border border-blue-400/50' 
+              : 'bg-white/10 text-white/70 border border-white/20 hover:bg-white/20'
+          }`}
+        >
+          Choose from options
+        </button>
+        <button
+          type="button"
+          onClick={() => setUseCustomInput(true)}
+          className={`px-3 py-1 text-xs rounded-full transition-all duration-200 ${
+            useCustomInput 
+              ? 'bg-green-500/30 text-green-300 border border-green-400/50' 
+              : 'bg-white/10 text-white/70 border border-white/20 hover:bg-white/20'
+          }`}
+        >
+          Write custom
+        </button>
+      </div>
+
+      {!useCustomInput ? (
+        // Dropdown/Listbox option
         <Listbox value={value} onChange={onChange as (value: string) => void}>
           <div className="relative">
             <Listbox.Button className={fieldClass + " flex items-center justify-between cursor-pointer pr-10"}>
@@ -544,7 +607,8 @@ function InputField({
             </Listbox.Options>
           </div>
         </Listbox>
-      ) : hasDatalist ? (
+      ) : (
+        // Custom text input
         <>
           {name === "product" || name === "pain" ? (
             <textarea
@@ -555,35 +619,21 @@ function InputField({
               rows={2}
               className={fieldClass + " resize-none"}
               style={{ minHeight: 80 }}
+              placeholder={`Enter your custom ${label.toLowerCase()}...`}
             />
           ) : (
             <input
-              list={`${name}-list`}
               type="text"
               name={name}
               id={name}
               value={value}
               onChange={onChange as (e: React.ChangeEvent<HTMLInputElement>) => void}
               className={fieldClass}
+              placeholder={`Enter your custom ${label.toLowerCase()}...`}
               required
             />
           )}
-          <datalist id={`${name}-list`}>
-            {selectOptions[name]?.map(option => (
-              <option value={option} key={option} />
-            ))}
-          </datalist>
         </>
-      ) : (
-        <input
-          type="text"
-          name={name}
-          id={name}
-          value={value}
-          onChange={onChange as (e: React.ChangeEvent<HTMLInputElement>) => void}
-          className={fieldClass}
-          required
-        />
       )}
     </div>
   );
