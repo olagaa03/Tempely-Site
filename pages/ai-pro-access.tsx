@@ -292,7 +292,7 @@ export default function AiProAccessPage() {
           <div className="glass-strong rounded-3xl p-8 shadow-2xl space-y-8 animate-slide-in">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-yellow-300 mb-2 gradient-text">
-                ✨ Your Pro Content
+                🚀 Your Exclusive Pro Content
               </h2>
               <p className="text-gray-400">Copy any piece with one click</p>
             </div>
