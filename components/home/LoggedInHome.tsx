@@ -39,7 +39,7 @@ export default function LoggedInHome() {
             description: 'Unlock unlimited content power with GPT-4. Go pro, go viral, and never run out of ideas.',
             link: '/ai-pro',
             accent: 'from-[var(--tempely-purple)] to-purple-400',
-            checkoutUrl: 'https://tempely.lemonsqueezy.com/buy/92b33056-7bc1-43c8-a3c6-06c6df097a30',
+            checkoutUrl: 'https://tempely.lemonsqueezy.com/buy/9fcbd47a-9c87-4d31-9639-2e38b5a84326',
           },
           {
             title: 'Products',
