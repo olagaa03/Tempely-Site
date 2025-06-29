@@ -565,18 +565,9 @@ function InputField({
               </Listbox.Button>
               <Listbox.Options className="absolute z-20 mt-2 w-full bg-black/90 border border-white/20 rounded-xl shadow-2xl max-h-60 overflow-auto focus:outline-none">
                 {selectOptions[name].map((groupOrItem, idx) =>
-                  typeof groupOrItem === 'string' ? (
-                    <Listbox.Option key={groupOrItem} value={groupOrItem} as={Fragment}>
-                      {({ active, selected }) => (
-                        <li className={`px-5 py-3 cursor-pointer select-none text-base transition-all ${active ? 'bg-blue-500/30 text-white' : 'text-white/90'}`}>
-                          {groupOrItem}
-                          {selected && <span className="ml-2 text-blue-400">✓</span>}
-                        </li>
-                      )}
-                    </Listbox.Option>
-                  ) : (
+                  typeof groupOrItem === 'string' ? null : (
                     <div key={groupOrItem.group}>
-                      <div className="px-5 py-2 text-xs font-bold text-yellow-300 uppercase tracking-wider opacity-80 bg-white/5 sticky top-0 z-10">{groupOrItem.group}</div>
+                      <div className="px-5 py-2 text-xs font-bold text-yellow-300 uppercase tracking-wider opacity-80 bg-white/5 sticky top-0 z-10 cursor-default select-none">{groupOrItem.group}</div>
                       {groupOrItem.items.map(item => (
                         <Listbox.Option key={item} value={item} as={Fragment}>
                           {({ active, selected }) => (
