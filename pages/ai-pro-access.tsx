@@ -296,7 +296,32 @@ export default function AiProAccessPage() {
               </h2>
               <p className="text-gray-400">Copy any piece with one click</p>
             </div>
-            {/* Captions */}
+            {/* Content Idea Section - move to top */}
+            {sections.idea && (
+              <div>
+                <h3 className="text-xl font-bold text-green-400 mb-4 flex items-center gap-2">
+                  <span className="animate-pulse-glow">💡</span>
+                  Content Idea
+                </h3>
+                <div className="group relative hover-lift">
+                  <div className="bg-green-500/10 border border-green-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-green-400/40 hover:bg-green-500/15">
+                    <p className="text-base leading-relaxed">{sections.idea}</p>
+                    <button
+                      onClick={() => copyToClipboard(sections.idea, `idea`)}
+                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-green-500/20 hover:bg-green-500/40 p-2 rounded-lg hover:scale-110"
+                      title="Copy to clipboard"
+                    >
+                      {copiedKey === `idea` ? (
+                        <span className="text-green-400 text-sm animate-fade-in">✓</span>
+                      ) : (
+                        <span className="text-green-400 text-sm">📋</span>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+            {/* Captions Section - filter out empty and number-only lines */}
             {sections.captions && (
               <div>
                 <h3 className="text-xl font-bold text-blue-400 mb-4 flex items-center gap-2">
@@ -304,28 +329,32 @@ export default function AiProAccessPage() {
                   Captions
                 </h3>
                 <div className="space-y-3">
-                  {sections.captions.split("\n").filter(Boolean).map((line, idx) => (
-                    <div key={`caption-${idx}`} className="group relative hover-lift">
-                      <div className="bg-blue-500/10 border border-blue-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-blue-400/40 hover:bg-blue-500/15">
-                        <p className="text-base leading-relaxed">{line.trim()}</p>
-                        <button
-                          onClick={() => copyToClipboard(line.trim(), `caption-${idx}`)}
-                          className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-blue-500/20 hover:bg-blue-500/40 p-2 rounded-lg hover:scale-110"
-                          title="Copy to clipboard"
-                        >
-                          {copiedKey === `caption-${idx}` ? (
-                            <span className="text-blue-400 text-sm animate-fade-in">✓</span>
-                          ) : (
-                            <span className="text-blue-400 text-sm">📋</span>
-                          )}
-                        </button>
+                  {sections.captions
+                    .split(/\n|\r/)
+                    .map(line => line.trim())
+                    .filter(line => line && !/^\d+\.?$/.test(line))
+                    .map((line, idx) => (
+                      <div key={`caption-${idx}`} className="group relative hover-lift">
+                        <div className="bg-blue-500/10 border border-blue-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-blue-400/40 hover:bg-blue-500/15">
+                          <p className="text-base leading-relaxed">{line}</p>
+                          <button
+                            onClick={() => copyToClipboard(line, `caption-${idx}`)}
+                            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-blue-500/20 hover:bg-blue-500/40 p-2 rounded-lg hover:scale-110"
+                            title="Copy to clipboard"
+                          >
+                            {copiedKey === `caption-${idx}` ? (
+                              <span className="text-blue-400 text-sm animate-fade-in">✓</span>
+                            ) : (
+                              <span className="text-blue-400 text-sm">📋</span>
+                            )}
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </div>
             )}
-            {/* Hooks */}
+            {/* Hooks Section - filter out empty and number-only lines */}
             {sections.hooks && (
               <div>
                 <h3 className="text-xl font-bold text-purple-400 mb-4 flex items-center gap-2">
@@ -333,24 +362,28 @@ export default function AiProAccessPage() {
                   Hooks
                 </h3>
                 <div className="space-y-3">
-                  {sections.hooks.split("\n").filter(Boolean).map((line, idx) => (
-                    <div key={`hook-${idx}`} className="group relative hover-lift">
-                      <div className="bg-purple-500/10 border border-purple-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-purple-400/40 hover:bg-purple-500/15">
-                        <p className="text-base leading-relaxed">{line.trim()}</p>
-                        <button
-                          onClick={() => copyToClipboard(line.trim(), `hook-${idx}`)}
-                          className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-purple-500/20 hover:bg-purple-500/40 p-2 rounded-lg hover:scale-110"
-                          title="Copy to clipboard"
-                        >
-                          {copiedKey === `hook-${idx}` ? (
-                            <span className="text-purple-400 text-sm animate-fade-in">✓</span>
-                          ) : (
-                            <span className="text-purple-400 text-sm">📋</span>
-                          )}
-                        </button>
+                  {sections.hooks
+                    .split(/\n|\r/)
+                    .map(line => line.trim())
+                    .filter(line => line && !/^\d+\.?$/.test(line))
+                    .map((line, idx) => (
+                      <div key={`hook-${idx}`} className="group relative hover-lift">
+                        <div className="bg-purple-500/10 border border-purple-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-purple-400/40 hover:bg-purple-500/15">
+                          <p className="text-base leading-relaxed">{line}</p>
+                          <button
+                            onClick={() => copyToClipboard(line, `hook-${idx}`)}
+                            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-purple-500/20 hover:bg-purple-500/40 p-2 rounded-lg hover:scale-110"
+                            title="Copy to clipboard"
+                          >
+                            {copiedKey === `hook-${idx}` ? (
+                              <span className="text-purple-400 text-sm animate-fade-in">✓</span>
+                            ) : (
+                              <span className="text-purple-400 text-sm">📋</span>
+                            )}
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </div>
             )}
@@ -398,31 +431,6 @@ export default function AiProAccessPage() {
                         <span className="text-yellow-300 text-sm animate-fade-in">✓</span>
                       ) : (
                         <span className="text-yellow-300 text-sm">📋</span>
-                      )}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-            {/* Content Idea Section */}
-            {sections.idea && (
-              <div>
-                <h3 className="text-xl font-bold text-green-400 mb-4 flex items-center gap-2">
-                  <span className="animate-pulse-glow">💡</span>
-                  Content Idea
-                </h3>
-                <div className="group relative hover-lift">
-                  <div className="bg-green-500/10 border border-green-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-green-400/40 hover:bg-green-500/15">
-                    <p className="text-base leading-relaxed">{sections.idea}</p>
-                    <button
-                      onClick={() => copyToClipboard(sections.idea, `idea`)}
-                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-green-500/20 hover:bg-green-500/40 p-2 rounded-lg hover:scale-110"
-                      title="Copy to clipboard"
-                    >
-                      {copiedKey === `idea` ? (
-                        <span className="text-green-400 text-sm animate-fade-in">✓</span>
-                      ) : (
-                        <span className="text-green-400 text-sm">📋</span>
                       )}
                     </button>
                   </div>
