@@ -65,11 +65,12 @@ export default function AiProAccessPage() {
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [sections, setSections] = useState<Record<SectionKey, string>>({
+  const [sections, setSections] = useState<Record<SectionKey | 'idea', string>>({
     captions: "",
     hooks: "",
     tip: "",
     why: "",
+    idea: "",
   });
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
@@ -86,7 +87,7 @@ export default function AiProAccessPage() {
     setLoading(true);
     setResult("");
     setError("");
-    setSections({ captions: "", hooks: "", tip: "", why: "" });
+    setSections({ captions: "", hooks: "", tip: "", why: "", idea: "" });
 
     try {
       const res = await fetch("/api/generate-pro-content", {
@@ -133,6 +134,7 @@ export default function AiProAccessPage() {
     };
 
     setSections({
+      idea: extract("Content Idea"),
       captions: extract("Captions"),
       hooks: extract("Hook Ideas"),
       tip: extract("Content Strategy Tip"),
@@ -396,6 +398,31 @@ export default function AiProAccessPage() {
                         <span className="text-yellow-300 text-sm animate-fade-in">✓</span>
                       ) : (
                         <span className="text-yellow-300 text-sm">📋</span>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+            {/* Content Idea Section */}
+            {sections.idea && (
+              <div>
+                <h3 className="text-xl font-bold text-green-400 mb-4 flex items-center gap-2">
+                  <span className="animate-pulse-glow">💡</span>
+                  Content Idea
+                </h3>
+                <div className="group relative hover-lift">
+                  <div className="bg-green-500/10 border border-green-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-green-400/40 hover:bg-green-500/15">
+                    <p className="text-base leading-relaxed">{sections.idea}</p>
+                    <button
+                      onClick={() => copyToClipboard(sections.idea, `idea`)}
+                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-green-500/20 hover:bg-green-500/40 p-2 rounded-lg hover:scale-110"
+                      title="Copy to clipboard"
+                    >
+                      {copiedKey === `idea` ? (
+                        <span className="text-green-400 text-sm animate-fade-in">✓</span>
+                      ) : (
+                        <span className="text-green-400 text-sm">📋</span>
                       )}
                     </button>
                   </div>

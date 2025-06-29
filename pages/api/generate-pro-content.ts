@@ -69,16 +69,19 @@ Customer Pain Point: ${pain || 'Not specified'}
 
 DELIVER THE FOLLOWING SECTIONS:
 
-1. **Captions**
+1. **Content Idea**
+Generate 1 creative content idea for this audience and platform. Make it unique, actionable, and relevant to the user's goal and niche.
+
+2. **Captions**
 Generate 3 unique, scroll-stopping ${format}s optimized for ${platform}. Match the tone "${tone}" and include relevant hashtags.
 
-2. **Hook Ideas**
+3. **Hook Ideas**
 Write 3 attention-grabbing hooks to use as opening lines or intro text. Use curiosity or emotional triggers.
 
-3. **Content Strategy Tip**
+4. **Content Strategy Tip**
 Give one tactical tip to improve performance for this format. Focus on trends, timing, formats, or creative approach.
 
-4. **Why This Works**
+5. **Why This Works**
 Explain why these examples work — reference psychology, copywriting principles, audience targeting, or structure. Speak like a strategist, not an AI.
 `.trim();
 
