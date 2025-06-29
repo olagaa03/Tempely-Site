@@ -467,73 +467,50 @@ function InputField({
     "w-full min-h-[52px] p-4 border border-white/20 rounded-xl bg-black/40 text-white placeholder-white/70 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400/40 focus:border-blue-400/40 transition-all duration-300";
 
   // Listbox options for select fields
-  const selectOptions: Record<string, string[]> = {
+  const selectOptions: Record<string, (string | { group: string; items: string[] })[]> = {
     niche: [
-      "Fitness Coaching", "Fashion Retailer", "Tech Startup", "Food & Cooking", "Travel Blogger", 
-      "Business Coach", "Health & Wellness", "Education", "Entertainment", "Lifestyle", 
-      "Finance", "Parenting", "Beauty", "Gaming", "Sports", "Music", "Art & Design", 
-      "Photography", "Marketing", "Real Estate", "Fitness", "Nutrition", "Mental Health",
-      "Career Development", "Personal Development", "Relationships", "Home & Garden",
-      "Pets", "Automotive", "Fashion", "Beauty & Skincare"
+      { group: "Health & Wellness", items: ["Fitness Coaching", "Nutrition", "Mental Health", "Health & Wellness", "Personal Development"] },
+      { group: "Business & Marketing", items: ["Business Coach", "Marketing", "Finance", "Real Estate", "Tech Startup"] },
+      { group: "Creative & Lifestyle", items: ["Fashion Retailer", "Fashion", "Beauty", "Beauty & Skincare", "Art & Design", "Photography", "Lifestyle", "Travel Blogger", "Food & Cooking"] },
+      { group: "Education & Careers", items: ["Education", "Career Development"] },
+      { group: "Entertainment & Hobbies", items: ["Entertainment", "Gaming", "Music", "Sports", "Home & Garden", "Pets", "Automotive"] },
+      { group: "Parenting & Relationships", items: ["Parenting", "Relationships"] },
     ],
     platform: [
-      "Instagram", "TikTok", "LinkedIn", "Facebook", "YouTube", "Twitter", "Pinterest", "Threads", "Reddit"
+      { group: "Social Media", items: ["Instagram", "TikTok", "LinkedIn", "Facebook", "YouTube", "Twitter", "Pinterest", "Threads", "Reddit"] },
     ],
     audience: [
-      "Moms 30-45", "Entrepreneurs", "Students", "Young Professionals", "Fitness Enthusiasts",
-      "Tech Professionals", "Small Business Owners", "Creative Professionals", "Parents",
-      "Health & Wellness Seekers", "Travelers", "Food Lovers", "Fashion Enthusiasts",
-      "Gamers", "Music Lovers", "Artists", "Photographers", "Marketers", "Real Estate Agents",
-      "Fitness Coaches", "Nutritionists", "Mental Health Professionals", "Career Coaches",
-      "Personal Development Seekers", "Relationship Coaches", "Homeowners", "Pet Owners",
-      "Car Enthusiasts", "Beauty Enthusiasts", "Skincare Lovers"
+      { group: "Demographics", items: ["Moms 30-45", "Young Professionals", "Students", "Parents"] },
+      { group: "Professionals", items: ["Entrepreneurs", "Tech Professionals", "Small Business Owners", "Creative Professionals", "Fitness Coaches", "Nutritionists", "Mental Health Professionals", "Career Coaches", "Relationship Coaches", "Marketers", "Real Estate Agents"] },
+      { group: "Interest Groups", items: ["Fitness Enthusiasts", "Health & Wellness Seekers", "Travelers", "Food Lovers", "Fashion Enthusiasts", "Gamers", "Music Lovers", "Artists", "Photographers", "Personal Development Seekers", "Homeowners", "Pet Owners", "Car Enthusiasts", "Beauty Enthusiasts", "Skincare Lovers"] },
     ],
     tone: [
-      "Educational", "Professional", "Friendly", "Motivational", "Bold", "Funny", "Witty", "Inspiring", "Conversational", "Casual"
+      { group: "Professional", items: ["Educational", "Professional", "Motivational", "Inspiring"] },
+      { group: "Casual & Fun", items: ["Friendly", "Bold", "Funny", "Witty", "Conversational", "Casual"] },
     ],
     goal: [
-      "Grow to 10k followers", "Launch a product", "Increase engagement", "Generate leads",
-      "Build brand awareness", "Drive website traffic", "Sell products/services", "Build community",
-      "Establish authority", "Create viral content", "Improve conversion rates", "Boost sales",
-      "Expand reach", "Increase brand loyalty", "Educate audience", "Entertain followers",
-      "Inspire action", "Build relationships", "Create partnerships", "Monetize content"
+      { group: "Growth & Engagement", items: ["Grow to 10k followers", "Increase engagement", "Build brand awareness", "Drive website traffic", "Expand reach", "Increase brand loyalty", "Build community", "Create viral content"] },
+      { group: "Sales & Leads", items: ["Launch a product", "Generate leads", "Sell products/services", "Improve conversion rates", "Boost sales", "Monetize content"] },
+      { group: "Authority & Education", items: ["Establish authority", "Educate audience", "Inspire action", "Build relationships", "Create partnerships"] },
     ],
     format: [
-      "Instagram Caption",
-      "Instagram Reel Script",
-      "Instagram Carousel",
-      "TikTok Script",
-      "TikTok Caption",
-      "LinkedIn Post",
-      "YouTube Script",
-      "YouTube Title & Description",
-      "Facebook Ad",
-      "Facebook Post",
-      "Tweet Thread",
-      "Pinterest Pin",
-      "Reddit Post",
-      "Blog Intro",
-      "Newsletter",
-      "Podcast Outline",
-      "Website Hero Copy",
-      "Google Ad Headline & Description",
-      "Product Landing Page Copy",
-      "Call to Action (CTA) Ideas"
+      { group: "Social Media", items: ["Instagram Caption", "Instagram Reel Script", "Instagram Carousel", "TikTok Script", "TikTok Caption", "LinkedIn Post", "Facebook Ad", "Facebook Post", "Tweet Thread", "Pinterest Pin", "Reddit Post"] },
+      { group: "Long-form & Email", items: ["YouTube Script", "YouTube Title & Description", "Blog Intro", "Newsletter", "Podcast Outline"] },
+      { group: "Web & Ads", items: ["Website Hero Copy", "Google Ad Headline & Description", "Product Landing Page Copy", "Call to Action (CTA) Ideas"] },
     ],
     product: [
-      "Digital course on meal planning", "Coaching program", "Online workshop", "E-book",
-      "Membership site", "Consulting services", "Physical product", "Software tool",
-      "App", "Template bundle", "Masterclass", "Challenge", "Webinar", "Podcast",
-      "YouTube channel", "Blog", "Newsletter", "Community", "Event", "Retreat"
+      { group: "Digital Products", items: ["Digital course", "E-book", "Template bundle", "Digital download", "Online tool", "Certification program", "Masterclass", "Webinar"] },
+      { group: "Services", items: ["Coaching program", "Consulting service", "1:1 service", "Group program"] },
+      { group: "Memberships & Subscriptions", items: ["Membership site", "Subscription box"] },
+      { group: "Events", items: ["Event", "Retreat", "Challenge"] },
+      { group: "Physical Products", items: ["Physical product"] },
+      { group: "Software & Apps", items: ["Software/app"] },
     ],
     pain: [
-      "Struggling with consistency and self-doubt", "Lack of time management", "Fear of failure",
-      "Imposter syndrome", "Overwhelm and burnout", "Lack of direction", "Financial stress",
-      "Relationship issues", "Health concerns", "Career stagnation", "Creative block",
-      "Social media pressure", "Comparison to others", "Perfectionism", "Procrastination",
-      "Lack of confidence", "Unclear goals", "Poor habits", "Stress and anxiety",
-      "Work-life balance", "Finding motivation", "Building discipline", "Overcoming obstacles"
-    ]
+      { group: "Mindset & Motivation", items: ["Struggling with consistency and self-doubt", "Lack of confidence", "Imposter syndrome", "Fear of failure", "Perfectionism", "Procrastination", "Finding motivation", "Building discipline", "Overcoming obstacles"] },
+      { group: "Productivity & Time", items: ["Lack of time management", "Overwhelm and burnout", "Lack of direction", "Unclear goals", "Poor habits", "Work-life balance"] },
+      { group: "External Challenges", items: ["Financial stress", "Relationship issues", "Health concerns", "Career stagnation", "Creative block", "Social media pressure", "Comparison to others", "Stress and anxiety"] },
+    ],
   };
 
   return (
@@ -579,34 +556,73 @@ function InputField({
 
       {!useCustomInput ? (
         // Dropdown/Listbox option
-        <Listbox value={value} onChange={onChange as (value: string) => void}>
+        ["niche", "platform", "audience", "tone", "goal", "format", "pain", "product"].includes(name) ? (
           <div className="relative">
-            <Listbox.Button className={fieldClass + " flex items-center justify-between cursor-pointer pr-10"}>
-              <span>{value || `Select ${label}`}</span>
-              <span className="pointer-events-none absolute right-4 top-1/2 transform -translate-y-1/2 text-white/70 text-xl">▼</span>
-            </Listbox.Button>
-            <Listbox.Options className="absolute z-20 mt-2 w-full bg-black/90 border border-white/20 rounded-xl shadow-2xl max-h-60 overflow-auto focus:outline-none">
-              {selectOptions[name]?.map(option => (
-                <Listbox.Option
-                  key={option}
-                  value={option}
-                  as={Fragment}
-                >
-                  {({ active, selected }) => (
-                    <li
-                      className={`px-5 py-3 cursor-pointer select-none text-base transition-all ${
-                        active ? 'bg-blue-500/30 text-white' : 'text-white/90'
-                      }`}
-                    >
-                      {option}
-                      {selected && <span className="ml-2 text-blue-400">✓</span>}
-                    </li>
-                  )}
-                </Listbox.Option>
-              ))}
-            </Listbox.Options>
+            <Listbox value={value} onChange={onChange as (value: string) => void}>
+              <Listbox.Button className={fieldClass + " flex items-center justify-between cursor-pointer pr-10"}>
+                <span>{value || `Select ${label}`}</span>
+                <span className="pointer-events-none absolute right-4 top-1/2 transform -translate-y-1/2 text-white/70 text-xl">▼</span>
+              </Listbox.Button>
+              <Listbox.Options className="absolute z-20 mt-2 w-full bg-black/90 border border-white/20 rounded-xl shadow-2xl max-h-60 overflow-auto focus:outline-none">
+                {selectOptions[name].map((groupOrItem, idx) =>
+                  typeof groupOrItem === 'string' ? (
+                    <Listbox.Option key={groupOrItem} value={groupOrItem} as={Fragment}>
+                      {({ active, selected }) => (
+                        <li className={`px-5 py-3 cursor-pointer select-none text-base transition-all ${active ? 'bg-blue-500/30 text-white' : 'text-white/90'}`}>
+                          {groupOrItem}
+                          {selected && <span className="ml-2 text-blue-400">✓</span>}
+                        </li>
+                      )}
+                    </Listbox.Option>
+                  ) : (
+                    <div key={groupOrItem.group}>
+                      <div className="px-5 py-2 text-xs font-bold text-yellow-300 uppercase tracking-wider opacity-80 bg-white/5 sticky top-0 z-10">{groupOrItem.group}</div>
+                      {groupOrItem.items.map(item => (
+                        <Listbox.Option key={item} value={item} as={Fragment}>
+                          {({ active, selected }) => (
+                            <li className={`px-5 py-3 cursor-pointer select-none text-base transition-all ${active ? 'bg-blue-500/30 text-white' : 'text-white/90'}`}>
+                              {item}
+                              {selected && <span className="ml-2 text-blue-400">✓</span>}
+                            </li>
+                          )}
+                        </Listbox.Option>
+                      ))}
+                    </div>
+                  )
+                )}
+              </Listbox.Options>
+            </Listbox>
           </div>
-        </Listbox>
+        ) : (
+          <Listbox value={value} onChange={onChange as (value: string) => void}>
+            <div className="relative">
+              <Listbox.Button className={fieldClass + " flex items-center justify-between cursor-pointer pr-10"}>
+                <span>{value || `Select ${label}`}</span>
+                <span className="pointer-events-none absolute right-4 top-1/2 transform -translate-y-1/2 text-white/70 text-xl">▼</span>
+              </Listbox.Button>
+              <Listbox.Options className="absolute z-20 mt-2 w-full bg-black/90 border border-white/20 rounded-xl shadow-2xl max-h-60 overflow-auto focus:outline-none">
+                {(selectOptions[name] as string[]).map(option => (
+                  <Listbox.Option
+                    key={option}
+                    value={option}
+                    as={Fragment}
+                  >
+                    {({ active, selected }) => (
+                      <li
+                        className={`px-5 py-3 cursor-pointer select-none text-base transition-all ${
+                          active ? 'bg-blue-500/30 text-white' : 'text-white/90'
+                        }`}
+                      >
+                        {option}
+                        {selected && <span className="ml-2 text-blue-400">✓</span>}
+                      </li>
+                    )}
+                  </Listbox.Option>
+                ))}
+              </Listbox.Options>
+            </div>
+          </Listbox>
+        )
       ) : (
         // Custom text input
         <>
