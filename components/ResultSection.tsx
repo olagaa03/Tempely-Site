@@ -147,9 +147,10 @@ function SectionBlock({
             .map((line, idx) => (
               <li
                 key={idx}
-                className={`bg-${color}-50 border border-${color}-200 p-4 rounded-lg text-sm leading-relaxed hover:shadow-md transition-shadow group`}
+                className={`bg-${color}-50 border border-${color}-200 p-4 rounded-lg text-sm leading-relaxed hover:shadow-md transition-shadow group flex items-start gap-2`}
               >
-                <div className="flex justify-between items-start gap-3">
+                <span className="font-bold text-lg text-white/80 min-w-[1.5em]">{String.fromCharCode(65 + idx)}.</span>
+                <div className="flex-1 flex justify-between items-start gap-3">
                   <span>{line.trim()}</span>
                   {copyToClipboard && (
                     <button

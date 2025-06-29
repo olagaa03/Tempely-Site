@@ -499,6 +499,7 @@ function InputField({
       { group: "Web & Ads", items: ["Website Hero Copy", "Google Ad Headline & Description", "Product Landing Page Copy", "Call to Action (CTA) Ideas"] },
     ],
     product: [
+      { group: "None", items: [""] },
       { group: "Digital Products", items: ["Digital course", "E-book", "Template bundle", "Digital download", "Online tool", "Certification program", "Masterclass", "Webinar"] },
       { group: "Services", items: ["Coaching program", "Consulting service", "1:1 service", "Group program"] },
       { group: "Memberships & Subscriptions", items: ["Membership site", "Subscription box"] },
@@ -507,6 +508,7 @@ function InputField({
       { group: "Software & Apps", items: ["Software/app"] },
     ],
     pain: [
+      { group: "None", items: [""] },
       { group: "Mindset & Motivation", items: ["Struggling with consistency and self-doubt", "Lack of confidence", "Imposter syndrome", "Fear of failure", "Perfectionism", "Procrastination", "Finding motivation", "Building discipline", "Overcoming obstacles"] },
       { group: "Productivity & Time", items: ["Lack of time management", "Overwhelm and burnout", "Lack of direction", "Unclear goals", "Poor habits", "Work-life balance"] },
       { group: "External Challenges", items: ["Financial stress", "Relationship issues", "Health concerns", "Career stagnation", "Creative block", "Social media pressure", "Comparison to others", "Stress and anxiety"] },
