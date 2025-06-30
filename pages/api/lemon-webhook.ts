@@ -66,9 +66,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (user) {
     const typedUser: any = user;
     try {
+      const customerPortalUrl = event.data?.attributes?.urls?.customer_portal || '';
       console.log('Attempting to update user metadata for:', typedUser.id);
       const updated = await clerkClient.users.updateUser(typedUser.id, {
-        publicMetadata: { pro: true },
+        publicMetadata: { pro: true, customerPortal: customerPortalUrl },
       });
       console.log('Pro access granted to user:', typedUser.id, 'Updated metadata:', updated.publicMetadata);
       return res.status(200).json({ success: true });
