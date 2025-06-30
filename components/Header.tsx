@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import { X, Menu } from 'lucide-react';
-import { SignedIn, SignedOut, SignInButton, UserButton, useClerk } from '@clerk/nextjs';
+import { SignedIn, SignedOut, SignInButton, UserButton, useClerk, useUser } from '@clerk/nextjs';
 
 const TEMPELY_PURPLE = '#7c3aed';
 
@@ -30,6 +30,15 @@ function SignOutButton() {
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const { user } = useUser();
+
+  function DefaultAvatar() {
+    return (
+      <span className="w-8 h-8 rounded-full bg-white flex items-center justify-center border-2 border-white/20 shadow overflow-hidden">
+        <Image src="/branding/Profile_Avatar.png" alt="Avatar" width={32} height={32} className="object-cover w-8 h-8" />
+      </span>
+    );
+  }
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-black/30 backdrop-blur-lg border-b border-white/10 shadow-sm font-sans">
@@ -47,20 +56,14 @@ export default function Header() {
           <Link href="/" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition text-[1rem]">Home</Link>
           <Link href="/products" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition text-[1rem]">Products</Link>
           <Link href="/about" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition text-[1rem]">About</Link>
-          <Link href="/ai-tool" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition text-[1rem]">AI Hook Generator</Link>
-          <Link href="/ai-pro" className="nav-link flex items-center gap-1 hover:text-yellow-200 transition text-[1rem]">
-            Content Engine Pro
-            <span className="ml-1 px-2 py-[3px] rounded-full font-bold text-xs shadow-sm leading-none glass" style={{ background: 'rgba(255, 221, 51, 0.18)', color: '#FFD600', border: '1px solid #FFD600', verticalAlign: 'middle', fontWeight: 700 }}>
-              GPT-4
-            </span>
-          </Link>
+          <Link href="/ai-tools" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition text-[1rem]">AI Tools</Link>
           <Link href="/bundle" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition text-[1rem]">Templates</Link>
           <div className="flex items-center gap-5 pl-8 border-l border-white/20 ml-4">
             <SignedIn>
               <Link href="/account" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition text-[1rem]">Account</Link>
             </SignedIn>
             <SignedIn>
-              <UserButton afterSignOutUrl="/" />
+              <DefaultAvatar />
               <SignOutButton />
             </SignedIn>
           </div>
@@ -74,18 +77,12 @@ export default function Header() {
           <Link href="/" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition block" onClick={() => setIsOpen(false)}>Home</Link>
           <Link href="/products" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition block" onClick={() => setIsOpen(false)}>Products</Link>
           <Link href="/about" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition block" onClick={() => setIsOpen(false)}>About</Link>
-          <Link href="/ai-tool" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition block" onClick={() => setIsOpen(false)}>AI Hook Generator</Link>
-          <Link href="/ai-pro" className="nav-link flex items-center gap-1 hover:text-yellow-200 transition block" onClick={() => setIsOpen(false)}>
-            Content Engine Pro
-            <span className="ml-1 px-2 py-[2px] rounded-full font-bold text-xs shadow-sm leading-none glass" style={{ background: 'rgba(255, 221, 51, 0.18)', color: '#FFD600', border: '1px solid #FFD600', fontWeight: 700 }}>
-              GPT-4
-            </span>
-          </Link>
+          <Link href="/ai-tools" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition block" onClick={() => setIsOpen(false)}>AI Tools</Link>
           <Link href="/bundle" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition block" onClick={() => setIsOpen(false)}>Templates</Link>
           <hr className="my-2 border-white/10" />
           <SignedIn>
             <div className="flex items-center gap-2 mt-2">
-              <UserButton afterSignOutUrl="/" />
+              <DefaultAvatar />
               <button
                 onClick={() => { setIsOpen(false); useClerk().signOut(() => { window.location.href = '/'; }); }}
                 className="px-3 py-1 bg-red-600 text-white rounded-full hover:bg-red-700 transition text-xs font-semibold shadow"

@@ -58,7 +58,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (isRateLimited(userId)) {
       console.log(`Rate limit exceeded for user: ${userId}`);
       return res.status(429).json({
-        error: 'Free usage limit reached. Try again tomorrow or upgrade to Temply Pro.',
+        error: 'Free usage limit reached. Try again tomorrow or upgrade to Tempely.',
       });
     }
 
@@ -80,7 +80,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const prompt = `
 Generate 1 basic content idea, 2 scroll-stopping captions, and 2 engaging hook ideas for content on ${platform}.
-Make sure they’re aligned with the following:
+Make sure they're aligned with the following:
 
 Niche: ${niche}
 Audience: ${audience}
