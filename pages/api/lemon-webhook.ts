@@ -52,15 +52,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!email) return res.status(400).json({ error: 'No email in payload' });
 
   const user = await getUserByEmail(email);
-  if (!user) return res.status(404).json({ error: 'User not found in Clerk' });
+  console.log('Lemon Squeezy webhook email:', email);
+  if (!user) {
+    console.error('User not found for email:', email);
+    return res.status(404).json({ error: 'User not found in Clerk', email });
+  } else {
+    console.log('User found:', user.id, user.emailAddresses);
+  }
 
   // ✅ Grant Pro access
   if (eventName === 'subscription_created' || eventName === 'order_created') {
-    await clerkClient.users.updateUser(user.id, {
-      publicMetadata: { pro: true },
-    });
-    console.log('Pro access granted to user:', user.id);
-    return res.status(200).json({ success: true });
+    try {
+      await clerkClient.users.updateUser(user.id, {
+        publicMetadata: { pro: true },
+      });
+      console.log('Pro access granted to user:', user.id);
+      return res.status(200).json({ success: true });
+    } catch (err) {
+      console.error('Failed to update Clerk user:', err);
+      return res.status(500).json({ error: 'Failed to update Clerk user', details: err });
+    }
   }
 
   // 🚫 Revoke Pro access
