@@ -56,6 +56,9 @@ export default function Header() {
           </Link>
           <Link href="/bundle" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">Templates</Link>
           <SignedIn>
+            <Link href="/account" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">Account</Link>
+          </SignedIn>
+          <SignedIn>
             <UserButton afterSignOutUrl="/" />
             <SignOutButton />
           </SignedIn>
