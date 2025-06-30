@@ -43,32 +43,27 @@ export default function Header() {
             className="w-auto h-14 md:h-20 max-w-[180px] md:max-w-[320px] transition-all duration-300"
           />
         </Link>
-        <nav className="hidden md:flex items-center space-x-7 text-base font-medium">
-          <Link href="/" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">Home</Link>
-          <Link href="/products" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">Products</Link>
-          <Link href="/about" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">About</Link>
-          <Link href="/ai-tool" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">AI Hook Generator</Link>
-          <Link href="/ai-pro" className="nav-link flex items-center gap-1 hover:text-yellow-200 transition">
+        <nav className="hidden md:flex items-center gap-8 text-base font-medium">
+          <Link href="/" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition text-[1rem]">Home</Link>
+          <Link href="/products" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition text-[1rem]">Products</Link>
+          <Link href="/about" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition text-[1rem]">About</Link>
+          <Link href="/ai-tool" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition text-[1rem]">AI Hook Generator</Link>
+          <Link href="/ai-pro" className="nav-link flex items-center gap-1 hover:text-yellow-200 transition text-[1rem]">
             Content Engine Pro
             <span className="ml-1 px-2 py-[3px] rounded-full font-bold text-xs shadow-sm leading-none glass" style={{ background: 'rgba(255, 221, 51, 0.18)', color: '#FFD600', border: '1px solid #FFD600', verticalAlign: 'middle', fontWeight: 700 }}>
               GPT-4
             </span>
           </Link>
-          <Link href="/bundle" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">Templates</Link>
-          <SignedIn>
-            <Link href="/account" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition">Account</Link>
-          </SignedIn>
-          <SignedIn>
-            <UserButton afterSignOutUrl="/" />
-            <SignOutButton />
-          </SignedIn>
-          <SignedOut>
-            <SignInButton mode="modal">
-              <button className="bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-full px-5 py-2 shadow transition-transform duration-200 hover:scale-105">
-                Sign In
-              </button>
-            </SignInButton>
-          </SignedOut>
+          <Link href="/bundle" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition text-[1rem]">Templates</Link>
+          <div className="flex items-center gap-5 pl-8 border-l border-white/20 ml-4">
+            <SignedIn>
+              <Link href="/account" className="nav-link hover:text-[var(--tempely-purple)] text-gray-100 transition text-[1rem]">Account</Link>
+            </SignedIn>
+            <SignedIn>
+              <UserButton afterSignOutUrl="/" />
+              <SignOutButton />
+            </SignedIn>
+          </div>
         </nav>
         <button className="md:hidden text-gray-100 focus:outline-none focus:ring-2 focus:ring-[var(--tempely-purple)]" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <X size={28} /> : <Menu size={28} />}
