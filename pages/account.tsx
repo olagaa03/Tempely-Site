@@ -2,7 +2,8 @@ import { useUser } from '@clerk/nextjs';
 
 export default function AccountPage() {
   const { user } = useUser();
-  const portalUrl = String(user?.publicMetadata?.customerPortal || '');
+  // Use the generic portal if customerPortal is missing
+  const portalUrl = String(user?.publicMetadata?.customerPortal || 'https://tempely.lemonsqueezy.com/billing/');
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#18181B] to-[#0F0F0F] font-sans px-4 py-20">
