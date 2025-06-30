@@ -63,10 +63,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // ✅ Grant Pro access
   if (eventName === 'subscription_created' || eventName === 'order_created') {
     try {
-      await clerkClient.users.updateUser(user.id, {
+      console.log('Attempting to update user metadata for:', user.id);
+      const updated = await clerkClient.users.updateUser(user.id, {
         publicMetadata: { pro: true },
       });
-      console.log('Pro access granted to user:', user.id);
+      console.log('Pro access granted to user:', user.id, 'Updated metadata:', updated.publicMetadata);
       return res.status(200).json({ success: true });
     } catch (err) {
       console.error('Failed to update Clerk user:', err);
