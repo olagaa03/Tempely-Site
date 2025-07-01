@@ -36,7 +36,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   // Check Clerk metadata for Pro access
   const user = await clerkClient.users.getUser(userId);
-  console.log('User metadata:', user.publicMetadata);
   if (!user.publicMetadata?.pro) {
     return res.status(403).json({ error: 'Forbidden: Pro access required.' });
   }
@@ -103,6 +102,6 @@ Explain why these examples work — reference psychology, copywriting principles
     return res.status(200).json({ result: output });
   } catch (error: any) {
     console.error('❌ Pro API error:', error?.message || error);
-    return res.status(500).json({ error: 'Pro content generation failed. Check API key or logs.' });
+    return res.status(500).json({ error: 'Pro content generation failed.' });
   }
 }

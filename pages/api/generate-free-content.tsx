@@ -56,7 +56,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     if (isRateLimited(userId)) {
-      console.log(`Rate limit exceeded for user: ${userId}`);
       return res.status(429).json({
         error: 'Free usage limit reached. Try again tomorrow or upgrade to Tempely.',
       });
@@ -121,6 +120,6 @@ Hooks:
     return res.status(200).json({ result: output });
   } catch (error: any) {
     console.error('[Server Error]', error?.message || error);
-    return res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Content generation failed.' });
   }
 }
