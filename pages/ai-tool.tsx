@@ -213,6 +213,11 @@ export default function AiToolPage() {
                 </span>
               )}
             </button>
+            <div className="w-full flex justify-center mt-3">
+              <span className="text-xs text-gray-300 bg-black/20 border border-white/10 rounded-lg px-4 py-2 text-center" style={{maxWidth: '90%'}}>
+                Note: Free users can generate up to 5 pieces of AI content per day.
+              </span>
+            </div>
           </form>
         </div>
 

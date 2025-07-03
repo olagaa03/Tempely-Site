@@ -167,7 +167,7 @@ export default function AiProAccessPage() {
           <h1 className="text-5xl md:text-6xl font-extrabold mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent drop-shadow-lg gradient-text">
             Tempely Pro Content Engine
           </h1>
-          <span className="inline-block bg-yellow-400/10 text-yellow-300 font-semibold px-4 py-1 rounded-full text-xs mb-4">Custom-Tuned for Marketers</span>
+          <span className="inline-block bg-yellow-400/10 text-yellow-300 font-semibold px-4 py-1 rounded-full text-xs mb-4">Custom-Tuned for Creators</span>
           <p className="text-2xl text-gray-100 mb-3 max-w-2xl mx-auto leading-snug animate-fade-in">
             Unlock <span className="font-bold text-blue-400">GPT-4</span> content creation: viral hooks, strategic captions, and <span className="font-bold text-green-300">marketing copy</span> for your brand.
           </p>
