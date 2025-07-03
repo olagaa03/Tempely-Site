@@ -1,10 +1,11 @@
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.clerk.dev https://*.clerk.com https://clerk.tempely.com;
+  script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.clerk.dev https://*.clerk.com https://clerk.tempely.com https://challenges.cloudflare.com;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   img-src 'self' data: blob:;
   font-src 'self' https://fonts.gstatic.com;
-  connect-src 'self' https://*.clerk.dev https://*.clerk.com https://clerk.tempely.com https://api.clerk.dev https://api.clerk.com https://assets.clerk.dev https://assets.clerk.com wss://*.clerk.dev wss://*.clerk.com;
+  connect-src 'self' https://*.clerk.dev https://*.clerk.com https://clerk.tempely.com https://api.clerk.dev https://api.clerk.com https://assets.clerk.dev https://assets.clerk.com wss://*.clerk.dev wss://*.clerk.com https://challenges.cloudflare.com;
+  frame-src https://challenges.cloudflare.com https://*.clerk.dev https://*.clerk.com https://clerk.tempely.com;
   object-src 'none';
   frame-ancestors 'none';
   worker-src blob:;
