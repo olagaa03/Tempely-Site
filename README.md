@@ -1,4 +1,15 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Tempely Website
+
+This is a [Next.js](https://nextjs.org) project for Tempely, an AI-powered content creation platform.
+
+## Features
+
+- **Free AI Content Generation**: Generate content ideas, captions, and hooks using GPT-3.5 (5 generations/day limit)
+- **Unlimited Generations Subscription**: $9.99/month for unlimited generations with the same fast GPT-3.5 engine
+- **Pro Subscription**: $19.99/month for GPT-4 powered content with advanced features
+- **User Authentication**: Powered by Clerk
+- **Payment Processing**: Integrated with Lemon Squeezy
+- **Product Templates**: Hooked, Posted, and Tracked templates for content creators
 
 ## Getting Started
 

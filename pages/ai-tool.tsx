@@ -5,7 +5,7 @@ import { useUser, SignInButton } from '@clerk/nextjs';
 import Link from 'next/link';
 
 export default function AiToolPage() {
-  const { isSignedIn } = useUser();
+  const { isSignedIn, user } = useUser();
 
   const [formData, setFormData] = useState({
     niche: '',
@@ -215,13 +215,61 @@ export default function AiToolPage() {
             </button>
             <div className="w-full flex justify-center mt-3">
               <span className="text-xs text-gray-300 bg-black/20 border border-white/10 rounded-lg px-4 py-2 text-center" style={{maxWidth: '90%'}}>
-                Note: Free users can generate up to 5 pieces of AI content per day.
+                {user?.publicMetadata?.unlimitedGenerations ? (
+                  <span className="text-emerald-400">✨ Unlimited generations active - generate as much as you want!</span>
+                ) : (
+                  <span>Note: Free users can generate up to 5 pieces of AI content per day.</span>
+                )}
               </span>
             </div>
           </form>
         </div>
 
-        {/* Upgrade Section */}
+        {/* Unlimited Generations Upgrade Section */}
+        {!user?.publicMetadata?.unlimitedGenerations && (
+          <div className="bg-gradient-to-r from-green-500/10 via-emerald-500/10 to-teal-500/10 border border-green-400/30 text-green-200 rounded-3xl p-8 mb-6 backdrop-blur-xl shadow-2xl">
+          <div className="flex items-start gap-4">
+            <div className="text-3xl">⚡</div>
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-4">
+                <h3 className="text-2xl font-bold text-green-300">Unlimited Generations</h3>
+                <span className="bg-gradient-to-r from-green-400 to-emerald-400 text-black text-xs px-3 py-1 rounded-full font-bold">$9.99/mo</span>
+              </div>
+              <p className="text-green-100 mb-4 leading-relaxed">
+                Love the speed? Get <strong>unlimited generations</strong> with the same fast GPT-3.5 engine. Perfect for creators who want to generate content without limits.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="text-green-400">✓</span>
+                  <span>Unlimited daily generations</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="text-green-400">✓</span>
+                  <span>Same fast GPT-3.5 engine</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="text-green-400">✓</span>
+                  <span>Cancel anytime</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="text-green-400">✓</span>
+                  <span>No setup fees</span>
+                </div>
+              </div>
+              <a
+                href="https://tempely.lemonsqueezy.com/buy/unlimited-generations"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 text-black font-bold px-8 py-3 rounded-xl shadow-lg transition-all duration-300 hover:scale-105"
+              >
+                🚀 Get Unlimited Access
+              </a>
+            </div>
+          </div>
+        </div>
+        )}
+
+        {/* Pro Upgrade Section */}
         <div className="bg-gradient-to-r from-yellow-500/10 via-orange-500/10 to-red-500/10 border border-yellow-400/30 text-yellow-200 rounded-3xl p-8 mb-8 backdrop-blur-xl shadow-2xl">
           <div className="flex items-start gap-4">
             <div className="text-3xl">🚀</div>

@@ -63,6 +63,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (eventName === 'subscription_created' || eventName === 'order_created') {
     try {
       const customerPortalUrl = event.data?.attributes?.urls?.customer_portal || '';
+      const productId = event.data?.attributes?.product_id;
+      
+      // Check if this is the unlimited generations subscription
+      if (productId === 'unlimited-generations') {
+        const updated = await clerkClient.users.updateUser(user.id, {
+          publicMetadata: { unlimitedGenerations: true, customerPortal: customerPortalUrl },
+        });
+        console.log('Unlimited generations access granted to user:', user.id);
+        return res.status(200).json({ success: true });
+      }
+      
+      // Default Pro access
       const updated = await clerkClient.users.updateUser(user.id, {
         publicMetadata: { pro: true, customerPortal: customerPortalUrl },
       });
@@ -77,14 +89,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // 🚫 Revoke Pro access
   if (eventName === 'subscription_cancelled') {
     try {
+      const productId = event.data?.attributes?.product_id;
+      
+      // Check if this is the unlimited generations subscription
+      if (productId === 'unlimited-generations') {
+        await clerkClient.users.updateUser(user.id, {
+          publicMetadata: { unlimitedGenerations: false },
+        });
+        console.log('Unlimited generations access revoked for user:', user.id);
+        return res.status(200).json({ success: true });
+      }
+      
+      // Default Pro access revocation
       await clerkClient.users.updateUser(user.id, {
         publicMetadata: { pro: false },
       });
       console.log('Pro access revoked for user:', user.id);
       return res.status(200).json({ success: true });
     } catch (err) {
-      console.error('Failed to revoke Pro access:', err);
-      return res.status(500).json({ error: 'Failed to revoke Pro access' });
+      console.error('Failed to revoke access:', err);
+      return res.status(500).json({ error: 'Failed to revoke access' });
     }
   }
 

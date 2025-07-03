@@ -14,6 +14,9 @@ export default function AccountPage() {
           {Boolean(user?.publicMetadata?.pro) && (
             <div className="mt-2 text-green-400 font-semibold">Pro Access Active</div>
           )}
+          {Boolean(user?.publicMetadata?.unlimitedGenerations) && (
+            <div className="mt-2 text-emerald-400 font-semibold">Unlimited Generations Active</div>
+          )}
         </div>
         {Boolean(user?.publicMetadata?.pro) && portalUrl && (
           <a

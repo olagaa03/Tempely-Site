@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import OpenAI from 'openai';
 import { z } from 'zod';
 import { getAuth } from '@clerk/nextjs/server';
+import { clerkClient } from '@clerk/clerk-sdk-node';
 
 // In-memory rate limiter (per userId)
 type UsageStore = {
@@ -55,9 +56,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    if (isRateLimited(userId)) {
+    // Check if user has unlimited generations subscription
+    const user = await clerkClient.users.getUser(userId);
+    const hasUnlimitedGenerations = user.publicMetadata?.unlimitedGenerations === true;
+    
+    if (!hasUnlimitedGenerations && isRateLimited(userId)) {
       return res.status(429).json({
-        error: 'Free usage limit reached. Try again tomorrow or upgrade to Tempely.',
+        error: 'Free usage limit reached. Try again tomorrow or upgrade to unlimited generations for $9.99/month.',
       });
     }
 
@@ -116,7 +121,7 @@ Hooks:
       return res.status(500).json({ error: 'No content returned' });
     }
 
-    console.log(`[SUCCESS] Content generated for user ${userId}`);
+    console.log(`[SUCCESS] Content generated for user ${userId}${hasUnlimitedGenerations ? ' (unlimited)' : ''}`);
     return res.status(200).json({ result: output });
   } catch (error: any) {
     console.error('[Server Error]', error?.message || error);
