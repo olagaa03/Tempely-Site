@@ -61,6 +61,8 @@ export default function AiToolPage() {
     }
   };
 
+  const hasUnlimited = user?.publicMetadata?.unlimitedGenerations || user?.publicMetadata?.pro;
+
   if (!isSignedIn) {
     return (
       <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#0F0F1C] via-[#18122B] to-[#4B2067] text-center px-4 relative overflow-hidden">
@@ -215,7 +217,7 @@ export default function AiToolPage() {
             </button>
             <div className="w-full flex justify-center mt-3">
               <span className="text-xs text-gray-300 bg-black/20 border border-white/10 rounded-lg px-4 py-2 text-center" style={{maxWidth: '90%'}}>
-                {user?.publicMetadata?.unlimitedGenerations ? (
+                {hasUnlimited ? (
                   <span className="text-emerald-400">✨ Unlimited generations active - generate as much as you want!</span>
                 ) : (
                   <span>Note: Free users can generate up to 5 pieces of AI content per day.</span>
@@ -226,7 +228,7 @@ export default function AiToolPage() {
         </div>
 
         {/* Unlimited Generations Upgrade Section */}
-        {!user?.publicMetadata?.unlimitedGenerations && (
+        {!hasUnlimited && (
           <div className="bg-gradient-to-r from-green-500/10 via-emerald-500/10 to-teal-500/10 border border-green-400/30 text-green-200 rounded-3xl p-8 mb-6 backdrop-blur-xl shadow-2xl">
           <div className="flex items-start gap-4">
             <div className="text-3xl">⚡</div>
@@ -277,6 +279,7 @@ export default function AiToolPage() {
               <div className="flex items-center gap-3 mb-4">
                 <h3 className="text-2xl font-bold text-yellow-300">Upgrade to Tempely Pro</h3>
                 <span className="bg-gradient-to-r from-yellow-400 to-orange-400 text-black text-xs px-3 py-1 rounded-full font-bold">GPT-4</span>
+                <span className="bg-yellow-400 text-black text-xs px-3 py-1 rounded-full font-bold ml-2">$19.99/mo</span>
               </div>
               <p className="text-yellow-100 mb-4 leading-relaxed">
                 Supercharge your content creation with <strong>Tempely Pro</strong> and unlock our most powerful AI tools built on <strong>GPT-4</strong>.

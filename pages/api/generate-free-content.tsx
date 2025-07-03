@@ -58,7 +58,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Check if user has unlimited generations subscription
     const user = await clerkClient.users.getUser(userId);
-    const hasUnlimitedGenerations = user.publicMetadata?.unlimitedGenerations === true;
+    const hasUnlimitedGenerations = user.publicMetadata?.unlimitedGenerations === true || user.publicMetadata?.pro === true;
     
     if (!hasUnlimitedGenerations && isRateLimited(userId)) {
       return res.status(429).json({
