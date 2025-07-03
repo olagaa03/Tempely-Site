@@ -66,6 +66,18 @@ export default function Header() {
               <DefaultAvatar />
               <SignOutButton />
             </SignedIn>
+            <SignedOut>
+              <SignInButton mode="modal">
+                <button className="bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-full px-5 py-2 shadow transition-transform duration-200 hover:scale-105 text-base">
+                  Sign In
+                </button>
+              </SignInButton>
+              <Link href="/sign-up">
+                <button className="bg-gray-100 hover:bg-gray-200 text-blue-700 font-semibold rounded-full px-5 py-2 shadow transition-transform duration-200 hover:scale-105 text-base ml-2">
+                  Sign Up
+                </button>
+              </Link>
+            </SignedOut>
           </div>
         </nav>
         <button className="md:hidden text-gray-100 focus:outline-none focus:ring-2 focus:ring-[var(--tempely-purple)]" onClick={() => setIsOpen(!isOpen)}>
