@@ -49,12 +49,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   console.log('Lemon Squeezy webhook payload:', JSON.stringify(event, null, 2));
   const eventName = event.event_name;
   const email = event.data?.attributes?.user_email || event.data?.attributes?.email;
-
-  if (!email) return res.status(400).json({ error: 'No email in payload' });
-
+  console.log('Webhook email:', email);
   const user = await getUserByEmail(email);
+  console.log('Found user:', user ? user.id : 'NOT FOUND');
+
+  // Product ID extraction
+  let productId = null;
+  if (eventName === 'order_created') {
+    productId = event.data?.attributes?.first_order_item?.product_id;
+  } else {
+    productId = event.data?.attributes?.product_id;
+  }
+  console.log('Product ID:', productId);
+
   if (!user) {
-    console.error('User not found for email:', email);
+    console.error('No Clerk user found for email:', email);
     return res.status(404).json({ error: 'User not found in Clerk' });
   }
 
@@ -62,17 +71,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (eventName === 'subscription_created' || eventName === 'order_created') {
     try {
       const customerPortalUrl = event.data?.attributes?.urls?.customer_portal || '';
-      let productId = null;
-      if (eventName === 'order_created') {
-        productId = event.data?.attributes?.first_order_item?.product_id;
-      } else {
-        productId = event.data?.attributes?.product_id;
-      }
       // Unlimited Generations product
       if (productId === 567880) {
-        await clerkClient.users.updateUser(user.id, {
-          publicMetadata: { unlimitedGenerations: true, customerPortal: customerPortalUrl },
-        });
+        try {
+          const updateResult = await clerkClient.users.updateUser(user.id, {
+            publicMetadata: { unlimitedGenerations: true, customerPortal: customerPortalUrl },
+          });
+          console.log('Update result:', updateResult);
+        } catch (err) {
+          console.error('Clerk update error:', err);
+        }
         console.log('Unlimited generations access granted to user:', user.id);
         return res.status(200).json({ success: true });
       }
@@ -91,7 +99,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // 🚫 Revoke Unlimited Generations or Pro access
   if (eventName === 'subscription_cancelled') {
     try {
-      const productId = event.data?.attributes?.product_id;
       // Unlimited Generations product
       if (productId === 567880) {
         await clerkClient.users.updateUser(user.id, {
