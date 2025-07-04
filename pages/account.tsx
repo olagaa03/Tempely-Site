@@ -15,7 +15,17 @@ export default function AccountPage() {
             <div className="mt-2 text-green-400 font-semibold">Pro Access Active</div>
           )}
           {Boolean(user?.publicMetadata?.unlimitedGenerations) && (
-            <div className="mt-2 text-emerald-400 font-semibold">Unlimited Generations Active</div>
+            <>
+              <div className="mt-2 text-emerald-400 font-semibold">Unlimited Generations Active</div>
+              <a
+                href={portalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block mt-2 text-sm text-red-400 underline opacity-80 hover:opacity-100 transition"
+              >
+                Cancel Subscription
+              </a>
+            </>
           )}
         </div>
         {Boolean(user?.publicMetadata?.pro) && portalUrl && (
