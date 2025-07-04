@@ -259,7 +259,7 @@ export default function AiToolPage() {
                 </div>
               </div>
               <a
-                href="https://tempely.lemonsqueezy.com/buy/unlimited-generations"
+                href="https://tempely.lemonsqueezy.com/buy/0cf347b0-00b4-4c72-a726-365d080439e4"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 text-black font-bold px-8 py-3 rounded-xl shadow-lg transition-all duration-300 hover:scale-105"
