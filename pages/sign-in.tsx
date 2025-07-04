@@ -17,7 +17,7 @@ export default function CustomSignIn() {
     if (!isLoaded) return;
     try {
       await signIn.create({ identifier: email, password });
-      router.push('/');
+      window.location.href = '/';
     } catch (err: any) {
       setError(err.errors?.[0]?.message || 'Sign in failed');
     } finally {
