@@ -62,7 +62,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (eventName === 'subscription_created' || eventName === 'order_created') {
     try {
       const customerPortalUrl = event.data?.attributes?.urls?.customer_portal || '';
-      const productId = event.data?.attributes?.product_id;
+      let productId = null;
+      if (eventName === 'order_created') {
+        productId = event.data?.attributes?.first_order_item?.product_id;
+      } else {
+        productId = event.data?.attributes?.product_id;
+      }
       // Unlimited Generations product
       if (productId === 567880) {
         await clerkClient.users.updateUser(user.id, {
