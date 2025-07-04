@@ -61,6 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     productId = event.data?.attributes?.product_id;
   }
   console.log('Product ID:', productId);
+  console.log('Type of productId:', typeof productId, productId);
 
   if (!user) {
     console.error('No Clerk user found for email:', email);
@@ -72,7 +73,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       const customerPortalUrl = event.data?.attributes?.urls?.customer_portal || '';
       // Unlimited Generations product
-      if (productId === 567880) {
+      if (String(productId) === '567880') {
         console.log('About to update Clerk user metadata...');
         try {
           const updateResult = await clerkClient.users.updateUser(user.id, {
@@ -101,7 +102,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (eventName === 'subscription_cancelled') {
     try {
       // Unlimited Generations product
-      if (productId === 567880) {
+      if (String(productId) === '567880') {
         await clerkClient.users.updateUser(user.id, {
           publicMetadata: { unlimitedGenerations: false },
         });
