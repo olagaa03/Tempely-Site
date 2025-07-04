@@ -58,25 +58,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(404).json({ error: 'User not found in Clerk' });
   }
 
-
-
-  // ✅ Grant Pro access
+  // ✅ Grant Pro or Unlimited Generations access
   if (eventName === 'subscription_created' || eventName === 'order_created') {
     try {
       const customerPortalUrl = event.data?.attributes?.urls?.customer_portal || '';
       const productId = event.data?.attributes?.product_id;
-      
-      // Check if this is the unlimited generations subscription
-      if (productId === 'unlimited-generations') {
-        const updated = await clerkClient.users.updateUser(user.id, {
+      // Unlimited Generations product
+      if (productId === 567880) {
+        await clerkClient.users.updateUser(user.id, {
           publicMetadata: { unlimitedGenerations: true, customerPortal: customerPortalUrl },
         });
         console.log('Unlimited generations access granted to user:', user.id);
         return res.status(200).json({ success: true });
       }
-      
-      // Default Pro access
-      const updated = await clerkClient.users.updateUser(user.id, {
+      // Default Pro access (other product IDs)
+      await clerkClient.users.updateUser(user.id, {
         publicMetadata: { pro: true, customerPortal: customerPortalUrl },
       });
       console.log('Pro access granted to user:', user.id);
@@ -87,21 +83,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   }
 
-  // 🚫 Revoke Pro access
+  // 🚫 Revoke Unlimited Generations or Pro access
   if (eventName === 'subscription_cancelled') {
     try {
       const productId = event.data?.attributes?.product_id;
-      
-      // Check if this is the unlimited generations subscription
-      if (productId === 'unlimited-generations') {
+      // Unlimited Generations product
+      if (productId === 567880) {
         await clerkClient.users.updateUser(user.id, {
           publicMetadata: { unlimitedGenerations: false },
         });
         console.log('Unlimited generations access revoked for user:', user.id);
         return res.status(200).json({ success: true });
       }
-      
-      // Default Pro access revocation
+      // Default Pro access revocation (other product IDs)
       await clerkClient.users.updateUser(user.id, {
         publicMetadata: { pro: false },
       });
