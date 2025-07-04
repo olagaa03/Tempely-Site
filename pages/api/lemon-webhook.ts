@@ -85,7 +85,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ error: 'Invalid JSON' });
   }
 
-  const eventName = event.event_name;
+  const eventName = event.meta?.event_name;
   const email = event.data?.attributes?.user_email || event.data?.attributes?.email;
   console.log('Webhook event name:', eventName);
   console.log('Webhook email:', email);
