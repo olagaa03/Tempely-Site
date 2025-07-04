@@ -73,6 +73,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const customerPortalUrl = event.data?.attributes?.urls?.customer_portal || '';
       // Unlimited Generations product
       if (productId === 567880) {
+        console.log('About to update Clerk user metadata...');
         try {
           const updateResult = await clerkClient.users.updateUser(user.id, {
             publicMetadata: { unlimitedGenerations: true, customerPortal: customerPortalUrl },
