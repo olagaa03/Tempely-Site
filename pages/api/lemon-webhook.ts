@@ -46,6 +46,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const event = JSON.parse(rawBody);
+  console.log('Lemon Squeezy webhook payload:', JSON.stringify(event, null, 2));
   const eventName = event.event_name;
   const email = event.data?.attributes?.user_email || event.data?.attributes?.email;
 
