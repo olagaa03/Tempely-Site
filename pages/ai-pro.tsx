@@ -81,6 +81,10 @@ export default function AiProPage() {
               <li className="flex items-center gap-2"><DownloadCloud className="text-cyan-200 w-4 h-4" /> Monthly premium templates drop</li>
             </ul>
             <p className="mt-auto text-2xl font-semibold text-yellow-200 mb-4">$19.99<span className="text-lg font-medium text-yellow-100">/month</span></p>
+            {/* NB: Use same email note */}
+            <div className="mb-4 p-3 rounded-lg bg-yellow-200/80 text-yellow-900 font-semibold border border-yellow-400 text-sm">
+              <strong>NB:</strong> Please use the same email address as your Tempely account when purchasing. This ensures your Pro access is activated instantly!
+            </div>
             <a
               href="https://tempely.lemonsqueezy.com/buy/9fcbd47a-9c87-4d31-9639-2e38b5a84326"
               target="_blank"

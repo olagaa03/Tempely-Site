@@ -258,6 +258,10 @@ export default function AiToolPage() {
                   <span>No setup fees</span>
                 </div>
               </div>
+              {/* NB: Use same email note */}
+              <div className="mb-4 p-3 rounded-lg bg-yellow-200/80 text-yellow-900 font-semibold border border-yellow-400 text-sm">
+                <strong>NB:</strong> Please use the same email address as your Tempely account when purchasing. This ensures your unlimited access is activated instantly!
+              </div>
               <a
                 href="https://tempely.lemonsqueezy.com/buy/0cf347b0-00b4-4c72-a726-365d080439e4"
                 target="_blank"
