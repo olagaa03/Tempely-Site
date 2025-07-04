@@ -62,6 +62,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
   console.log('Product ID:', productId);
   console.log('Type of productId:', typeof productId, productId);
+  console.log('Checking if productId matches 567880...');
 
   if (!user) {
     console.error('No Clerk user found for email:', email);
@@ -85,6 +86,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
         console.log('Unlimited generations access granted to user:', user.id);
         return res.status(200).json({ success: true });
+      } else {
+        console.log('productId did NOT match 567880:', productId);
       }
       // Default Pro access (other product IDs)
       await clerkClient.users.updateUser(user.id, {
