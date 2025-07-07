@@ -13,7 +13,7 @@ if (!apiKey) {
 const openai = new OpenAI({ apiKey });
 
 // Validate request body
-const InputSchema = z.object({
+const FullScriptSchema = z.object({
   niche: z.string().min(1),
   platform: z.string().min(1),
   audience: z.string().min(1),
@@ -21,9 +21,19 @@ const InputSchema = z.object({
   extra: z.string().optional(),
   tone: z.string().optional(),
   goal: z.string().optional(),
-  regenerateBlock: z.string().optional(),
-  blockContent: z.string().optional(),
-  scriptContext: z.any().optional(),
+});
+
+const RegenerateSchema = z.object({
+  regenerateBlock: z.string().min(1),
+  blockContent: z.string().min(1),
+  scriptContext: z.any(),
+  tone: z.string().optional(),
+  goal: z.string().optional(),
+  platform: z.string().optional(),
+  format: z.string().optional(),
+  audience: z.string().optional(),
+  niche: z.string().optional(),
+  extra: z.string().optional(),
 });
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -42,12 +52,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(403).json({ error: 'Forbidden: Pro access required.' });
   }
 
-  const parsed = InputSchema.safeParse(req.body);
-  if (!parsed.success) {
-    return res.status(400).json({ error: 'Invalid or missing input fields.' });
+  let parsed;
+  let niche, format, audience, platform, extra, tone, goal, regenerateBlock, blockContent, scriptContext;
+  if (req.body.regenerateBlock) {
+    parsed = RegenerateSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ error: 'Invalid or missing input fields for regeneration.' });
+    }
+    ({ regenerateBlock, blockContent, scriptContext, tone, goal, platform, format, audience, niche, extra } = parsed.data);
+  } else {
+    parsed = FullScriptSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ error: 'Invalid or missing input fields.' });
+    }
+    ({ niche, format, audience, platform, extra, tone, goal } = parsed.data);
   }
-
-  const { niche, format, audience, platform, extra, tone, goal, regenerateBlock, blockContent, scriptContext } = parsed.data;
 
   if (regenerateBlock) {
     if (!blockContent) {
