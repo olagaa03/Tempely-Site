@@ -49,6 +49,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const { niche, format, audience, platform, extra, tone, goal, regenerateBlock, blockContent, scriptContext } = parsed.data;
 
+  if (regenerateBlock) {
+    if (!blockContent) {
+      return res.status(400).json({ error: 'Missing blockContent for regeneration.' });
+    }
+    if (!scriptContext) {
+      return res.status(400).json({ error: 'Missing scriptContext for regeneration.' });
+    }
+    if (!regenerateBlock) {
+      return res.status(400).json({ error: 'Missing regenerateBlock for regeneration.' });
+    }
+  }
+
   let prompt;
   if (regenerateBlock && scriptContext && blockContent) {
     // Regenerate only a specific block

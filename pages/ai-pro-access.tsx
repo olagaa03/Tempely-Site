@@ -480,6 +480,51 @@ function InputField({
       "Medium (15–30 sec)",
       "Long (1–2 min)"
     ],
+    tone: [
+      "Bold",
+      "Enthusiastic",
+      "Educational",
+      "Fun",
+      "Motivational",
+      "Inspiring",
+      "Conversational",
+      "Professional",
+      "Empowering",
+      "Friendly",
+      "Playful",
+      "Serious",
+      "Casual",
+      "Persuasive",
+      "Uplifting",
+      "Witty",
+      "Direct",
+      "Relatable",
+      "Storytelling",
+      "Analytical",
+      "Encouraging"
+    ],
+    goal: [
+      "Drive engagement",
+      "Educate",
+      "Inspire action",
+      "Promote product",
+      "Build community",
+      "Increase followers",
+      "Generate leads",
+      "Boost sales",
+      "Raise awareness",
+      "Entertain",
+      "Establish authority",
+      "Encourage sharing",
+      "Start a conversation",
+      "Showcase expertise",
+      "Motivate audience",
+      "Highlight benefits",
+      "Solve a problem",
+      "Share a story",
+      "Announce news",
+      "Demonstrate value"
+    ],
   };
 
   return (
@@ -532,7 +577,7 @@ function InputField({
                 <span>{value === "" ? "None" : value || `Select ${label}`}</span>
                 <span className="pointer-events-none absolute right-4 top-1/2 transform -translate-y-1/2 text-white/70 text-xl">▼</span>
               </Listbox.Button>
-              <Listbox.Options className="absolute z-20 mt-2 w-full bg-black/90 border border-white/20 rounded-xl shadow-2xl max-h-60 overflow-auto focus:outline-none">
+              <Listbox.Options className="absolute z-20 mt-2 w-full min-w-[250px] bg-black/90 border border-white/20 rounded-xl shadow-2xl max-h-60 overflow-auto focus:outline-none">
                 {(selectOptions[name] || []).map((groupOrItem, idx) =>
                   typeof groupOrItem === 'string' ? (
                     <Listbox.Option key={groupOrItem} value={groupOrItem} as={Fragment}>
@@ -569,7 +614,7 @@ function InputField({
                 <span>{value === "" ? "None" : value || `Select ${label}`}</span>
                 <span className="pointer-events-none absolute right-4 top-1/2 transform -translate-y-1/2 text-white/70 text-xl">▼</span>
               </Listbox.Button>
-              <Listbox.Options className="absolute z-20 mt-2 w-full bg-black/90 border border-white/20 rounded-xl shadow-2xl max-h-60 overflow-auto focus:outline-none">
+              <Listbox.Options className="absolute z-20 mt-2 w-full min-w-[250px] bg-black/90 border border-white/20 rounded-xl shadow-2xl max-h-60 overflow-auto focus:outline-none">
                 {(options || []).map(option => (
                   <Listbox.Option
                     key={option}
