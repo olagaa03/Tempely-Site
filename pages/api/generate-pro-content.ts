@@ -19,6 +19,8 @@ const InputSchema = z.object({
   audience: z.string().min(1),
   format: z.string().min(1),
   extra: z.string().optional(),
+  regenerateBlock: z.string().optional(),
+  scriptContext: z.any().optional(),
 });
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -42,9 +44,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ error: 'Invalid or missing input fields.' });
   }
 
-  const { niche, format, audience, platform, extra } = parsed.data;
+  const { niche, format, audience, platform, extra, regenerateBlock, scriptContext } = parsed.data;
 
-  const prompt = `
+  let prompt;
+  if (regenerateBlock && scriptContext) {
+    // Regenerate only a specific block
+    prompt = `You are a world-class video content strategist and scriptwriter.
+
+Here is the current script context:
+Script Title: ${scriptContext.title}
+Length: ${scriptContext.length}
+Vibe: ${scriptContext.vibe}
+Goal: ${scriptContext.goal}
+Script:
+${scriptContext.script}
+
+Regenerate ONLY the following block: ${regenerateBlock}
+- Make sure it fits seamlessly with the rest of the script and matches the style, tone, and context.
+- Return ONLY the new version of the ${regenerateBlock} block, nothing else.`;
+  } else {
+    // Full script generation
+    prompt = `
 You are a world-class video content strategist and scriptwriter.
 
 Your job is to create a high-converting, visually organized video script for the following:
@@ -77,6 +97,7 @@ Write a compelling caption for posting this video on ${platform}. Include releva
 **CTA:**
 Write a strong call to action for the end of the video or for the caption.
 `;
+  }
 
   try {
     const response = await openai.chat.completions.create({
@@ -90,6 +111,11 @@ Write a strong call to action for the end of the video or for the caption.
 
     if (!output) {
       return res.status(500).json({ error: 'No content returned from OpenAI.' });
+    }
+
+    if (regenerateBlock && scriptContext) {
+      // Return only the regenerated block
+      return res.status(200).json({ result: output });
     }
 
     console.log(`[PRO ✅] Content generated for user ${userId}`);
