@@ -456,7 +456,7 @@ function InputField({
   name: string;
   label: string;
   value: string;
-  onChange: ((value: string) => void) | ((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void);
+  onChange: (value: string) => void;
   example?: string;
   icon?: React.ReactNode;
   options?: string[];
@@ -560,7 +560,7 @@ function InputField({
         // Dropdown/Listbox option
         ["niche", "platform", "audience", "tone", "goal", "format", "pain", "product"].includes(name) ? (
           <div className="relative">
-            <Listbox value={value} onChange={onChange as (value: string) => void}>
+            <Listbox value={value} onChange={onChange}>
               <Listbox.Button className={fieldClass + " flex items-center justify-between cursor-pointer pr-10"}>
                 <span>{value === "" ? "None" : value || `Select ${label}`}</span>
                 <span className="pointer-events-none absolute right-4 top-1/2 transform -translate-y-1/2 text-white/70 text-xl">▼</span>
@@ -587,7 +587,7 @@ function InputField({
             </Listbox>
           </div>
         ) : (
-          <Listbox value={value} onChange={onChange as (value: string) => void}>
+          <Listbox value={value} onChange={onChange}>
             <div className="relative">
               <Listbox.Button className={fieldClass + " flex items-center justify-between cursor-pointer pr-10"}>
                 <span>{value === "" ? "None" : value || `Select ${label}`}</span>
@@ -624,7 +624,7 @@ function InputField({
               name={name}
               id={name}
               value={value}
-              onChange={e => onChange(e.target.value)}
+              onChange={e => onChange((e.target as HTMLTextAreaElement).value)}
               rows={2}
               className={fieldClass + " resize-none"}
               style={{ minHeight: 80 }}
@@ -636,7 +636,7 @@ function InputField({
               name={name}
               id={name}
               value={value}
-              onChange={e => onChange(e.target.value)}
+              onChange={e => onChange((e.target as HTMLInputElement).value)}
               className={fieldClass}
               placeholder={`Enter your custom ${label.toLowerCase()}...`}
               required
