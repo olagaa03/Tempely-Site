@@ -19,7 +19,10 @@ const InputSchema = z.object({
   audience: z.string().min(1),
   format: z.string().min(1),
   extra: z.string().optional(),
+  tone: z.string().optional(),
+  goal: z.string().optional(),
   regenerateBlock: z.string().optional(),
+  blockContent: z.string().optional(),
   scriptContext: z.any().optional(),
 });
 
@@ -44,10 +47,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ error: 'Invalid or missing input fields.' });
   }
 
-  const { niche, format, audience, platform, extra, regenerateBlock, scriptContext } = parsed.data;
+  const { niche, format, audience, platform, extra, tone, goal, regenerateBlock, blockContent, scriptContext } = parsed.data;
 
   let prompt;
-  if (regenerateBlock && scriptContext) {
+  if (regenerateBlock && scriptContext && blockContent) {
     // Regenerate only a specific block
     prompt = `You are a world-class video content strategist and scriptwriter.
 
@@ -56,10 +59,18 @@ Script Title: ${scriptContext.title}
 Length: ${scriptContext.length}
 Vibe: ${scriptContext.vibe}
 Goal: ${scriptContext.goal}
+Tone: ${tone || scriptContext.tone || ''}
+Platform: ${platform}
+Format: ${format}
+Target Audience: ${audience}
+
 Script:
 ${scriptContext.script}
 
-Regenerate ONLY the following block: ${regenerateBlock}
+Regenerate ONLY the following block:
+Block Label: ${regenerateBlock}
+Current Block Content: ${blockContent}
+
 - Make sure it fits seamlessly with the rest of the script and matches the style, tone, and context.
 - Return ONLY the new version of the ${regenerateBlock} block, nothing else.`;
   } else {
@@ -72,6 +83,8 @@ Your job is to create a high-converting, visually organized video script for the
 - Format: ${format}
 - Target Audience: ${audience}
 - Platform: ${platform}
+- Tone: ${tone || ''}
+- Goal: ${goal || ''}
 ${extra ? `- Extra Instructions: ${extra}` : ''}
 
 DELIVER THE FOLLOWING SECTIONS (use clear section headers, bolded with **, and keep the order):

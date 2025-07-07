@@ -58,10 +58,12 @@ export const getServerSideProps: GetServerSideProps = async (
 export default function AiProAccessPage() {
   const [formData, setFormData] = useState({
     niche: "Content Creation",
-    format: "Short (10–30 sec)",
+    format: "Short (5–12 sec)",
     audience: "Young Professionals",
     platform: "TikTok",
     extra: "",
+    tone: "Bold",
+    goal: "Drive engagement",
   });
 
   const [result, setResult] = useState("");
@@ -208,10 +210,10 @@ export default function AiProAccessPage() {
                 icon={<LayoutGrid className="text-cyan-400" />}
                 name="format"
                 label="Format"
-                example="Short (10–30 sec), Long (2–3 min)"
+                example="Short (5–12 sec), Medium (15–30 sec), Long (1–2 min)"
                 value={formData.format}
                 onChange={(val: string) => setFormData({ ...formData, format: val })}
-                options={["Short (10–30 sec)", "Long (2–3 min)"]}
+                options={["Short (5–12 sec)", "Medium (15–30 sec)", "Long (1–2 min)"]}
               />
               <InputField
                 icon={<User className="text-blue-400" />}
@@ -229,6 +231,24 @@ export default function AiProAccessPage() {
                 value={formData.platform}
                 onChange={(val: string) => setFormData({ ...formData, platform: val })}
                 options={["TikTok", "Instagram", "YouTube"]}
+              />
+              <InputField
+                icon={<Sparkles className="text-purple-400" />}
+                name="tone"
+                label="Tone"
+                example="e.g. Bold, Enthusiastic, Educational, Fun"
+                value={formData.tone}
+                onChange={(val: string) => setFormData({ ...formData, tone: val })}
+                options={["Bold", "Enthusiastic", "Educational", "Fun", "Motivational", "Inspiring", "Conversational", "Professional"]}
+              />
+              <InputField
+                icon={<Target className="text-green-400" />}
+                name="goal"
+                label="Goal"
+                example="e.g. Drive engagement, Educate, Inspire action"
+                value={formData.goal}
+                onChange={(val: string) => setFormData({ ...formData, goal: val })}
+                options={["Drive engagement", "Educate", "Inspire action", "Promote product", "Build community", "Increase followers"]}
               />
             </div>
             <div className="mt-4">
@@ -354,12 +374,15 @@ export default function AiProAccessPage() {
                                   headers: { "Content-Type": "application/json" },
                                   body: JSON.stringify({
                                     regenerateBlock: blockLabel,
-                                    scriptContext: sections,
+                                    blockContent: line.replace(/^(\[.*?\])/, "").trim(),
+                                    scriptContext: { ...sections, tone: formData.tone, goal: formData.goal },
+                                    tone: formData.tone,
+                                    goal: formData.goal,
                                   }),
                                 });
                                 const data = await res.json();
                                 if (data.result && typeof data.result === 'string') {
-                                  // Replace only this block in the script
+                                  // Replace only this block in the script using both label and old content
                                   const newScript = sections.script.split(/\n/).map((l, i) =>
                                     i === idx ? `${blockLabel} ${data.result.replace(blockLabel, '').trim()}` : l
                                   ).join('\n');
