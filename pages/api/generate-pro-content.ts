@@ -84,27 +84,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   let prompt;
   if (regenerateBlock && scriptContext && blockContent) {
     // Regenerate only a specific block
-    prompt = `You are a world-class video content strategist and scriptwriter.
-
-Here is the current script context:
-Script Title: ${scriptContext.title}
-Length: ${scriptContext.length}
-Vibe: ${scriptContext.vibe}
-Goal: ${scriptContext.goal}
-Tone: ${tone || scriptContext.tone || ''}
-Platform: ${platform}
-Format: ${format}
-Target Audience: ${audience}
-
-Script:
-${scriptContext.script}
-
-Regenerate ONLY the following block:
-Block Label: ${regenerateBlock}
-Current Block Content: ${blockContent}
-
-- Make sure it fits seamlessly with the rest of the script and matches the style, tone, and context.
-- Return ONLY the new version of the ${regenerateBlock} block, nothing else.`;
+    let extraBlockInstructions = '';
+    if (/hook/i.test(regenerateBlock)) {
+      extraBlockInstructions = `\nInstructions:\n- Return ONLY a single, creative, high-impact hook line for a TikTok video.\n- Make it scroll-stopping, punchy, and original.\n- Do NOT return a list or multiple options—just one line.\n- Do NOT repeat the label.\n- Match the style, tone, and context of the rest of the script.\n- Example of a good hook: (Animated, lively voice) \"Stop scrolling—this 3 seconds could change your content game!\"`;
+    } else if (/value|proposition|drop/i.test(regenerateBlock)) {
+      extraBlockInstructions = `\nInstructions:\n- Return ONLY a single, creative, high-value statement for this section.\n- Make it actionable, specific, and valuable.\n- Do NOT return a list or multiple options—just one line.\n- Do NOT repeat the label.\n- Match the style, tone, and context of the rest of the script.`;
+    } else if (/cta|call to action/i.test(regenerateBlock)) {
+      extraBlockInstructions = `\nInstructions:\n- Return ONLY a single, strong call to action.\n- Make it motivating, clear, and platform-appropriate.\n- Do NOT return a list or multiple options—just one line.\n- Do NOT repeat the label.\n- Match the style, tone, and context of the rest of the script.`;
+    } else {
+      extraBlockInstructions = `\nInstructions:\n- Return ONLY a single, creative, and contextually appropriate line for this section.\n- Do NOT return a list or multiple options—just one line.\n- Do NOT repeat the label.\n- Match the style, tone, and context of the rest of the script.`;
+    }
+    prompt = `You are a world-class video content strategist and scriptwriter.\n\nHere is the current script context:\nScript Title: ${scriptContext.title}\nLength: ${scriptContext.length}\nVibe: ${scriptContext.vibe}\nGoal: ${scriptContext.goal}\nTone: ${tone || scriptContext.tone || ''}\nPlatform: ${platform}\nFormat: ${format}\nTarget Audience: ${audience}\n\nScript:\n${scriptContext.script}\n\nRegenerate ONLY the following block:\nBlock Label: ${regenerateBlock}\nCurrent Block Content: ${blockContent}\n${extraBlockInstructions}`;
   } else {
     // Full script generation
     prompt = `
