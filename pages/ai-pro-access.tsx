@@ -369,12 +369,32 @@ export default function AiProAccessPage() {
                             onClick={async () => {
                               setRegeneratingBlock(blockLabel);
                               try {
+                                // Parse the script into blocks (label + content)
+                                const scriptBlocks: { label: string; content: string }[] = [];
+                                let currentLabel: string | null = null;
+                                let currentContent: string[] = [];
+                                sections.script.split('\n').forEach(line => {
+                                  const match = line.match(/^(\[.*?\])/);
+                                  if (match) {
+                                    if (currentLabel) {
+                                      scriptBlocks.push({ label: currentLabel, content: currentContent.join('\n').trim() });
+                                    }
+                                    currentLabel = match[1];
+                                    currentContent = [line.replace(/^(\[.*?\])/, '').trim()];
+                                  } else if (currentLabel) {
+                                    currentContent.push(line.trim());
+                                  }
+                                });
+                                if (currentLabel) {
+                                  scriptBlocks.push({ label: currentLabel, content: currentContent.join('\n').trim() });
+                                }
+                                const block = scriptBlocks.find(b => b.label === blockLabel);
                                 const res = await fetch("/api/generate-pro-content", {
                                   method: "POST",
                                   headers: { "Content-Type": "application/json" },
                                   body: JSON.stringify({
                                     regenerateBlock: blockLabel,
-                                    blockContent: line.replace(/^(\[.*?\])/, "").trim(),
+                                    blockContent: block ? block.content : "",
                                     scriptContext: { ...sections, tone: formData.tone, goal: formData.goal },
                                     tone: formData.tone,
                                     goal: formData.goal,
