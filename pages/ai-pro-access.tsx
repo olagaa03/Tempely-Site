@@ -411,9 +411,9 @@ function InputField({
       { group: "Interest Groups", items: ["Fitness Enthusiasts", "Health & Wellness Seekers", "Travelers", "Food Lovers", "Fashion Enthusiasts", "Gamers", "Music Lovers", "Artists", "Photographers", "Personal Development Seekers", "Homeowners", "Pet Owners", "Car Enthusiasts", "Beauty Enthusiasts", "Skincare Lovers"] },
     ],
     format: [
-      { group: "Social Media", items: ["Instagram Caption", "Instagram Reel Script", "Instagram Carousel", "TikTok Script", "TikTok Caption", "LinkedIn Post", "Facebook Ad", "Facebook Post", "Tweet Thread", "Pinterest Pin", "Reddit Post"] },
-      { group: "Long-form & Email", items: ["YouTube Script", "YouTube Title & Description", "Blog Intro", "Newsletter", "Podcast Outline"] },
-      { group: "Web & Ads", items: ["Website Hero Copy", "Google Ad Headline & Description", "Product Landing Page Copy", "Call to Action (CTA) Ideas"] },
+      "Short (5–12 sec)",
+      "Medium (15–30 sec)",
+      "Long (1–2 min)"
     ],
   };
 
