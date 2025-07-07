@@ -92,16 +92,30 @@ export default function AiProAccessPage() {
         body: JSON.stringify(formData),
       });
 
-      const data = await res.json();
-      if (!res.ok || !data.result || typeof data.result !== "string" || data.result.trim() === "") {
+      // Debug: log the raw response
+      const text = await res.text();
+      console.log("[DEBUG] Raw response from backend:", text);
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (err) {
+        setError("Invalid response from server.");
+        setLoading(false);
+        return;
+      }
+      console.log("[DEBUG] Parsed response:", data);
+      if (!res.ok) {
+        setError(data.error || "Server error.");
+        return;
+      }
+      if (!data.result || typeof data.result !== "string" || data.result.trim() === "") {
         setError(data.error || "No valid result returned from OpenAI.");
         return;
       }
-
       setResult(data.result);
       parseSections(data.result);
-    } catch {
-      setError("Failed to connect to OpenAI");
+    } catch (err) {
+      setError("Failed to connect to OpenAI: " + (err?.message || err));
     } finally {
       setLoading(false);
     }
