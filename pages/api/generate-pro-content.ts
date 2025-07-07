@@ -22,6 +22,7 @@ const InputSchema = z.object({
   product: z.string().optional(),
   pain: z.string().optional(),
   format: z.string().min(1),
+  extra: z.string().optional(),
 });
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -45,44 +46,32 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ error: 'Invalid or missing input fields.' });
   }
 
-  const { niche, platform, audience, tone, goal, product, pain, format } = parsed.data;
+  const { niche, format, audience, platform, extra } = parsed.data;
 
   const prompt = `
-You're a world-class brand strategist and content marketing expert.
+You are a world-class video content strategist and scriptwriter.
 
-Your task is to create marketing content that:
-- Feels professionally written and emotionally compelling
-- Is tailored to the user's niche, audience, and product
-- Explains the strategic reasoning behind each section
+Your job is to create a high-converting, engaging video script for the following:
+- Niche: ${niche}
+- Format: ${format}
+- Target Audience: ${audience}
+- Platform: ${platform}
+${extra ? `- Extra Instructions: ${extra}` : ''}
 
-FORMAT: ${format}
+DELIVER THE FOLLOWING SECTIONS (use clear section headers):
 
-USER INPUT:
-Niche: ${niche}
-Platform: ${platform}
-Audience: ${audience}
-Tone: ${tone}
-Goal: ${goal}
-Product: ${product || 'Not specified'}
-Customer Pain Point: ${pain || 'Not specified'}
+**Hook**
+Write a single, attention-grabbing opening line for the video.
 
-DELIVER THE FOLLOWING SECTIONS:
+**Script**
+Write a full script for the video, tailored to the specified format and audience. Make it actionable, engaging, and platform-appropriate.
 
-1. **Content Idea**
-Generate 1 creative content idea for this audience and platform. Make it unique, actionable, and relevant to the user's goal and niche.
+**Caption**
+Write a compelling caption for posting this video on ${platform}. Include relevant hashtags if appropriate.
 
-2. **Captions**
-Generate 3 unique, scroll-stopping ${format}s optimized for ${platform}. Match the tone "${tone}" and include relevant hashtags.
-
-3. **Hook Ideas**
-Write 3 attention-grabbing hooks to use as opening lines or intro text. Use curiosity or emotional triggers.
-
-4. **Content Strategy Tip**
-Give one tactical tip to improve performance for this format. Focus on trends, timing, formats, or creative approach.
-
-5. **Why This Works**
-Explain why these examples work — reference psychology, copywriting principles, audience targeting, or structure. Speak like a strategist, not an AI.
-`.trim();
+**CTA**
+Write a strong call to action for the end of the video.
+`;
 
   try {
     const response = await openai.chat.completions.create({

@@ -52,25 +52,21 @@ export const getServerSideProps: GetServerSideProps = async (
 
 export default function AiProAccessPage() {
   const [formData, setFormData] = useState({
-    niche: "Fitness Coaching",
-    platform: "Instagram",
-    audience: "Moms 30-45",
-    tone: "Educational",
-    goal: "Grow to 10k followers",
-    product: "Digital course on meal planning",
-    pain: "Struggling with consistency and self-doubt",
-    format: "Instagram Caption",
+    niche: "Content Creation",
+    format: "Short (10–30 sec)",
+    audience: "Young Professionals",
+    platform: "TikTok",
+    extra: "",
   });
 
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [sections, setSections] = useState<Record<SectionKey | 'idea', string>>({
-    captions: "",
-    hooks: "",
-    tip: "",
-    why: "",
-    idea: "",
+  const [sections, setSections] = useState<{ hook: string; script: string; caption: string; cta: string }>({
+    hook: "",
+    script: "",
+    caption: "",
+    cta: "",
   });
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
@@ -87,7 +83,7 @@ export default function AiProAccessPage() {
     setLoading(true);
     setResult("");
     setError("");
-    setSections({ captions: "", hooks: "", tip: "", why: "", idea: "" });
+    setSections({ hook: "", script: "", caption: "", cta: "" });
 
     try {
       const res = await fetch("/api/generate-pro-content", {
@@ -97,12 +93,7 @@ export default function AiProAccessPage() {
       });
 
       const data = await res.json();
-      if (
-        !res.ok ||
-        !data.result ||
-        typeof data.result !== "string" ||
-        data.result.trim() === ""
-      ) {
+      if (!res.ok || !data.result || typeof data.result !== "string" || data.result.trim() === "") {
         setError(data.error || "No valid result returned from OpenAI.");
         return;
       }
@@ -119,12 +110,9 @@ export default function AiProAccessPage() {
   const parseSections = (text: string) => {
     const extract = (label: string) => {
       const patterns = [
-        // Match "**1. Captions**" or "**Captions**" or "Captions:"
-        new RegExp(`\\*\\*\\d*\\.?\\s*${label}\\*\\*\\s*([\\s\\S]*?)(?=\\*\\*\\d*\\.?\\s*\\w|$)`, "i"),
-        new RegExp(`\\*\\*${label}\\*\\*\\s*([\\s\\S]*?)(?=\\*\\*|$)`, "i"),
-        new RegExp(`${label}:\\s*([\\s\\S]*?)(\\n\\n|$)`, "i"),
-        // Fallback: match label at start of line
-        new RegExp(`^${label}\\s*\\n([\\s\\S]*?)(\\n\\n|$)`, "im"),
+        new RegExp(`\*\*${label}\*\*:?\s*([\s\S]*?)(?=\*\*|$)`, "i"),
+        new RegExp(`${label}:\s*([\s\S]*?)(\n\n|$)`, "i"),
+        new RegExp(`^${label}\s*\n([\s\S]*?)(\n\n|$)`, "im"),
       ];
       for (const pattern of patterns) {
         const match = text.match(pattern);
@@ -132,13 +120,11 @@ export default function AiProAccessPage() {
       }
       return "";
     };
-
     setSections({
-      idea: extract("Content Idea"),
-      captions: extract("Captions"),
-      hooks: extract("Hook Ideas"),
-      tip: extract("Content Strategy Tip"),
-      why: extract("Why This Works"),
+      hook: extract("Hook"),
+      script: extract("Script"),
+      caption: extract("Caption"),
+      cta: extract("CTA"),
     });
   };
 
@@ -188,65 +174,50 @@ export default function AiProAccessPage() {
                 icon={<Tag className="text-pink-400" />}
                 name="niche"
                 label="Niche"
-                example="e.g. Fitness Coaching, Fashion Retailer"
+                example="e.g. Fitness, Cooking, Marketing"
                 value={formData.niche}
                 onChange={(val: string) => setFormData({ ...formData, niche: val })}
+              />
+              <InputField
+                icon={<LayoutGrid className="text-cyan-400" />}
+                name="format"
+                label="Format"
+                example="Short (10–30 sec), Long (2–3 min)"
+                value={formData.format}
+                onChange={(val: string) => setFormData({ ...formData, format: val })}
+                options={["Short (10–30 sec)", "Long (2–3 min)"]}
+              />
+              <InputField
+                icon={<User className="text-blue-400" />}
+                name="audience"
+                label="Target Audience"
+                example="e.g. Young Professionals, Moms 30–45"
+                value={formData.audience}
+                onChange={(val: string) => setFormData({ ...formData, audience: val })}
               />
               <InputField
                 icon={<Megaphone className="text-yellow-400" />}
                 name="platform"
                 label="Platform"
-                example="e.g. Instagram, TikTok, LinkedIn"
+                example="e.g. TikTok, Instagram, YouTube"
                 value={formData.platform}
                 onChange={(val: string) => setFormData({ ...formData, platform: val })}
+                options={["TikTok", "Instagram", "YouTube"]}
               />
-              <InputField
-                icon={<User className="text-blue-400" />}
-                name="audience"
-                label="Audience"
-                example="e.g. Moms 30-45, Entrepreneurs, Students"
-                value={formData.audience}
-                onChange={(val: string) => setFormData({ ...formData, audience: val })}
-              />
-              <InputField
-                icon={<Mic className="text-purple-400" />}
-                name="tone"
-                label="Tone"
-                example="e.g. Funny, Educational, Bold"
-                value={formData.tone}
-                onChange={(val: string) => setFormData({ ...formData, tone: val })}
-              />
-              <InputField
-                icon={<Target className="text-green-400" />}
-                name="goal"
-                label="Goal"
-                example="e.g. Grow to 10k followers, Launch a product"
-                value={formData.goal}
-                onChange={(val: string) => setFormData({ ...formData, goal: val })}
-              />
-              <InputField
-                icon={<LayoutGrid className="text-cyan-400" />}
-                name="format"
-                label="Content Format"
-                example="e.g. Instagram Caption, LinkedIn Post"
-                value={formData.format}
-                onChange={(val: string) => setFormData({ ...formData, format: val })}
-              />
-              <InputField
-                icon={<TrendingUp className="text-orange-400" />}
-                name="product"
-                label="Product/Offer"
-                example="e.g. Digital course, Coaching program"
-                value={formData.product}
-                onChange={(val: string) => setFormData({ ...formData, product: val })}
-              />
-              <InputField
-                icon={<AlertCircle className="text-red-400" />}
-                name="pain"
-                label="Audience Pain Point"
-                example="e.g. Struggling with consistency"
-                value={formData.pain}
-                onChange={(val: string) => setFormData({ ...formData, pain: val })}
+            </div>
+            <div className="mt-4">
+              <label htmlFor="extra" className="block font-bold text-base mb-1 flex items-center gap-2 text-white drop-shadow">
+                <Info className="text-green-400" />
+                Extra Instructions (optional)
+              </label>
+              <textarea
+                id="extra"
+                name="extra"
+                value={formData.extra}
+                onChange={e => setFormData({ ...formData, extra: e.target.value })}
+                rows={3}
+                className="w-full min-h-[52px] p-4 border border-white/20 rounded-xl bg-black/40 text-white placeholder-white/70 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400/40 focus:border-blue-400/40 transition-all duration-300 resize-none"
+                placeholder="Add any special requests, context, or details for your script..."
               />
             </div>
             <button
@@ -261,12 +232,12 @@ export default function AiProAccessPage() {
               {loading ? (
                 <span className="flex justify-center items-center gap-3 text-white">
                   <TempelySpinner />
-                  <span>Generating Pro Content...</span>
+                  <span>Generating Script...</span>
                 </span>
               ) : (
                 <span className="flex items-center justify-center gap-3">
                   <span className="text-2xl animate-pulse-glow">🚀</span>
-                  Generate Pro Content
+                  Generate Pro Script
                   <span className="text-lg">→</span>
                 </span>
               )}
@@ -288,123 +259,77 @@ export default function AiProAccessPage() {
         )}
 
         {/* Results Section */}
-        {(sections.captions || sections.hooks || sections.tip || sections.why) && (
+        {(sections.hook || sections.script || sections.caption || sections.cta) && (
           <div className="glass-strong rounded-3xl p-8 shadow-2xl space-y-8 animate-slide-in">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-yellow-300 mb-2 gradient-text">
-                🚀 Your Exclusive Pro Content
+                Your Video Script
               </h2>
               <p className="text-gray-400">Copy any piece with one click</p>
             </div>
-            {/* Content Idea Section - move to top */}
-            {sections.idea && (
-              <div>
-                <h3 className="text-xl font-bold text-green-400 mb-4 flex items-center gap-2">
-                  <span className="animate-pulse-glow">💡</span>
-                  Content Idea
-                </h3>
-                <div className="group relative hover-lift">
-                  <div className="bg-green-500/10 border border-green-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-green-400/40 hover:bg-green-500/15">
-                    <p className="text-base leading-relaxed">{sections.idea}</p>
-                    <button
-                      onClick={() => copyToClipboard(sections.idea, `idea`)}
-                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-green-500/20 hover:bg-green-500/40 p-2 rounded-lg hover:scale-110"
-                      title="Copy to clipboard"
-                    >
-                      {copiedKey === `idea` ? (
-                        <span className="text-green-400 text-sm animate-fade-in">✓</span>
-                      ) : (
-                        <span className="text-green-400 text-sm">📋</span>
-                      )}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-            {/* Captions Section - improved parsing and display */}
-            {sections.captions && (
-              <div>
-                <h3 className="text-xl font-bold text-blue-400 mb-4 flex items-center gap-2">
-                  <span className="animate-pulse-glow">📢</span>
-                  Captions
-                </h3>
-                <div className="space-y-3">
-                  {sections.captions
-                    .split(/(?:^|\n)\s*(?:[a-zA-Z]|\d+)\.\s+/) // split on a., b., c., 1., 2., 3.
-                    .map(line => line.trim())
-                    .map(line => line.replace(/^[_*\s"']+|[_*\s"']+$/g, "")) // remove markdown/quotes
-                    .filter(line => line && line.length > 2) // filter out empty or too-short lines
-                    .map((line, idx) => (
-                      <div key={`caption-${idx}`} className="group relative hover-lift">
-                        <div className="bg-blue-500/10 border border-blue-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-blue-400/40 hover:bg-blue-500/15">
-                          <p className="text-base leading-relaxed">{line}</p>
-                          <button
-                            onClick={() => copyToClipboard(line, `caption-${idx}`)}
-                            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-blue-500/20 hover:bg-blue-500/40 p-2 rounded-lg hover:scale-110"
-                            title="Copy to clipboard"
-                          >
-                            {copiedKey === `caption-${idx}` ? (
-                              <span className="text-blue-400 text-sm animate-fade-in">✓</span>
-                            ) : (
-                              <span className="text-blue-400 text-sm">📋</span>
-                            )}
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                </div>
-              </div>
-            )}
-            {/* Hooks Section - improved parsing and display */}
-            {sections.hooks && (
+            {sections.hook && (
               <div>
                 <h3 className="text-xl font-bold text-purple-400 mb-4 flex items-center gap-2">
                   <span className="animate-pulse-glow">🎣</span>
-                  Hooks
+                  Hook
                 </h3>
-                <div className="space-y-3">
-                  {sections.hooks
-                    .split(/(?:^|\n)\s*(?:[a-zA-Z]|\d+)\.\s+/) // split on a., b., c., 1., 2., 3.
-                    .map(line => line.trim())
-                    .map(line => line.replace(/^[_*\s"']+|[_*\s"']+$/g, "")) // remove markdown/quotes
-                    .filter(line => line && line.length > 2) // filter out empty or too-short lines
-                    .map((line, idx) => (
-                      <div key={`hook-${idx}`} className="group relative hover-lift">
-                        <div className="bg-purple-500/10 border border-purple-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-purple-400/40 hover:bg-purple-500/15">
-                          <p className="text-base leading-relaxed">{line}</p>
-                          <button
-                            onClick={() => copyToClipboard(line, `hook-${idx}`)}
-                            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-purple-500/20 hover:bg-purple-500/40 p-2 rounded-lg hover:scale-110"
-                            title="Copy to clipboard"
-                          >
-                            {copiedKey === `hook-${idx}` ? (
-                              <span className="text-purple-400 text-sm animate-fade-in">✓</span>
-                            ) : (
-                              <span className="text-purple-400 text-sm">📋</span>
-                            )}
-                          </button>
-                        </div>
-                      </div>
-                    ))}
+                <div className="group relative hover-lift">
+                  <div className="bg-purple-500/10 border border-purple-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-purple-400/40 hover:bg-purple-500/15">
+                    <p className="text-base leading-relaxed">{sections.hook}</p>
+                    <button
+                      onClick={() => copyToClipboard(sections.hook, `hook`)}
+                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-purple-500/20 hover:bg-purple-500/40 p-2 rounded-lg hover:scale-110"
+                      title="Copy to clipboard"
+                    >
+                      {copiedKey === `hook` ? (
+                        <span className="text-purple-400 text-sm animate-fade-in">✓</span>
+                      ) : (
+                        <span className="text-purple-400 text-sm">📋</span>
+                      )}
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
-            {/* Content Strategy Tip */}
-            {sections.tip && (
+            {sections.script && (
+              <div>
+                <h3 className="text-xl font-bold text-blue-400 mb-4 flex items-center gap-2">
+                  <span className="animate-pulse-glow">🎬</span>
+                  Script
+                </h3>
+                <div className="group relative hover-lift">
+                  <div className="bg-blue-500/10 border border-blue-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-blue-400/40 hover:bg-blue-500/15">
+                    <p className="text-base leading-relaxed whitespace-pre-line">{sections.script}</p>
+                    <button
+                      onClick={() => copyToClipboard(sections.script, `script`)}
+                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-blue-500/20 hover:bg-blue-500/40 p-2 rounded-lg hover:scale-110"
+                      title="Copy to clipboard"
+                    >
+                      {copiedKey === `script` ? (
+                        <span className="text-blue-400 text-sm animate-fade-in">✓</span>
+                      ) : (
+                        <span className="text-blue-400 text-sm">📋</span>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+            {sections.caption && (
               <div>
                 <h3 className="text-xl font-bold text-green-400 mb-4 flex items-center gap-2">
-                  <span className="animate-pulse-glow">💡</span>
-                  Content Strategy Tip
+                  <span className="animate-pulse-glow">💬</span>
+                  Caption
                 </h3>
                 <div className="group relative hover-lift">
                   <div className="bg-green-500/10 border border-green-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-green-400/40 hover:bg-green-500/15">
-                    <p className="text-base leading-relaxed">{sections.tip}</p>
+                    <p className="text-base leading-relaxed">{sections.caption}</p>
                     <button
-                      onClick={() => copyToClipboard(sections.tip, `tip`)}
+                      onClick={() => copyToClipboard(sections.caption, `caption`)}
                       className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-green-500/20 hover:bg-green-500/40 p-2 rounded-lg hover:scale-110"
                       title="Copy to clipboard"
                     >
-                      {copiedKey === `tip` ? (
+                      {copiedKey === `caption` ? (
                         <span className="text-green-400 text-sm animate-fade-in">✓</span>
                       ) : (
                         <span className="text-green-400 text-sm">📋</span>
@@ -414,25 +339,24 @@ export default function AiProAccessPage() {
                 </div>
               </div>
             )}
-            {/* Why This Works */}
-            {sections.why && (
+            {sections.cta && (
               <div>
-                <h3 className="text-xl font-bold text-yellow-300 mb-4 flex items-center gap-2">
-                  <span className="animate-pulse-glow">🧠</span>
-                  Why This Works
+                <h3 className="text-xl font-bold text-yellow-400 mb-4 flex items-center gap-2">
+                  <span className="animate-pulse-glow">👉</span>
+                  Call To Action (CTA)
                 </h3>
                 <div className="group relative hover-lift">
-                  <div className="bg-yellow-400/10 border border-yellow-300/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-yellow-300/40 hover:bg-yellow-400/15">
-                    <p className="text-base leading-relaxed">{sections.why}</p>
+                  <div className="bg-yellow-500/10 border border-yellow-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-yellow-400/40 hover:bg-yellow-500/15">
+                    <p className="text-base leading-relaxed">{sections.cta}</p>
                     <button
-                      onClick={() => copyToClipboard(sections.why, `why`)}
-                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-yellow-400/20 hover:bg-yellow-400/40 p-2 rounded-lg hover:scale-110"
+                      onClick={() => copyToClipboard(sections.cta, `cta`)}
+                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-yellow-500/20 hover:bg-yellow-500/40 p-2 rounded-lg hover:scale-110"
                       title="Copy to clipboard"
                     >
-                      {copiedKey === `why` ? (
-                        <span className="text-yellow-300 text-sm animate-fade-in">✓</span>
+                      {copiedKey === `cta` ? (
+                        <span className="text-yellow-400 text-sm animate-fade-in">✓</span>
                       ) : (
-                        <span className="text-yellow-300 text-sm">📋</span>
+                        <span className="text-yellow-400 text-sm">📋</span>
                       )}
                     </button>
                   </div>
@@ -486,34 +410,10 @@ function InputField({
       { group: "Professionals", items: ["Entrepreneurs", "Tech Professionals", "Small Business Owners", "Creative Professionals", "Fitness Coaches", "Nutritionists", "Mental Health Professionals", "Career Coaches", "Relationship Coaches", "Marketers", "Real Estate Agents"] },
       { group: "Interest Groups", items: ["Fitness Enthusiasts", "Health & Wellness Seekers", "Travelers", "Food Lovers", "Fashion Enthusiasts", "Gamers", "Music Lovers", "Artists", "Photographers", "Personal Development Seekers", "Homeowners", "Pet Owners", "Car Enthusiasts", "Beauty Enthusiasts", "Skincare Lovers"] },
     ],
-    tone: [
-      { group: "Professional", items: ["Educational", "Professional", "Motivational", "Inspiring"] },
-      { group: "Casual & Fun", items: ["Friendly", "Bold", "Funny", "Witty", "Conversational", "Casual"] },
-    ],
-    goal: [
-      { group: "Growth & Engagement", items: ["Grow to 10k followers", "Increase engagement", "Build brand awareness", "Drive website traffic", "Expand reach", "Increase brand loyalty", "Build community", "Create viral content"] },
-      { group: "Sales & Leads", items: ["Launch a product", "Generate leads", "Sell products/services", "Improve conversion rates", "Boost sales", "Monetize content"] },
-      { group: "Authority & Education", items: ["Establish authority", "Educate audience", "Inspire action", "Build relationships", "Create partnerships"] },
-    ],
     format: [
       { group: "Social Media", items: ["Instagram Caption", "Instagram Reel Script", "Instagram Carousel", "TikTok Script", "TikTok Caption", "LinkedIn Post", "Facebook Ad", "Facebook Post", "Tweet Thread", "Pinterest Pin", "Reddit Post"] },
       { group: "Long-form & Email", items: ["YouTube Script", "YouTube Title & Description", "Blog Intro", "Newsletter", "Podcast Outline"] },
       { group: "Web & Ads", items: ["Website Hero Copy", "Google Ad Headline & Description", "Product Landing Page Copy", "Call to Action (CTA) Ideas"] },
-    ],
-    product: [
-      { group: "None", items: [""] },
-      { group: "Digital Products", items: ["Digital course", "E-book", "Template bundle", "Digital download", "Online tool", "Certification program", "Masterclass", "Webinar"] },
-      { group: "Services", items: ["Coaching program", "Consulting service", "1:1 service", "Group program"] },
-      { group: "Memberships & Subscriptions", items: ["Membership site", "Subscription box"] },
-      { group: "Events", items: ["Event", "Retreat", "Challenge"] },
-      { group: "Physical Products", items: ["Physical product"] },
-      { group: "Software & Apps", items: ["Software/app"] },
-    ],
-    pain: [
-      { group: "None", items: [""] },
-      { group: "Mindset & Motivation", items: ["Struggling with consistency and self-doubt", "Lack of confidence", "Imposter syndrome", "Fear of failure", "Perfectionism", "Procrastination", "Finding motivation", "Building discipline", "Overcoming obstacles"] },
-      { group: "Productivity & Time", items: ["Lack of time management", "Overwhelm and burnout", "Lack of direction", "Unclear goals", "Poor habits", "Work-life balance"] },
-      { group: "External Challenges", items: ["Financial stress", "Relationship issues", "Health concerns", "Career stagnation", "Creative block", "Social media pressure", "Comparison to others", "Stress and anxiety"] },
     ],
   };
 
@@ -560,7 +460,7 @@ function InputField({
 
       {!useCustomInput ? (
         // Dropdown/Listbox option
-        ["niche", "platform", "audience", "tone", "goal", "format", "pain", "product"].includes(name) ? (
+        ["niche", "platform", "audience"].includes(name) ? (
           <div className="relative">
             <Listbox value={value} onChange={onChange}>
               <Listbox.Button className={fieldClass + " flex items-center justify-between cursor-pointer pr-10"}>
@@ -621,7 +521,7 @@ function InputField({
       ) : (
         // Custom text input
         <>
-          {name === "product" || name === "pain" ? (
+          {name === "format" ? (
             <textarea
               name={name}
               id={name}
