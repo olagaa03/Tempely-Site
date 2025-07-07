@@ -321,7 +321,7 @@ export default function AiProAccessPage() {
                 </div>
               </div>
             )}
-            {/* Captions Section - filter out empty and number-only lines */}
+            {/* Captions Section - improved parsing and display */}
             {sections.captions && (
               <div>
                 <h3 className="text-xl font-bold text-blue-400 mb-4 flex items-center gap-2">
@@ -330,9 +330,10 @@ export default function AiProAccessPage() {
                 </h3>
                 <div className="space-y-3">
                   {sections.captions
-                    .split(/\n|\r/)
+                    .split(/(?:^|\n)\s*(?:[a-zA-Z]|\d+)\.\s+/) // split on a., b., c., 1., 2., 3.
                     .map(line => line.trim())
-                    .filter(line => line && !/^\d+\.?$/.test(line))
+                    .map(line => line.replace(/^[_*\s"']+|[_*\s"']+$/g, "")) // remove markdown/quotes
+                    .filter(line => line && line.length > 2) // filter out empty or too-short lines
                     .map((line, idx) => (
                       <div key={`caption-${idx}`} className="group relative hover-lift">
                         <div className="bg-blue-500/10 border border-blue-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-blue-400/40 hover:bg-blue-500/15">
@@ -354,7 +355,7 @@ export default function AiProAccessPage() {
                 </div>
               </div>
             )}
-            {/* Hooks Section - filter out empty and number-only lines */}
+            {/* Hooks Section - improved parsing and display */}
             {sections.hooks && (
               <div>
                 <h3 className="text-xl font-bold text-purple-400 mb-4 flex items-center gap-2">
@@ -363,9 +364,10 @@ export default function AiProAccessPage() {
                 </h3>
                 <div className="space-y-3">
                   {sections.hooks
-                    .split(/\n|\r/)
+                    .split(/(?:^|\n)\s*(?:[a-zA-Z]|\d+)\.\s+/) // split on a., b., c., 1., 2., 3.
                     .map(line => line.trim())
-                    .filter(line => line && !/^\d+\.?$/.test(line))
+                    .map(line => line.replace(/^[_*\s"']+|[_*\s"']+$/g, "")) // remove markdown/quotes
+                    .filter(line => line && line.length > 2) // filter out empty or too-short lines
                     .map((line, idx) => (
                       <div key={`hook-${idx}`} className="group relative hover-lift">
                         <div className="bg-purple-500/10 border border-purple-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-purple-400/40 hover:bg-purple-500/15">
