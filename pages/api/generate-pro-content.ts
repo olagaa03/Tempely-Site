@@ -55,6 +55,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   let parsed;
   let niche, format, audience, platform, extra, tone, goal, regenerateBlock, blockContent, scriptContext;
   if (req.body.regenerateBlock) {
+    console.log('[DEBUG] Regeneration request body:', req.body);
     parsed = RegenerateSchema.safeParse(req.body);
     if (!parsed.success) {
       return res.status(400).json({ error: 'Invalid or missing input fields for regeneration.' });
