@@ -624,7 +624,7 @@ function InputField({
               name={name}
               id={name}
               value={value}
-              onChange={onChange as (e: React.ChangeEvent<HTMLTextAreaElement>) => void}
+              onChange={e => onChange(e.target.value)}
               rows={2}
               className={fieldClass + " resize-none"}
               style={{ minHeight: 80 }}
@@ -636,7 +636,7 @@ function InputField({
               name={name}
               id={name}
               value={value}
-              onChange={onChange as (e: React.ChangeEvent<HTMLInputElement>) => void}
+              onChange={e => onChange(e.target.value)}
               className={fieldClass}
               placeholder={`Enter your custom ${label.toLowerCase()}...`}
               required
