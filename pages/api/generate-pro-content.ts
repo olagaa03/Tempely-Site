@@ -47,26 +47,35 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const prompt = `
 You are a world-class video content strategist and scriptwriter.
 
-Your job is to create a high-converting, engaging video script for the following:
+Your job is to create a high-converting, visually organized video script for the following:
 - Niche: ${niche}
 - Format: ${format}
 - Target Audience: ${audience}
 - Platform: ${platform}
 ${extra ? `- Extra Instructions: ${extra}` : ''}
 
-DELIVER THE FOLLOWING SECTIONS (use clear section headers):
+DELIVER THE FOLLOWING SECTIONS (use clear section headers, bolded with **, and keep the order):
 
-**Hook**
-Write a single, attention-grabbing opening line for the video.
+**Script Title:**
+Give a punchy, creative title for the script.
 
-**Script**
-Write a full script for the video, tailored to the specified format and audience. Make it actionable, engaging, and platform-appropriate.
+**Length:**
+Estimate the video length in seconds.
 
-**Caption**
+**Vibe:**
+Describe the style/tone (e.g., bold, punchy, educational, fun, disruptive).
+
+**Goal:**
+State the main goal of the script (e.g., drive engagement, educate, inspire action).
+
+**Script:**
+Break the script into labeled time blocks (e.g., [HOOK | 0–4s], [TRUTH DROP | 4–12s], [REALITY CHECK | 12–21s], [CTA | 21–27s]). Use clear labels and keep each block concise and actionable. Use line breaks for clarity.
+
+**Caption:**
 Write a compelling caption for posting this video on ${platform}. Include relevant hashtags if appropriate.
 
-**CTA**
-Write a strong call to action for the end of the video.
+**CTA:**
+Write a strong call to action for the end of the video or for the caption.
 `;
 
   try {

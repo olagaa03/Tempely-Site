@@ -62,8 +62,11 @@ export default function AiProAccessPage() {
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [sections, setSections] = useState<{ hook: string; script: string; caption: string; cta: string }>({
-    hook: "",
+  const [sections, setSections] = useState<{ title: string; length: string; vibe: string; goal: string; script: string; caption: string; cta: string }>({
+    title: "",
+    length: "",
+    vibe: "",
+    goal: "",
     script: "",
     caption: "",
     cta: "",
@@ -83,7 +86,7 @@ export default function AiProAccessPage() {
     setLoading(true);
     setResult("");
     setError("");
-    setSections({ hook: "", script: "", caption: "", cta: "" });
+    setSections({ title: "", length: "", vibe: "", goal: "", script: "", caption: "", cta: "" });
 
     try {
       const res = await fetch("/api/generate-pro-content", {
@@ -124,7 +127,7 @@ export default function AiProAccessPage() {
   const parseSections = (text: string) => {
     const extract = (label: string) => {
       const patterns = [
-        new RegExp(`\\*\\*${label}\\*\\*:?\\s*([\\s\\S]*?)(?=\\*\\*|$)`, "i"),
+        new RegExp(`\\*\\*${label}:\\*\\*\\s*([\\s\\S]*?)(?=\\*\\*|$)`, "i"),
         new RegExp(`${label}:\\s*([\\s\\S]*?)(\\n\\n|$)`, "i"),
         new RegExp(`^${label}\\s*\\n([\\s\\S]*?)(\\n\\n|$)`, "im"),
       ];
@@ -135,7 +138,10 @@ export default function AiProAccessPage() {
       return "";
     };
     setSections({
-      hook: extract("Hook"),
+      title: extract("Script Title"),
+      length: extract("Length"),
+      vibe: extract("Vibe"),
+      goal: extract("Goal"),
       script: extract("Script"),
       caption: extract("Caption"),
       cta: extract("CTA"),
@@ -273,7 +279,7 @@ export default function AiProAccessPage() {
         )}
 
         {/* Results Section */}
-        {(sections.hook || sections.script || sections.caption || sections.cta) && (
+        {(sections.title || sections.script || sections.caption || sections.cta) && (
           <div className="glass-strong rounded-3xl p-8 shadow-2xl space-y-8 animate-slide-in">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-yellow-300 mb-2 gradient-text">
@@ -281,99 +287,75 @@ export default function AiProAccessPage() {
               </h2>
               <p className="text-gray-400">Copy any piece with one click</p>
             </div>
-            {sections.hook && (
+            {sections.title && (
               <div>
-                <h3 className="text-xl font-bold text-purple-400 mb-4 flex items-center gap-2">
-                  <span className="animate-pulse-glow">🎣</span>
-                  Hook
+                <h3 className="text-xl font-bold text-pink-400 mb-2 flex items-center gap-2">
+                  <span className="">🎬</span>
+                  Script Title
                 </h3>
-                <div className="group relative hover-lift">
-                  <div className="bg-purple-500/10 border border-purple-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-purple-400/40 hover:bg-purple-500/15">
-                    <p className="text-base leading-relaxed">{sections.hook}</p>
-                    <button
-                      onClick={() => copyToClipboard(sections.hook, `hook`)}
-                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-purple-500/20 hover:bg-purple-500/40 p-2 rounded-lg hover:scale-110"
-                      title="Copy to clipboard"
-                    >
-                      {copiedKey === `hook` ? (
-                        <span className="text-purple-400 text-sm animate-fade-in">✓</span>
-                      ) : (
-                        <span className="text-purple-400 text-sm">📋</span>
-                      )}
-                    </button>
-                  </div>
+                <div className="bg-pink-500/10 border border-pink-400/20 p-4 rounded-xl text-white mb-2">
+                  <p className="text-lg font-semibold">{sections.title}</p>
                 </div>
               </div>
             )}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {sections.length && (
+                <div className="bg-blue-500/10 border border-blue-400/20 p-4 rounded-xl text-white">
+                  <span className="font-bold text-blue-300">⏱️ Length:</span> {sections.length}
+                </div>
+              )}
+              {sections.vibe && (
+                <div className="bg-purple-500/10 border border-purple-400/20 p-4 rounded-xl text-white">
+                  <span className="font-bold text-purple-300">🎭 Vibe:</span> {sections.vibe}
+                </div>
+              )}
+              {sections.goal && (
+                <div className="bg-green-500/10 border border-green-400/20 p-4 rounded-xl text-white">
+                  <span className="font-bold text-green-300">🎯 Goal:</span> {sections.goal}
+                </div>
+              )}
+            </div>
             {sections.script && (
               <div>
-                <h3 className="text-xl font-bold text-blue-400 mb-4 flex items-center gap-2">
-                  <span className="animate-pulse-glow">🎬</span>
+                <h3 className="text-xl font-bold text-blue-400 mb-2 flex items-center gap-2">
+                  <span className="">📝</span>
                   Script
                 </h3>
-                <div className="group relative hover-lift">
-                  <div className="bg-blue-500/10 border border-blue-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-blue-400/40 hover:bg-blue-500/15">
-                    <p className="text-base leading-relaxed whitespace-pre-line">{sections.script}</p>
-                    <button
-                      onClick={() => copyToClipboard(sections.script, `script`)}
-                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-blue-500/20 hover:bg-blue-500/40 p-2 rounded-lg hover:scale-110"
-                      title="Copy to clipboard"
-                    >
-                      {copiedKey === `script` ? (
-                        <span className="text-blue-400 text-sm animate-fade-in">✓</span>
-                      ) : (
-                        <span className="text-blue-400 text-sm">📋</span>
-                      )}
-                    </button>
-                  </div>
+                <div className="bg-blue-500/10 border border-blue-400/20 p-4 rounded-xl text-white whitespace-pre-line font-mono">
+                  {sections.script.split(/\n/).map((line, idx) => {
+                    // Highlight time blocks like [HOOK | 0–4s]
+                    const match = line.match(/^(\[.*?\])/);
+                    return (
+                      <div key={idx} className="mb-1">
+                        {match ? (
+                          <span className="font-bold text-yellow-300 mr-2">{match[1]}</span>
+                        ) : null}
+                        <span>{line.replace(/^(\[.*?\])/, "")}</span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}
             {sections.caption && (
               <div>
-                <h3 className="text-xl font-bold text-green-400 mb-4 flex items-center gap-2">
-                  <span className="animate-pulse-glow">💬</span>
+                <h3 className="text-xl font-bold text-green-400 mb-2 flex items-center gap-2">
+                  <span className="">💬</span>
                   Caption
                 </h3>
-                <div className="group relative hover-lift">
-                  <div className="bg-green-500/10 border border-green-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-green-400/40 hover:bg-green-500/15">
-                    <p className="text-base leading-relaxed">{sections.caption}</p>
-                    <button
-                      onClick={() => copyToClipboard(sections.caption, `caption`)}
-                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-green-500/20 hover:bg-green-500/40 p-2 rounded-lg hover:scale-110"
-                      title="Copy to clipboard"
-                    >
-                      {copiedKey === `caption` ? (
-                        <span className="text-green-400 text-sm animate-fade-in">✓</span>
-                      ) : (
-                        <span className="text-green-400 text-sm">📋</span>
-                      )}
-                    </button>
-                  </div>
+                <div className="bg-green-500/10 border border-green-400/20 p-4 rounded-xl text-white">
+                  <p className="text-base leading-relaxed">{sections.caption}</p>
                 </div>
               </div>
             )}
             {sections.cta && (
               <div>
-                <h3 className="text-xl font-bold text-yellow-400 mb-4 flex items-center gap-2">
-                  <span className="animate-pulse-glow">👉</span>
+                <h3 className="text-xl font-bold text-yellow-400 mb-2 flex items-center gap-2">
+                  <span className="">👉</span>
                   Call To Action (CTA)
                 </h3>
-                <div className="group relative hover-lift">
-                  <div className="bg-yellow-500/10 border border-yellow-400/20 p-4 rounded-xl text-white backdrop-blur-sm transition-all duration-300 hover:border-yellow-400/40 hover:bg-yellow-500/15">
-                    <p className="text-base leading-relaxed">{sections.cta}</p>
-                    <button
-                      onClick={() => copyToClipboard(sections.cta, `cta`)}
-                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-yellow-500/20 hover:bg-yellow-500/40 p-2 rounded-lg hover:scale-110"
-                      title="Copy to clipboard"
-                    >
-                      {copiedKey === `cta` ? (
-                        <span className="text-yellow-400 text-sm animate-fade-in">✓</span>
-                      ) : (
-                        <span className="text-yellow-400 text-sm">📋</span>
-                      )}
-                    </button>
-                  </div>
+                <div className="bg-yellow-500/10 border border-yellow-400/20 p-4 rounded-xl text-white">
+                  <p className="text-base leading-relaxed">{sections.cta}</p>
                 </div>
               </div>
             )}
