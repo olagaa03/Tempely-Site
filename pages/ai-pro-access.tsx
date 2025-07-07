@@ -115,7 +115,7 @@ export default function AiProAccessPage() {
       setResult(data.result);
       parseSections(data.result);
     } catch (err) {
-      setError("Failed to connect to OpenAI: " + (err?.message || err));
+      setError("Failed to connect to OpenAI: " + err);
     } finally {
       setLoading(false);
     }
