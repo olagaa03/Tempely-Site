@@ -119,12 +119,12 @@ export default function AiProAccessPage() {
   const parseSections = (text: string) => {
     const extract = (label: string) => {
       const patterns = [
-        new RegExp(
-          `\\*\\*\\d+\\.\\s*${label}\\*\\*\\s*([\\s\\S]*?)(?=\\*\\*\\d+\\.|$)`,
-          "i"
-        ),
+        // Match "**1. Captions**" or "**Captions**" or "Captions:"
+        new RegExp(`\\*\\*\\d*\\.?\\s*${label}\\*\\*\\s*([\\s\\S]*?)(?=\\*\\*\\d*\\.?\\s*\\w|$)`, "i"),
         new RegExp(`\\*\\*${label}\\*\\*\\s*([\\s\\S]*?)(?=\\*\\*|$)`, "i"),
         new RegExp(`${label}:\\s*([\\s\\S]*?)(\\n\\n|$)`, "i"),
+        // Fallback: match label at start of line
+        new RegExp(`^${label}\\s*\\n([\\s\\S]*?)(\\n\\n|$)`, "im"),
       ];
       for (const pattern of patterns) {
         const match = text.match(pattern);
