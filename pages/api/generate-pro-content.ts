@@ -17,10 +17,6 @@ const InputSchema = z.object({
   niche: z.string().min(1),
   platform: z.string().min(1),
   audience: z.string().min(1),
-  tone: z.string().min(1),
-  goal: z.string().min(1),
-  product: z.string().optional(),
-  pain: z.string().optional(),
   format: z.string().min(1),
   extra: z.string().optional(),
 });

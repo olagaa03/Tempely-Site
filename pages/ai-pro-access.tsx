@@ -460,7 +460,7 @@ function InputField({
 
       {!useCustomInput ? (
         // Dropdown/Listbox option
-        ["niche", "platform", "audience"].includes(name) ? (
+        ["niche", "platform", "audience", "format"].includes(name) ? (
           <div className="relative">
             <Listbox value={value} onChange={onChange}>
               <Listbox.Button className={fieldClass + " flex items-center justify-between cursor-pointer pr-10"}>
@@ -468,7 +468,7 @@ function InputField({
                 <span className="pointer-events-none absolute right-4 top-1/2 transform -translate-y-1/2 text-white/70 text-xl">▼</span>
               </Listbox.Button>
               <Listbox.Options className="absolute z-20 mt-2 w-full bg-black/90 border border-white/20 rounded-xl shadow-2xl max-h-60 overflow-auto focus:outline-none">
-                {selectOptions[name].map((groupOrItem, idx) =>
+                {selectOptions[name]?.map((groupOrItem, idx) =>
                   typeof groupOrItem === 'string' ? null : (
                     <div key={groupOrItem.group}>
                       <div className="px-5 py-2 text-xs font-bold text-yellow-300 uppercase tracking-wider opacity-80 bg-white/5 sticky top-0 z-10 cursor-default select-none">{groupOrItem.group}</div>
@@ -520,31 +520,16 @@ function InputField({
         )
       ) : (
         // Custom text input
-        <>
-          {name === "format" ? (
-            <textarea
-              name={name}
-              id={name}
-              value={value}
-              onChange={e => onChange((e.target as HTMLTextAreaElement).value)}
-              rows={2}
-              className={fieldClass + " resize-none"}
-              style={{ minHeight: 80 }}
-              placeholder={`Enter your custom ${label.toLowerCase()}...`}
-            />
-          ) : (
-            <input
-              type="text"
-              name={name}
-              id={name}
-              value={value}
-              onChange={e => onChange((e.target as HTMLInputElement).value)}
-              className={fieldClass}
-              placeholder={`Enter your custom ${label.toLowerCase()}...`}
-              required
-            />
-          )}
-        </>
+        <input
+          type="text"
+          name={name}
+          id={name}
+          value={value}
+          onChange={e => onChange((e.target as HTMLInputElement).value)}
+          className={fieldClass}
+          placeholder={`Enter your custom ${label.toLowerCase()}...`}
+          required
+        />
       )}
     </div>
   );
