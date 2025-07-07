@@ -16,6 +16,11 @@ import {
   Tag,
   AlertCircle,
   LayoutGrid,
+  Clock,
+  MessageCircle,
+  RefreshCw,
+  PenTool,
+  Crown,
 } from "lucide-react";
 import ResultSection from "@/components/ResultSection";
 import TempelySpinner from "@/components/TempelySpinner";
@@ -72,6 +77,7 @@ export default function AiProAccessPage() {
     cta: "",
   });
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
+  const [regeneratingBlock, setRegeneratingBlock] = useState<string | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -290,47 +296,87 @@ export default function AiProAccessPage() {
             {sections.title && (
               <div>
                 <h3 className="text-xl font-bold text-pink-400 mb-2 flex items-center gap-2">
-                  <span className="">🎬</span>
+                  <Crown className="w-6 h-6 text-pink-400" />
                   Script Title
                 </h3>
-                <div className="bg-pink-500/10 border border-pink-400/20 p-4 rounded-xl text-white mb-2">
+                <div className="bg-gradient-to-r from-pink-500/20 to-pink-400/10 border border-pink-400/30 p-4 rounded-xl text-white mb-2 shadow-lg">
                   <p className="text-lg font-semibold">{sections.title}</p>
                 </div>
               </div>
             )}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {sections.length && (
-                <div className="bg-blue-500/10 border border-blue-400/20 p-4 rounded-xl text-white">
-                  <span className="font-bold text-blue-300">⏱️ Length:</span> {sections.length}
+                <div className="bg-gradient-to-r from-blue-500/20 to-blue-400/10 border border-blue-400/30 p-4 rounded-xl text-white flex items-center gap-2 shadow">
+                  <Clock className="w-5 h-5 text-blue-300" />
+                  <span className="font-bold text-blue-200">Length:</span> {sections.length}
                 </div>
               )}
               {sections.vibe && (
-                <div className="bg-purple-500/10 border border-purple-400/20 p-4 rounded-xl text-white">
-                  <span className="font-bold text-purple-300">🎭 Vibe:</span> {sections.vibe}
+                <div className="bg-gradient-to-r from-purple-500/20 to-purple-400/10 border border-purple-400/30 p-4 rounded-xl text-white flex items-center gap-2 shadow">
+                  <Sparkles className="w-5 h-5 text-purple-300" />
+                  <span className="font-bold text-purple-200">Vibe:</span> {sections.vibe}
                 </div>
               )}
               {sections.goal && (
-                <div className="bg-green-500/10 border border-green-400/20 p-4 rounded-xl text-white">
-                  <span className="font-bold text-green-300">🎯 Goal:</span> {sections.goal}
+                <div className="bg-gradient-to-r from-green-500/20 to-green-400/10 border border-green-400/30 p-4 rounded-xl text-white flex items-center gap-2 shadow">
+                  <Target className="w-5 h-5 text-green-300" />
+                  <span className="font-bold text-green-200">Goal:</span> {sections.goal}
                 </div>
               )}
             </div>
             {sections.script && (
               <div>
                 <h3 className="text-xl font-bold text-blue-400 mb-2 flex items-center gap-2">
-                  <span className="">📝</span>
+                  <PenTool className="w-6 h-6 text-blue-400" />
                   Script
                 </h3>
-                <div className="bg-blue-500/10 border border-blue-400/20 p-4 rounded-xl text-white whitespace-pre-line font-mono">
+                <div className="bg-gradient-to-r from-blue-500/20 to-blue-400/10 border border-blue-400/30 p-4 rounded-xl text-white font-mono shadow-lg">
                   {sections.script.split(/\n/).map((line, idx) => {
                     // Highlight time blocks like [HOOK | 0–4s]
                     const match = line.match(/^(\[.*?\])/);
+                    const blockLabel = match ? match[1] : null;
                     return (
-                      <div key={idx} className="mb-1">
-                        {match ? (
-                          <span className="font-bold text-yellow-300 mr-2">{match[1]}</span>
+                      <div key={idx} className="mb-2 flex items-start gap-2 group">
+                        {blockLabel ? (
+                          <span className="font-bold text-yellow-300 mr-2 whitespace-nowrap">{blockLabel}</span>
                         ) : null}
-                        <span>{line.replace(/^(\[.*?\])/, "")}</span>
+                        <span className="flex-1">{line.replace(/^(\[.*?\])/, "")}</span>
+                        {blockLabel && (
+                          <button
+                            className={`ml-2 p-1 rounded-full bg-blue-600/20 hover:bg-blue-600/40 transition ${regeneratingBlock === blockLabel ? 'opacity-60 cursor-wait' : ''}`}
+                            title={`Regenerate ${blockLabel}`}
+                            disabled={regeneratingBlock === blockLabel}
+                            onClick={async () => {
+                              setRegeneratingBlock(blockLabel);
+                              try {
+                                const res = await fetch("/api/generate-pro-content", {
+                                  method: "POST",
+                                  headers: { "Content-Type": "application/json" },
+                                  body: JSON.stringify({
+                                    regenerateBlock: blockLabel,
+                                    scriptContext: sections,
+                                  }),
+                                });
+                                const data = await res.json();
+                                if (data.result && typeof data.result === 'string') {
+                                  // Replace only this block in the script
+                                  const newScript = sections.script.split(/\n/).map((l, i) =>
+                                    i === idx ? `${blockLabel} ${data.result.replace(blockLabel, '').trim()}` : l
+                                  ).join('\n');
+                                  setSections({ ...sections, script: newScript });
+                                }
+                              } finally {
+                                setRegeneratingBlock(null);
+                              }
+                            }}
+                          >
+                            {regeneratingBlock === blockLabel ? (
+                              <RefreshCw className="w-4 h-4 animate-spin text-blue-300" />
+                            ) : (
+                              <RefreshCw className="w-4 h-4 text-blue-300" />
+                            )}
+                          </button>
+                        )}
                       </div>
                     );
                   })}
@@ -340,10 +386,10 @@ export default function AiProAccessPage() {
             {sections.caption && (
               <div>
                 <h3 className="text-xl font-bold text-green-400 mb-2 flex items-center gap-2">
-                  <span className="">💬</span>
+                  <MessageCircle className="w-6 h-6 text-green-400" />
                   Caption
                 </h3>
-                <div className="bg-green-500/10 border border-green-400/20 p-4 rounded-xl text-white">
+                <div className="bg-gradient-to-r from-green-500/20 to-green-400/10 border border-green-400/30 p-4 rounded-xl text-white shadow-lg">
                   <p className="text-base leading-relaxed">{sections.caption}</p>
                 </div>
               </div>
@@ -351,10 +397,10 @@ export default function AiProAccessPage() {
             {sections.cta && (
               <div>
                 <h3 className="text-xl font-bold text-yellow-400 mb-2 flex items-center gap-2">
-                  <span className="">👉</span>
+                  <Megaphone className="w-6 h-6 text-yellow-400" />
                   Call To Action (CTA)
                 </h3>
-                <div className="bg-yellow-500/10 border border-yellow-400/20 p-4 rounded-xl text-white">
+                <div className="bg-gradient-to-r from-yellow-500/20 to-yellow-400/10 border border-yellow-400/30 p-4 rounded-xl text-white shadow-lg">
                   <p className="text-base leading-relaxed">{sections.cta}</p>
                 </div>
               </div>
