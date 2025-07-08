@@ -1,23 +1,33 @@
-import { Lightbulb, Clock, DollarSign, Zap } from "lucide-react";
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
-export default function About() {
+export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#18181B] to-[#0F0F0F] font-sans px-4 py-20 flex items-center justify-center">
-      <div className="max-w-2xl w-full bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl border border-white/10 p-10 text-center">
-        <h1 className="text-4xl md:text-5xl font-extrabold mb-6 text-white drop-shadow-lg">About Tempely</h1>
-        <p className="text-lg text-gray-300 mb-6">
-          Tempely is a premium content creation platform built for creators who want to grow smarter, faster, and with less stress. Our tools are designed to help you plan, generate, and track content that actually works.
+    <main className="min-h-screen bg-gradient-to-br from-[#0F0F1C] via-[#18122B] to-[#4B2067] flex flex-col justify-between">
+      <Header />
+      <section className="flex flex-col items-center justify-center text-center py-24 px-6 w-full max-w-3xl mx-auto animate-fade-in">
+        <h1 className="h1 text-5xl md:text-6xl font-extrabold mb-6 gradient-text drop-shadow-xl">About Tempely</h1>
+        <p className="text-xl text-white/80 mb-8 max-w-2xl mx-auto animate-fade-in delay-100">
+          Tempely is on a mission to empower creators with the world’s most advanced, creative, and premium AI content tools.
         </p>
-        <div className="text-base text-gray-400 mb-8">
-          <p className="mb-2">• AI-powered content generation</p>
-          <p className="mb-2">• Viral hook and caption formulas</p>
-          <p className="mb-2">• Data-driven content tracking</p>
-          <p className="mb-2">• Templates and bundles for every creator</p>
+        <div className="card-premium flex flex-col gap-6 items-center text-center animate-fade-in delay-200">
+          <h2 className="h2 text-2xl font-bold gradient-text mb-2">Our Story</h2>
+          <p className="text-white/90 text-lg max-w-xl">
+            Founded by creators, for creators—Tempely was born out of frustration with generic, uninspired AI tools. We set out to build something different: a platform that feels like a creative partner, not just a robot.
+          </p>
+          <h2 className="h2 text-2xl font-bold gradient-text mb-2 mt-6">Our Mission</h2>
+          <p className="text-white/90 text-lg max-w-xl">
+            To help every creator, brand, and visionary unlock their full potential with AI that’s bold, original, and truly useful.
+          </p>
+          <h2 className="h2 text-2xl font-bold gradient-text mb-2 mt-6">Our Values</h2>
+          <ul className="text-white/80 text-lg flex flex-col gap-2 list-disc list-inside">
+            <li><span className="font-bold text-accent">Creativity First:</span> Every tool is designed to inspire, not replace, human creativity.</li>
+            <li><span className="font-bold text-accent-2">Quality Over Quantity:</span> We focus on outputs that are truly valuable, not just fast.</li>
+            <li><span className="font-bold text-primary">For Everyone:</span> Tempely is built to empower all creators, no matter their background or audience size.</li>
+          </ul>
         </div>
-        <div className="text-gray-500 text-sm">
-          &copy; 2025 Tempely. All rights reserved.
-        </div>
-      </div>
+      </section>
+      <Footer />
     </main>
   );
 }

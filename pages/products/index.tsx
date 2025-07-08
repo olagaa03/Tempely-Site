@@ -1,60 +1,54 @@
 'use client';
-import { useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-
-const products = [
-  {
-    title: 'Hooked',
-    image: '/screenshots/hooked-cover.png',
-    description: 'Write viral-worthy hooks using proven formulas and scripts.',
-    link: '/products/hooked',
-    accent: 'blue',
-  },
-  {
-    title: 'Posted',
-    image: '/screenshots/posted-cover.png',
-    description: 'Plan content with clarity and avoid burnout with smart templates.',
-    link: '/products/posted',
-    accent: 'purple',
-  },
-  {
-    title: 'Tracked',
-    image: '/screenshots/tracked-cover.png',
-    description: "See what's working, what's not, and evolve your content strategy.",
-    link: '/products/tracked',
-    accent: 'yellow',
-  },
-];
-
-const accentClass: Record<string, string> = {
-  blue: 'group-hover:text-blue-400',
-  purple: 'group-hover:text-purple-400',
-  yellow: 'group-hover:text-yellow-400',
-};
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 
 export default function ProductsPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#18181B] to-[#0F0F0F] font-sans px-4 py-20">
-      <h1 className="text-5xl font-extrabold text-center mb-12 text-white drop-shadow-lg">Explore Our Products</h1>
-      <div className="max-w-6xl mx-auto md:grid md:grid-cols-3 gap-12 flex overflow-x-auto md:overflow-visible flex-row md:flex-none space-x-6 md:space-x-0 snap-x md:snap-none pb-4 md:pb-0">
-        {products.map((item) => (
-          <Link href={item.link} key={item.title} className="group block transition duration-300 hover:scale-105 min-w-[85vw] max-w-xs md:min-w-0 md:max-w-none snap-center">
-            <div className="rounded-md overflow-hidden bg-white/10 backdrop-blur-md p-8 shadow-xl border border-white/10 hover:border-blue-500 hover:shadow-2xl transition flex flex-col items-center">
-              <Image
-                src={item.image}
-                alt={item.title}
-                width={300}
-                height={180}
-                className="mx-auto rounded-md transition-transform duration-300 group-hover:scale-105"
-              />
-              <h3 className={`text-2xl font-bold mt-8 text-white transition ${accentClass[item.accent]}`}>{item.title}</h3>
-              <p className="text-gray-300 mt-4 text-base font-medium text-center">{item.description}</p>
-              <span className="mt-6 inline-block bg-blue-600 text-white px-6 py-2 rounded-md font-semibold shadow hover:bg-blue-500 transition-transform duration-200 hover:scale-105">View Product</span>
-            </div>
-          </Link>
-        ))}
-      </div>
+    <main className="min-h-screen bg-gradient-to-br from-[#0F0F1C] via-[#18122B] to-[#4B2067] flex flex-col justify-between">
+      <Header />
+      <section className="flex flex-col items-center justify-center text-center py-24 px-6 w-full max-w-4xl mx-auto animate-fade-in">
+        <h1 className="h1 text-5xl md:text-6xl font-extrabold mb-6 gradient-text drop-shadow-xl">Our Products</h1>
+        <p className="text-xl text-white/80 mb-8 max-w-2xl mx-auto animate-fade-in delay-100">
+          Explore our premium bundles and tools for creators.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full mt-8">
+          <ProductCard
+            title="AI Pro Bundle"
+            desc="Unlock all premium AI tools, unlimited generations, and exclusive templates."
+            color="from-blue-500 to-purple-500"
+            href="/products/bundle"
+          />
+          <ProductCard
+            title="Hooked Bundle"
+            desc="Get the ultimate hooks, captions, and viral content formulas."
+            color="from-yellow-400 to-pink-400"
+            href="/products/hooked"
+          />
+          <ProductCard
+            title="Posted Bundle"
+            desc="Everything you need to plan, create, and post high-performing content."
+            color="from-green-400 to-blue-400"
+            href="/products/posted"
+          />
+          <ProductCard
+            title="Tracked Bundle"
+            desc="Track your content’s performance and optimize for growth."
+            color="from-purple-400 to-yellow-400"
+            href="/products/tracked"
+          />
+        </div>
+      </section>
+      <Footer />
     </main>
+  );
+}
+
+function ProductCard({ title, desc, color, href }: { title: string; desc: string; color: string; href: string }) {
+  return (
+    <a href={href} className={`card-premium bg-gradient-to-br ${color} hover:scale-105 hover:shadow-xl transition-all duration-300 flex flex-col gap-3 animate-fade-in`}>
+      <h3 className="h3 text-2xl font-bold mb-1 gradient-text drop-shadow-lg">{title}</h3>
+      <p className="text-white/80 text-lg mb-2">{desc}</p>
+      <span className="btn-premium w-fit mt-auto self-end text-base px-6 py-2">Learn More →</span>
+    </a>
   );
 }

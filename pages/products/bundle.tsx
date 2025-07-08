@@ -1,95 +1,26 @@
-import { useUser, SignInButton } from '@clerk/nextjs';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 
-export default function Bundle() {
-  const { isSignedIn } = useUser();
+export default function BundleProductPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#5b21b6] via-[#18181B] to-[#0F0F0F] font-sans text-white pt-32 px-4">
-      <section className="max-w-6xl mx-auto flex flex-col md:flex-row items-start gap-10 px-4 pt-6">
-
-        {/* Product Image - Mobile optimized */}
-        <div className="w-full md:w-1/2 max-h-[50vh] md:max-h-none overflow-hidden rounded-md shadow-md">
-          <img
-            src="/screenshots/bundle-cover.png"
-            alt="Creator Bundle preview"
-            className="w-full object-cover"
-          />
-        </div>
-
-        {/* Description + Buy Button */}
-        <div className="w-full md:w-1/2">
-          <h1 className="text-3xl md:text-5xl font-bold text-center md:text-left mt-4 text-white">Creator Bundle.</h1>
-          <p className="text-lg md:text-xl text-white/90 mb-4 text-center md:text-left">
-            Get all three premium templates — <strong>Hooked</strong>, <strong>Posted</strong>, and <strong>Tracked</strong> — in one bundle and save big.
-          </p>
-
-          <ul className="list-disc list-inside text-white/80 space-y-2 mb-6">
-            <li><strong>Hooked</strong>: A categorized hook bank for viral content ideas</li>
-            <li><strong>Posted</strong>: A Notion planner to script, schedule, and stay consistent</li>
-            <li><strong>Tracked</strong>: A dashboard to analyze performance and improve results</li>
-            <li><strong>Bonus visuals</strong> and strategy tips included</li>
-            <li><strong>Save 40%</strong> vs buying separately</li>
+    <main className="min-h-screen bg-gradient-to-br from-[#0F0F1C] via-[#18122B] to-[#4B2067] flex flex-col justify-between">
+      <Header />
+      <section className="flex flex-col items-center justify-center text-center py-24 px-6 w-full max-w-2xl mx-auto animate-fade-in">
+        <h1 className="h1 text-5xl md:text-6xl font-extrabold mb-6 gradient-text drop-shadow-xl">AI Pro Bundle</h1>
+        <p className="text-xl text-white/80 mb-8 max-w-2xl mx-auto animate-fade-in delay-100">
+          Unlock all premium AI tools, unlimited generations, and exclusive templates for creators who want it all.
+        </p>
+        <div className="card-premium flex flex-col gap-6 items-center text-center animate-fade-in delay-200">
+          <ul className="text-white/80 text-lg flex flex-col gap-2 list-disc list-inside mb-6">
+            <li>Unlimited access to all AI tools</li>
+            <li>Exclusive script and content templates</li>
+            <li>Priority support and updates</li>
+            <li>Early access to new features</li>
           </ul>
-
-          <p className="text-white/80 mb-6 text-center md:text-left">
-            Whether you're starting from scratch or scaling your creative output, this bundle gives you everything you need to show up like a pro.
-          </p>
-
-          {isSignedIn ? (
-            <a
-              href="https://tempely.lemonsqueezy.com/buy/ac691241-ed9c-4150-9818-fba70ac8402c"
-              className="block w-full md:w-auto text-center bg-blue-600 text-white px-6 py-3 rounded-md font-semibold text-lg shadow hover:opacity-90 transition"
-            >
-              Buy the Bundle for $24.99 (Save 40%)
-            </a>
-          ) : (
-            <SignInButton mode="modal" fallbackRedirectUrl="https://tempely.lemonsqueezy.com/buy/ac691241-ed9c-4150-9818-fba70ac8402c">
-              <button className="block w-full md:w-auto text-center bg-blue-600 text-white px-6 py-3 rounded-md font-semibold text-lg shadow hover:opacity-90 transition">
-                Buy the Bundle for $24.99 (Save 40%)
-              </button>
-            </SignInButton>
-          )}
+          <a href="/sign-up" className="btn-premium text-xl px-10 py-4 mt-2">Get Pro Access →</a>
         </div>
       </section>
-
-      {/* Bundle Preview Thumbnails */}
-      <section className="w-full mt-16 px-4 max-w-6xl mx-auto text-center">
-        <h2 className="text-2xl font-semibold mb-6">Included Templates</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <img src="/screenshots/hooked-cover.png" alt="Hooked preview" className="rounded-md shadow-md hover:scale-105 transition-transform" />
-          <img src="/screenshots/posted-cover.png" alt="Posted preview" className="rounded-md shadow-md hover:scale-105 transition-transform" />
-          <img src="/screenshots/tracked-cover.png" alt="Tracked preview" className="rounded-md shadow-md hover:scale-105 transition-transform" />
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="w-full mt-24 px-4 max-w-6xl mx-auto text-center">
-        <h2 className="text-3xl font-bold mb-12">What creators are saying</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white border rounded-md p-6 shadow-md">
-            <p className="text-gray-700 italic text-sm">
-              “Posted is the first content planner I actually stick to — clean and super practical.”
-            </p>
-            <p className="mt-4 font-medium text-gray-900 text-sm">— Jamie, Content Coach</p>
-          </div>
-          <div className="bg-white border rounded-md p-6 shadow-md">
-            <p className="text-gray-700 italic text-sm">
-              “Hooked helped me finally go viral. The categories and examples are gold.”
-            </p>
-            <p className="mt-4 font-medium text-gray-900 text-sm">— Alex, Copywriter</p>
-          </div>
-          <div className="bg-white border rounded-md p-6 shadow-md">
-            <p className="text-gray-700 italic text-sm">
-              “Tracked showed me what actually works. My content is finally data-driven.”
-            </p>
-            <p className="mt-4 font-medium text-gray-900 text-sm">— Sam, Creator</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="w-full text-center text-gray-500 text-sm mt-20">
-        <p>&copy; 2025 Tempely. All rights reserved.</p>
-      </footer>
+      <Footer />
     </main>
   );
 }

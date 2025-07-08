@@ -1,19 +1,24 @@
-export default function Privacy() {
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
+
+export default function PrivacyPolicyPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#18181B] to-[#0F0F0F] font-sans px-4 py-20 flex items-center justify-center">
-      <div className="max-w-2xl w-full bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl border border-white/10 p-10 text-left">
-        <h1 className="text-4xl md:text-5xl font-extrabold mb-6 text-white drop-shadow-lg">Privacy Policy</h1>
-        <p className="text-gray-300 mb-6">Tempely respects your privacy. Here's how we handle your data:</p>
-        <ul className="list-disc pl-6 space-y-2 text-gray-400 mb-8">
-          <li>We collect only necessary information (e.g., name, email, payment).</li>
-          <li>Your data is used only to deliver our services. We never sell it.</li>
-          <li>We may use cookies to improve your experience.</li>
-          <li>You can request to access or delete your data by contacting us.</li>
-          <li>Payments are securely processed by our payment provider, Lemon Squeezy.</li>
-          <li>Contact: <span className="text-blue-400">hello@tempely.com</span></li>
-        </ul>
-        <div className="text-gray-500 text-sm">&copy; 2025 Tempely. All rights reserved.</div>
-      </div>
+    <main className="min-h-screen bg-gradient-to-br from-[#0F0F1C] via-[#18122B] to-[#4B2067] flex flex-col justify-between">
+      <Header />
+      <section className="flex flex-col items-center justify-center py-20 px-6 w-full max-w-3xl mx-auto animate-fade-in">
+        <div className="card-premium flex flex-col gap-6 items-center w-full animate-fade-in delay-100">
+          <h1 className="h1 text-3xl md:text-4xl font-extrabold gradient-text mb-4">Privacy Policy</h1>
+          <p className="text-white/80 text-lg mb-4">Your privacy is important to us. This policy explains how Tempely collects, uses, and protects your information.</p>
+          {/* Insert actual privacy policy content here, using <h2> and <p> for sections */}
+          <h2 className="h2 text-xl font-bold gradient-text mb-2 mt-4">Information We Collect</h2>
+          <p className="text-white/80 text-base mb-2">We collect information you provide directly, such as when you create an account, use our tools, or contact support.</p>
+          <h2 className="h2 text-xl font-bold gradient-text mb-2 mt-4">How We Use Information</h2>
+          <p className="text-white/80 text-base mb-2">We use your information to provide, improve, and personalize Tempely’s services, and to communicate with you.</p>
+          <h2 className="h2 text-xl font-bold gradient-text mb-2 mt-4">Your Rights</h2>
+          <p className="text-white/80 text-base mb-2">You can access, update, or delete your information at any time by contacting us or using your account settings.</p>
+        </div>
+      </section>
+      <Footer />
     </main>
   );
 }
