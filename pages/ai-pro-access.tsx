@@ -64,6 +64,8 @@ export default function AiProAccessPage() {
     extra: "",
     tone: "Bold",
     goal: "Drive engagement",
+    framework: "AIDA (Attention, Interest, Desire, Action)",
+    vibe: "Bold",
   });
 
   const [result, setResult] = useState("");
@@ -80,6 +82,7 @@ export default function AiProAccessPage() {
   });
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [regeneratingBlock, setRegeneratingBlock] = useState<string | null>(null);
+  const [critique, setCritique] = useState<string | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -95,6 +98,7 @@ export default function AiProAccessPage() {
     setResult("");
     setError("");
     setSections({ title: "", length: "", vibe: "", goal: "", script: "", caption: "", cta: "" });
+    setCritique(null);
 
     try {
       const res = await fetch("/api/generate-pro-content", {
@@ -125,6 +129,8 @@ export default function AiProAccessPage() {
       }
       setResult(data.result);
       parseSections(data.result);
+      // Show critique if available
+      if (data.critique) setCritique(data.critique);
     } catch (err) {
       setError("Failed to connect to OpenAI: " + err);
     } finally {
@@ -176,6 +182,31 @@ export default function AiProAccessPage() {
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 py-16 pt-32">
+        {/* Inspiration & Viral Examples Section */}
+        <div className="mb-12 animate-fade-in">
+          <h2 className="text-2xl md:text-3xl font-bold text-yellow-300 mb-4 flex items-center gap-2 animate-slide-in">
+            <Sparkles className="w-7 h-7 text-yellow-300 animate-bounce-slow" />
+            Inspiration & Viral Examples
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-gradient-to-br from-purple-700/40 to-blue-700/30 border border-purple-400/30 rounded-2xl p-5 shadow-xl flex flex-col gap-2 transform hover:scale-105 hover:shadow-pink-400/30 transition-all duration-300 animate-fade-in">
+              <span className="font-bold text-pink-300 text-lg">Viral Hook Example</span>
+              <span className="text-white">"Stop scrolling—this 3 seconds could change your content game!"</span>
+              <span className="text-xs text-gray-400 mt-2">Why this works: <span className="text-white">Direct, urgent, and scroll-stopping. Uses a challenge to the viewer.</span></span>
+            </div>
+            <div className="bg-gradient-to-br from-blue-700/40 to-green-700/30 border border-blue-400/30 rounded-2xl p-5 shadow-xl flex flex-col gap-2 transform hover:scale-105 hover:shadow-blue-400/30 transition-all duration-300 animate-fade-in delay-100">
+              <span className="font-bold text-blue-300 text-lg">Script Snippet</span>
+              <span className="text-white">"Remember, it’s not about pumping out the most content, but about delivering value that resonates with your audience."</span>
+              <span className="text-xs text-gray-400 mt-2">Why this works: <span className="text-white">Educational, actionable, and audience-focused.</span></span>
+            </div>
+            <div className="bg-gradient-to-br from-green-700/40 to-yellow-700/30 border border-green-400/30 rounded-2xl p-5 shadow-xl flex flex-col gap-2 transform hover:scale-105 hover:shadow-green-400/30 transition-all duration-300 animate-fade-in delay-200">
+              <span className="font-bold text-green-300 text-lg">CTA Example</span>
+              <span className="text-white">"Swipe up now to join the content revolution!"</span>
+              <span className="text-xs text-gray-400 mt-2">Why this works: <span className="text-white">Clear, motivating, and action-oriented.</span></span>
+            </div>
+          </div>
+        </div>
+
         {/* Header Section */}
         <div className="text-center mb-12">
           <h1 className="text-5xl md:text-6xl font-extrabold mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent drop-shadow-lg gradient-text">
@@ -231,6 +262,24 @@ export default function AiProAccessPage() {
                 value={formData.platform}
                 onChange={(val: string) => setFormData({ ...formData, platform: val })}
                 options={["TikTok", "Instagram", "YouTube"]}
+              />
+              <InputField
+                icon={<Sparkles className="text-purple-400" />}
+                name="framework"
+                label="Framework"
+                example="e.g. AIDA, PAS, Storytelling"
+                value={formData.framework}
+                onChange={(val: string) => setFormData({ ...formData, framework: val })}
+                options={["AIDA (Attention, Interest, Desire, Action)", "PAS (Problem, Agitation, Solution)", "Storytelling", "Listicle", "Bold/Controversial", "Educational", "Conversational"]}
+              />
+              <InputField
+                icon={<Sparkles className="text-yellow-400" />}
+                name="vibe"
+                label="Vibe"
+                example="e.g. Bold, Funny, Disruptive, Educational"
+                value={formData.vibe}
+                onChange={(val: string) => setFormData({ ...formData, vibe: val })}
+                options={["Bold", "Funny", "Controversial", "Educational", "Inspiring", "Disruptive", "Relatable", "High-Energy"]}
               />
               <InputField
                 icon={<Sparkles className="text-purple-400" />}
@@ -326,20 +375,20 @@ export default function AiProAccessPage() {
             )}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {sections.length && (
-                <div className="bg-gradient-to-r from-blue-500/20 to-blue-400/10 border border-blue-400/30 p-4 rounded-xl text-white flex items-center gap-2 shadow">
-                  <Clock className="w-5 h-5 text-blue-300" />
+                <div className="bg-gradient-to-r from-blue-500/20 to-blue-400/10 border border-blue-400/30 p-4 rounded-xl text-white flex items-center gap-2 shadow hover:scale-105 hover:shadow-blue-400/30 transition-all duration-300 animate-fade-in">
+                  <Clock className="w-5 h-5 text-blue-300 animate-pulse-glow" />
                   <span className="font-bold text-blue-200">Length:</span> {sections.length}
                 </div>
               )}
               {sections.vibe && (
-                <div className="bg-gradient-to-r from-purple-500/20 to-purple-400/10 border border-purple-400/30 p-4 rounded-xl text-white flex items-center gap-2 shadow">
-                  <Sparkles className="w-5 h-5 text-purple-300" />
+                <div className="bg-gradient-to-r from-purple-500/20 to-purple-400/10 border border-purple-400/30 p-4 rounded-xl text-white flex items-center gap-2 shadow hover:scale-105 hover:shadow-purple-400/30 transition-all duration-300 animate-fade-in delay-100">
+                  <Sparkles className="w-5 h-5 text-purple-300 animate-bounce-slow" />
                   <span className="font-bold text-purple-200">Vibe:</span> {sections.vibe}
                 </div>
               )}
               {sections.goal && (
-                <div className="bg-gradient-to-r from-green-500/20 to-green-400/10 border border-green-400/30 p-4 rounded-xl text-white flex items-center gap-2 shadow">
-                  <Target className="w-5 h-5 text-green-300" />
+                <div className="bg-gradient-to-r from-green-500/20 to-green-400/10 border border-green-400/30 p-4 rounded-xl text-white flex items-center gap-2 shadow hover:scale-105 hover:shadow-green-400/30 transition-all duration-300 animate-fade-in delay-200">
+                  <Target className="w-5 h-5 text-green-300 animate-pulse-glow" />
                   <span className="font-bold text-green-200">Goal:</span> {sections.goal}
                 </div>
               )}
@@ -350,7 +399,7 @@ export default function AiProAccessPage() {
                   <PenTool className="w-6 h-6 text-blue-400" />
                   Script
                 </h3>
-                <div className="bg-gradient-to-r from-blue-500/20 to-blue-400/10 border border-blue-400/30 p-4 rounded-xl text-white font-mono shadow-lg">
+                <div className="bg-gradient-to-r from-blue-500/20 to-blue-400/10 border border-blue-400/30 p-4 rounded-xl text-white font-mono shadow-lg animate-fade-in">
                   {sections.script.split(/\n/).map((line, idx) => {
                     // Highlight time blocks like [HOOK | 0–4s]
                     const match = line.match(/^(\[.*?\])/);
@@ -398,31 +447,40 @@ export default function AiProAccessPage() {
                                     scriptContext: { ...sections, tone: formData.tone, goal: formData.goal },
                                     tone: formData.tone,
                                     goal: formData.goal,
+                                    framework: formData.framework,
+                                    vibe: formData.vibe,
                                   }),
                                 });
                                 const data = await res.json();
-                                if (data.result && typeof data.result === 'string') {
-                                  // Replace only this block in the script using both label and old content
-                                  const newScript = sections.script.split(/\n/).map((l, i) =>
-                                    i === idx ? `${blockLabel} ${data.result.replace(blockLabel, '').trim()}` : l
-                                  ).join('\n');
-                                  setSections({ ...sections, script: newScript });
+                                if (data.result) {
+                                  setResult(data.result);
+                                  parseSections(data.result);
+                                  // Show critique if available
+                                  if (data.critique) setCritique(data.critique);
                                 }
                               } finally {
                                 setRegeneratingBlock(null);
                               }
                             }}
                           >
-                            {regeneratingBlock === blockLabel ? (
-                              <RefreshCw className="w-4 h-4 animate-spin text-blue-300" />
-                            ) : (
-                              <RefreshCw className="w-4 h-4 text-blue-300" />
-                            )}
+                            <RefreshCw className="w-4 h-4 text-blue-300 group-hover:animate-spin" />
                           </button>
                         )}
                       </div>
                     );
                   })}
+                </div>
+              </div>
+            )}
+            {/* Critique/Why This Works Section */}
+            {critique && (
+              <div className="mt-8 animate-fade-in delay-200">
+                <h3 className="text-lg font-bold text-green-300 mb-2 flex items-center gap-2">
+                  <AlertCircle className="w-5 h-5 text-green-300 animate-bounce-slow" />
+                  Why This Works (Expert Breakdown)
+                </h3>
+                <div className="bg-gradient-to-r from-green-500/20 to-green-400/10 border border-green-400/30 p-4 rounded-xl text-white shadow-lg animate-fade-in">
+                  <pre className="whitespace-pre-wrap text-green-100 text-sm">{critique}</pre>
                 </div>
               </div>
             )}

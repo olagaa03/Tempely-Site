@@ -48,7 +48,6 @@ Product: ${product}
 Pain Point: ${pain}
 Goal: ${goal}
         `.trim();
-
       case 'hooks':
         return `
 Write 3 attention-grabbing hooks for use as openers in Reels or TikToks. Leverage curiosity, pain points, or controversy.
@@ -61,12 +60,24 @@ Goal: ${goal}
 Product: ${product}
 Pain Point: ${pain}
         `.trim();
+      case 'ideas':
+        return `
+You are a world-class viral content strategist. Generate 3 original, non-generic content ideas or angles for creators in the ${niche} niche, targeting ${audience} on ${platform}. Each idea should be bold, trend-aware, and have viral potential. Avoid generic advice—reference real trends, pain points, or audience desires. Format: 1-2 sentence idea per line.
 
+Tone: ${tone}
+Goal: ${goal}
+        `.trim();
+      case 'template':
+        return `
+You are a top-tier scriptwriter. Provide a reusable, high-converting video script template for the ${niche} niche on ${platform}, targeting ${audience}. The template should include labeled sections (e.g., [HOOK], [VALUE], [CTA]) and be adaptable for different topics. Keep it actionable and premium.
+
+Tone: ${tone}
+Goal: ${goal}
+        `.trim();
       case 'tip':
         return `
 Give one tactical content strategy tip for improving performance on ${platform} in the ${niche} niche. Focus on trends, timing, or formats.
         `.trim();
-
       case 'why':
         return `
 Explain why this kind of content works well. Reference emotional triggers, content psychology (e.g., urgency, validation), and strategic framing.
@@ -76,7 +87,6 @@ Tone: ${tone}
 Product: ${product}
 Pain Point: ${pain}
         `.trim();
-
       default:
         return '';
     }
