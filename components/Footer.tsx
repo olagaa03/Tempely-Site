@@ -2,17 +2,17 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="w-full glass-strong border-t border-white/10 py-10 px-6 mt-16 relative z-20">
+    <footer className="w-full bg-neutral-950 border-t border-white/10 py-10 px-6 mt-16 relative z-20">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
         {/* Left: Logo & Signature */}
         <div className="flex flex-col items-center md:items-start gap-2">
           <Link href="/" className="flex items-center gap-2 group">
-            <span className="block w-8 h-8 rounded-full bg-gradient-to-br from-[#7f5af0] via-[#ff6bcb] to-[#fbbf24] flex items-center justify-center shadow-lg">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#fff"/>
+            <span className="block w-8 h-8 flex items-center justify-center">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22.5 4L12.5 16H17L10.5 24L13 14H8L15.5 4H22.5Z" fill="#fff"/>
               </svg>
             </span>
-            <span className="font-extrabold text-xl tracking-tight gradient-text group-hover:scale-105 transition-transform duration-200">Tempely</span>
+            <span className="font-extrabold text-xl tracking-tight text-white group-hover:scale-105 transition-transform duration-200">Tempely</span>
           </Link>
           <span className="text-white/60 text-sm mt-1">Made for creators, by creators.</span>
         </div>
@@ -33,7 +33,7 @@ export default function Footer() {
             <a href="https://youtube.com/" target="_blank" rel="noopener" aria-label="YouTube" className="text-white/70 hover:text-danger transition text-xl"><svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a2.994 2.994 0 0 0-2.112-2.112C19.692 3.5 12 3.5 12 3.5s-7.692 0-9.386.574A2.994 2.994 0 0 0 .502 6.186C0 7.88 0 12 0 12s0 4.12.502 5.814a2.994 2.994 0 0 0 2.112 2.112C4.308 20.5 12 20.5 12 20.5s7.692 0 9.386-.574a2.994 2.994 0 0 0 2.112-2.112C24 16.12 24 12 24 12s0-4.12-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
           </div>
           <form className="flex gap-2 mt-1">
-            <input type="email" placeholder="Your email" className="rounded-xl px-4 py-2 bg-black/30 border border-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-accent-2/40 transition-all duration-200" />
+            <input type="email" placeholder="Your email" className="rounded-xl px-4 py-2 bg-neutral-900 border border-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-accent-2/40 transition-all duration-200" />
             <button type="submit" className="btn-premium px-6 py-2 text-base">Subscribe</button>
           </form>
         </div>
