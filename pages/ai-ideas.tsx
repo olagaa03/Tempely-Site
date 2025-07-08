@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { Lightbulb, Sparkles, AlertCircle } from 'lucide-react';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import { Sparkles, Lightbulb, AlertCircle } from 'lucide-react';
 
 export default function AiIdeasPage() {
   const [formData, setFormData] = useState({
@@ -49,16 +51,17 @@ export default function AiIdeasPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#0F0F1C] via-[#18122B] to-[#4B2067] relative overflow-hidden">
-      <div className="relative z-10 max-w-3xl mx-auto px-6 py-20">
-        <h1 className="text-4xl md:text-5xl font-extrabold mb-8 bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-400 bg-clip-text text-transparent drop-shadow-lg gradient-text text-center animate-fade-in flex items-center justify-center gap-3">
-          <Lightbulb className="w-10 h-10 text-yellow-300 animate-pulse-glow" />
+    <main className="min-h-screen bg-neutral-950 flex flex-col justify-between">
+      <Header />
+      <section className="flex flex-col items-center justify-center py-20 px-6 w-full max-w-2xl mx-auto animate-fade-in">
+        <h1 className="h1 text-4xl md:text-5xl font-extrabold mb-8 text-white drop-shadow-xl flex items-center gap-3">
+          <Lightbulb className="w-10 h-10 text-accent animate-pulse-glow" />
           Ideas Generator
         </h1>
-        <p className="text-lg text-gray-200 mb-10 text-center max-w-xl mx-auto animate-fade-in">
+        <p className="text-lg text-white/80 mb-10 text-center max-w-xl mx-auto animate-fade-in">
           Get bold, viral content ideas and angles based on real trends and audience psychology. Perfect for creators who want to stand out.
         </p>
-        <form onSubmit={handleSubmit} className="glass-strong rounded-3xl shadow-2xl p-8 mb-10 space-y-6 animate-fade-in">
+        <form onSubmit={handleSubmit} className="glass-strong border border-white/10 rounded-2xl shadow-xl p-8 mb-10 space-y-6 animate-fade-in w-full">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <InputField label="Niche" name="niche" value={formData.niche} onChange={handleChange} placeholder="e.g. Fitness, Cooking, Marketing" />
             <InputField label="Platform" name="platform" value={formData.platform} onChange={handleChange} placeholder="e.g. TikTok, Instagram, YouTube" />
@@ -69,7 +72,7 @@ export default function AiIdeasPage() {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-5 rounded-2xl font-bold text-xl shadow-2xl transition-all duration-300 hover-lift ${loading ? 'bg-gray-600 cursor-not-allowed' : 'bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-500 hover:from-yellow-300 hover:to-purple-400 text-white hover:scale-[1.02] hover:shadow-yellow-400/25'}`}
+            className={`btn-premium w-full py-5 text-xl ${loading ? 'opacity-60 cursor-not-allowed' : ''}`}
           >
             {loading ? (
               <span className="flex justify-center items-center gap-3 text-white">
@@ -78,7 +81,7 @@ export default function AiIdeasPage() {
               </span>
             ) : (
               <span className="flex items-center justify-center gap-3">
-                <Lightbulb className="w-6 h-6 text-yellow-300 animate-pulse-glow" />
+                <Lightbulb className="w-6 h-6 text-accent animate-pulse-glow" />
                 Generate Ideas
                 <span className="text-lg">→</span>
               </span>
@@ -86,7 +89,7 @@ export default function AiIdeasPage() {
           </button>
         </form>
         {error && (
-          <div className="bg-red-500/10 border border-red-400/30 text-red-300 rounded-2xl p-6 mb-8 backdrop-blur-xl animate-fade-in">
+          <div className="bg-red-500/10 border border-red-400/30 text-red-300 rounded-2xl p-6 mb-8 backdrop-blur-xl animate-fade-in w-full">
             <div className="flex items-center gap-3">
               <span className="text-2xl">⚠️</span>
               <div>
@@ -97,16 +100,16 @@ export default function AiIdeasPage() {
           </div>
         )}
         {ideas.length > 0 && (
-          <div className="space-y-6 animate-fade-in">
-            <h2 className="text-2xl font-bold text-yellow-300 mb-4 flex items-center gap-2">
-              <Sparkles className="w-7 h-7 text-yellow-300 animate-bounce-slow" />
+          <div className="space-y-6 animate-fade-in w-full">
+            <h2 className="text-2xl font-bold text-accent mb-4 flex items-center gap-2">
+              <Sparkles className="w-7 h-7 text-accent animate-bounce-slow" />
               Your Viral Ideas
             </h2>
             <div className="grid grid-cols-1 gap-6">
               {ideas.map((idea, idx) => (
-                <div key={idx} className="bg-gradient-to-br from-yellow-700/40 to-pink-700/30 border border-yellow-400/30 rounded-2xl p-6 shadow-xl flex flex-col gap-2 transform hover:scale-105 hover:shadow-yellow-400/30 transition-all duration-300 animate-fade-in">
-                  <span className="font-bold text-yellow-200 text-lg flex items-center gap-2">
-                    <Lightbulb className="w-5 h-5 text-yellow-200 animate-pulse-glow" />
+                <div key={idx} className="glass-strong border border-white/10 rounded-2xl p-6 shadow-xl flex flex-col gap-2 animate-fade-in">
+                  <span className="font-bold text-accent text-lg flex items-center gap-2">
+                    <Lightbulb className="w-5 h-5 text-accent animate-pulse-glow" />
                     Idea {idx + 1}
                   </span>
                   <span className="text-white text-lg">{idea}</span>
@@ -121,14 +124,15 @@ export default function AiIdeasPage() {
                   <AlertCircle className="w-5 h-5 text-green-300 animate-bounce-slow" />
                   Why These Ideas Work (Expert Breakdown)
                 </h3>
-                <div className="bg-gradient-to-r from-green-500/20 to-green-400/10 border border-green-400/30 p-4 rounded-xl text-white shadow-lg animate-fade-in">
+                <div className="bg-neutral-900 border border-green-400/30 p-4 rounded-xl text-white shadow-lg animate-fade-in">
                   <pre className="whitespace-pre-wrap text-green-100 text-sm">{critique}</pre>
                 </div>
               </div>
             )}
           </div>
         )}
-      </div>
+      </section>
+      <Footer />
     </main>
   );
 }
@@ -145,7 +149,7 @@ function InputField({ label, name, value, onChange, placeholder }: { label: stri
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className="w-full p-4 border border-white/20 rounded-xl bg-black/40 text-white placeholder-white/70 shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-400/40 focus:border-yellow-400/40 transition-all duration-300"
+        className="w-full p-4 border border-white/20 rounded-xl bg-neutral-900 text-white placeholder-white/70 shadow-lg focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent/40 transition-all duration-300"
       />
     </div>
   );

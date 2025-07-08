@@ -1,4 +1,4 @@
-import { ClipboardCopy } from 'lucide-react';
+import { ClipboardCopy, RefreshCw } from 'lucide-react';
 import { useState } from 'react';
 
 type ResultSectionProps = {
@@ -28,6 +28,7 @@ export default function ResultSection({
   onUpdateSection,
 }: ResultSectionProps) {
   const [loadingSection, setLoadingSection] = useState<null | 'captions' | 'hooks' | 'tip' | 'why'>(null);
+  const [copied, setCopied] = useState<string | null>(null);
 
   const splitLines = (text: string) =>
     text
@@ -35,9 +36,11 @@ export default function ResultSection({
       .map(line => line.trim())
       .filter(line => line && line !== ':' && !/^\d+\.$/.test(line));
 
-  const copyToClipboard = async (text: string) => {
+  const copyToClipboard = async (text: string, label: string) => {
     try {
       await navigator.clipboard.writeText(text);
+      setCopied(label);
+      setTimeout(() => setCopied(null), 1200);
     } catch (err) {
       console.error('Copy failed', err);
     }
@@ -46,13 +49,11 @@ export default function ResultSection({
   const handleRegenerate = async (sectionName: 'captions' | 'hooks' | 'tip' | 'why') => {
     try {
       setLoadingSection(sectionName);
-
       const res = await fetch('/api/generate-section', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...userInput, section: sectionName }),
       });
-
       const data = await res.json();
       if (data.result) {
         onUpdateSection(sectionName, data.result);
@@ -64,165 +65,107 @@ export default function ResultSection({
     }
   };
 
+  // Highlight [HOOK], [CTA], etc. in script
+  const highlightScript = (text: string) => {
+    return text.replace(/\[(HOOK|CTA|TRUTH REVEAL|VALUE|REALITY CHECK|SETUP|PROBLEM|SOLUTION|CLOSE|INTRO|OUTRO)[^\]]*\]/gi, match => `<span class='text-accent font-bold'>${match}</span>`);
+  };
+
   return (
-    <div className="space-y-10 transition-all duration-300">
-      {captions && (
-        <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg text-sm leading-relaxed whitespace-pre-wrap hover:shadow-md transition-shadow">
-          <SectionBlock
-            title="📢 Captions"
-            lines={splitLines(captions)}
-            color="blue"
-            onRegenerate={() => handleRegenerate('captions')}
-            copyToClipboard={copyToClipboard}
-            isLoading={loadingSection === 'captions'}
-          />
-        </div>
-      )}
-
-      {hooks && (
-        <div className="bg-purple-50 border border-purple-200 p-4 rounded-lg text-sm leading-relaxed whitespace-pre-wrap hover:shadow-md transition-shadow">
-          <SectionBlock
-            title="💡 Hook Ideas"
-            lines={splitLines(hooks)}
-            color="purple"
-            onRegenerate={() => handleRegenerate('hooks')}
-            copyToClipboard={copyToClipboard}
-            isLoading={loadingSection === 'hooks'}
-          />
-        </div>
-      )}
-
-      {tip && (
-        <div className="bg-green-50 border border-green-200 p-4 rounded-lg text-sm leading-relaxed whitespace-pre-wrap hover:shadow-md transition-shadow">
-          <SectionBlock
-            title="📈 Content Strategy Tip"
-            text={tip.trim().replace(/^:\s*/gm, '')}
-            color="green"
-            onRegenerate={() => handleRegenerate('tip')}
-            isLoading={loadingSection === 'tip'}
-          />
-        </div>
-      )}
-
-      {breakdown && (
-        <div className="bg-pink-50 border border-pink-200 p-4 rounded-lg text-sm leading-relaxed whitespace-pre-wrap hover:shadow-md transition-shadow">
-          <SectionBlock
-            title="🧠 Why This Works"
-            text={breakdown.trim().replace(/^:\s*/gm, '')}
-            color="pink"
-            onRegenerate={() => handleRegenerate('why')}
-            isLoading={loadingSection === 'why'}
-          />
-        </div>
-      )}
-    </div>
-  );
-}
-
-function SectionBlock({
-  title,
-  lines,
-  text,
-  color,
-  onRegenerate,
-  copyToClipboard,
-  isLoading,
-}: {
-  title: string;
-  lines?: string[];
-  text?: string;
-  color: string;
-  onRegenerate: () => void;
-  copyToClipboard?: (text: string) => void;
-  isLoading: boolean;
-}) {
-  return (
-    <div>
-      <Header title={title} color={color} onRegenerate={onRegenerate} isLoading={isLoading} />
-
-      {lines && (
-        <ul className="space-y-3">
-          {lines
-            .filter(line => line.trim() && !/^\d+\.$/.test(line.trim()))
-            .map((line, idx) => (
-              <li
-                key={idx}
-                className={`bg-${color}-50 border border-${color}-200 p-4 rounded-lg text-sm leading-relaxed hover:shadow-md transition-shadow group flex items-start gap-2`}
+    <div className="w-full max-w-2xl mx-auto mt-10">
+      <div className="glass-strong border border-accent/30 rounded-3xl shadow-2xl p-8 flex flex-col gap-10 animate-fade-in">
+        {/* Script Section */}
+        {userInput && (
+          <SectionHeader icon={<ClipboardCopy className="w-6 h-6 text-accent" />} label="Script" onRegenerate={() => handleRegenerate('why')} loading={loadingSection === 'why'} />
+        )}
+        {userInput && (
+          <div className="mb-6">
+            <pre className="whitespace-pre-wrap text-lg text-white font-mono leading-relaxed" dangerouslySetInnerHTML={{ __html: highlightScript(userInput.rawText || '') }} />
+            <button
+              onClick={() => copyToClipboard(userInput.rawText || '', 'script')}
+              className={`btn-premium mt-3 px-4 py-2 text-sm ${copied === 'script' ? 'bg-accent/80' : ''}`}
+            >
+              {copied === 'script' ? 'Copied!' : 'Copy Script'}
+            </button>
+          </div>
+        )}
+        {/* Why This Works Section */}
+        {breakdown && (
+          <div className="flex flex-col gap-3">
+            <SectionHeader icon={<span className="text-green-400">🧠</span>} label="Why This Works (Expert Breakdown)" onRegenerate={() => handleRegenerate('why')} loading={loadingSection === 'why'} />
+            <div className="bg-neutral-900 border border-green-400/30 p-5 rounded-2xl text-white text-base shadow-lg animate-fade-in">
+              <pre className="whitespace-pre-wrap text-green-100 text-sm font-mono">{breakdown}</pre>
+              <button
+                onClick={() => copyToClipboard(breakdown, 'breakdown')}
+                className={`btn-premium mt-3 px-4 py-2 text-sm ${copied === 'breakdown' ? 'bg-accent/80' : ''}`}
               >
-                <span className="font-bold text-lg text-white/80 min-w-[1.5em]">{String.fromCharCode(65 + idx)}.</span>
-                <div className="flex-1 flex justify-between items-start gap-3">
-                  <span>{line.trim()}</span>
-                  {copyToClipboard && (
-                    <button
-                      onClick={() => copyToClipboard(line)}
-                      className="text-gray-400 hover:text-current text-xs mt-1 transition"
-                      title="Copy"
-                    >
-                      <ClipboardCopy className="w-4 h-4" />
-                    </button>
-                  )}
-                </div>
-              </li>
-            ))}
-        </ul>
-      )}
-
-      {text && (
-        <div
-          className={`bg-${color}-50 border border-${color}-200 p-4 rounded-lg text-sm leading-relaxed whitespace-pre-wrap hover:shadow-md transition-shadow`}
-        >
-          {text}
-        </div>
-      )}
+                {copied === 'breakdown' ? 'Copied!' : 'Copy Breakdown'}
+              </button>
+            </div>
+          </div>
+        )}
+        {/* Captions Section */}
+        {captions && (
+          <div className="flex flex-col gap-3">
+            <SectionHeader icon={<span className="text-blue-400">📢</span>} label="Caption" onRegenerate={() => handleRegenerate('captions')} loading={loadingSection === 'captions'} />
+            <div className="bg-neutral-900 border border-blue-400/30 p-5 rounded-2xl text-white text-base shadow-lg animate-fade-in">
+              <pre className="whitespace-pre-wrap text-blue-100 text-sm font-mono">{captions}</pre>
+              <button
+                onClick={() => copyToClipboard(captions, 'captions')}
+                className={`btn-premium mt-3 px-4 py-2 text-sm ${copied === 'captions' ? 'bg-accent/80' : ''}`}
+              >
+                {copied === 'captions' ? 'Copied!' : 'Copy Caption'}
+              </button>
+            </div>
+          </div>
+        )}
+        {/* Hooks Section */}
+        {hooks && (
+          <div className="flex flex-col gap-3">
+            <SectionHeader icon={<span className="text-accent">💡</span>} label="Hooks" onRegenerate={() => handleRegenerate('hooks')} loading={loadingSection === 'hooks'} />
+            <div className="bg-neutral-900 border border-accent/30 p-5 rounded-2xl text-white text-base shadow-lg animate-fade-in">
+              <pre className="whitespace-pre-wrap text-accent text-sm font-mono">{hooks}</pre>
+              <button
+                onClick={() => copyToClipboard(hooks, 'hooks')}
+                className={`btn-premium mt-3 px-4 py-2 text-sm ${copied === 'hooks' ? 'bg-accent/80' : ''}`}
+              >
+                {copied === 'hooks' ? 'Copied!' : 'Copy Hooks'}
+              </button>
+            </div>
+          </div>
+        )}
+        {/* Tip Section */}
+        {tip && (
+          <div className="flex flex-col gap-3">
+            <SectionHeader icon={<span className="text-green-400">📈</span>} label="Content Strategy Tip" onRegenerate={() => handleRegenerate('tip')} loading={loadingSection === 'tip'} />
+            <div className="bg-neutral-900 border border-green-400/30 p-5 rounded-2xl text-white text-base shadow-lg animate-fade-in">
+              <pre className="whitespace-pre-wrap text-green-100 text-sm font-mono">{tip}</pre>
+              <button
+                onClick={() => copyToClipboard(tip, 'tip')}
+                className={`btn-premium mt-3 px-4 py-2 text-sm ${copied === 'tip' ? 'bg-accent/80' : ''}`}
+              >
+                {copied === 'tip' ? 'Copied!' : 'Copy Tip'}
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
 
-function Header({
-  title,
-  color,
-  onRegenerate,
-  isLoading,
-}: {
-  title: string;
-  color: string;
-  onRegenerate: () => void;
-  isLoading: boolean;
-}) {
+function SectionHeader({ icon, label, onRegenerate, loading }: { icon: React.ReactNode; label: string; onRegenerate: () => void; loading: boolean }) {
   return (
-    <div className="flex items-center justify-between mb-3">
-      <h3 className={`text-xl font-semibold text-${color}-600`}>{title}</h3>
+    <div className="flex items-center gap-3 mb-2">
+      <span>{icon}</span>
+      <h3 className="text-xl font-bold text-white tracking-tight flex-1">{label}</h3>
       <button
         onClick={onRegenerate}
-        className={`text-xs text-${color}-500 hover:underline flex items-center gap-1 disabled:opacity-60`}
-        disabled={isLoading}
+        className="text-accent hover:text-accent-2 transition-colors text-sm flex items-center gap-1 disabled:opacity-60"
+        disabled={loading}
+        title="Regenerate"
       >
-        {isLoading ? (
-          <>
-            <svg
-              className="w-4 h-4 animate-spin text-current"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              />
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-              />
-            </svg>
-            <span>Loading...</span>
-          </>
-        ) : (
-          <>🔁 Regenerate</>
-        )}
+        <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+        {loading ? 'Regenerating...' : 'Regenerate'}
       </button>
     </div>
   );

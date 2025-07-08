@@ -128,12 +128,12 @@ Pain Point: ${pain}
     const output = response.choices?.[0]?.message?.content?.trim();
 
     if (!output) {
-      return res.status(500).json({ error: 'No content returned' });
+      return res.status(200).json({ result: 'Sorry, no content could be generated at this time. Please try again or adjust your input.' });
     }
 
     return res.status(200).json({ result: formatOutput(output, section) });
   } catch (error: any) {
     console.error('[OpenAI Error]', error?.message || error);
-    return res.status(500).json({ error: 'Something went wrong with OpenAI' });
+    return res.status(500).json({ error: 'Something went wrong with OpenAI. Please try again later.' });
   }
 }
