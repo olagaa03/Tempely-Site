@@ -1,11 +1,18 @@
 'use client';
 
-import { useState } from 'react';
-import { useUser, SignInButton } from '@clerk/nextjs';
+import { useUser } from '@clerk/nextjs';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 export default function AiToolPage() {
-  const { isSignedIn, user } = useUser();
+  const { isSignedIn, isLoaded, user } = useUser();
+  const router = useRouter();
+  useEffect(() => {
+    if (isLoaded && !isSignedIn) {
+      router.replace('/sign-in?redirect=/ai-tool');
+    }
+  }, [isLoaded, isSignedIn, router]);
 
   const [formData, setFormData] = useState({
     niche: '',
@@ -63,6 +70,23 @@ export default function AiToolPage() {
 
   const hasUnlimited = user?.publicMetadata?.unlimitedGenerations || user?.publicMetadata?.pro;
 
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0F0F1C] via-[#18122B] to-[#4B2067] text-center px-4 relative overflow-hidden">
+        <div className="relative z-10">
+          <div className="glass-strong rounded-3xl p-12 shadow-2xl animate-slide-in">
+            <h1 className="text-5xl md:text-6xl font-extrabold mb-6 text-white drop-shadow-lg gradient-text">
+              Loading AI Tool...
+            </h1>
+            <p className="text-gray-300 mb-8 text-xl max-w-lg mx-auto leading-relaxed">
+              Please wait while we set up your AI content generation capabilities.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (!isSignedIn) {
     return (
       <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#0F0F1C] via-[#18122B] to-[#4B2067] text-center px-4 relative overflow-hidden">
@@ -80,7 +104,7 @@ export default function AiToolPage() {
             <p className="text-gray-300 mb-8 text-xl max-w-lg mx-auto leading-relaxed">
               Create stunning content with our free AI tool. Sign in to start generating audience-ready captions and hooks instantly.
             </p>
-            <SignInButton mode="modal" fallbackRedirectUrl="/ai-tool">
+            <Link href="/sign-in?redirect=/ai-tool">
               <button className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white text-xl font-bold px-10 py-4 rounded-2xl shadow-2xl transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-400/50 hover-lift">
                 <span className="flex items-center gap-3">
                   <span className="text-2xl animate-float">🚀</span>
@@ -88,7 +112,7 @@ export default function AiToolPage() {
                   <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
                 </span>
               </button>
-            </SignInButton>
+            </Link>
           </div>
         </div>
       </main>
