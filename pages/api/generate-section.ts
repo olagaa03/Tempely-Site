@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { getAuth } from '@clerk/nextjs/server';
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!,
+  apiKey: process.env.TEMPLY_FREE_API_KEY!,
 });
 
 // Input validation schema
