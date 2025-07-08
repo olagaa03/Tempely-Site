@@ -1,168 +1,123 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@700;900&display=swap');
 
-/* Light theme variables */
+/* Premium Color Palette */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary: #7f5af0;
+  --primary-dark: #4b2067;
+  --accent: #fbbf24;
+  --accent-2: #ff6bcb;
+  --success: #22d3ee;
+  --danger: #ef4444;
+  --background: #0f0f1c;
+  --background-alt: #18122b;
+  --surface: #232136;
+  --glass: rgba(255,255,255,0.08);
+  --glass-strong: rgba(255,255,255,0.16);
+  --border: rgba(255,255,255,0.18);
+  --text-main: #f3f4f6;
+  --text-muted: #a1a1aa;
+  --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 }
 
-/* Dark theme override (optional) */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-/* Theme variables */
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-/* Base styles */
 body {
-  background: #4B2067;
-  color: #F3F4F6;
-  font-family: 'Inter', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, var(--background) 0%, var(--background-alt) 40%, var(--primary-dark) 100%) !important;
+  color: var(--text-main);
+  font-family: 'Inter', 'Montserrat', sans-serif;
+  font-size: 18px;
+  letter-spacing: 0.01em;
 }
 
-/* Ensure Tailwind base styles apply */
-html, body {
-  /* @apply bg-white text-black; */
-  background: linear-gradient(135deg, #0F0F1C 0%, #18122B 40%, #4B2067 100%) !important;
+h1, .h1 {
+  font-family: 'Montserrat', 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 3rem;
+  letter-spacing: -0.02em;
+  color: var(--primary);
+}
+h2, .h2 {
+  font-family: 'Montserrat', 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 2.25rem;
+  color: var(--accent);
+}
+h3, .h3 {
+  font-family: 'Montserrat', 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--primary);
 }
 
-::selection {
-  background: #3B82F6;
-  color: #fff;
-}
-
-/* Header nav-link pop-up effect */
-.nav-link {
-  @apply text-gray-100 font-medium text-base px-2 py-1 transition relative transition-transform duration-150;
-}
-.nav-link:hover,
-.nav-link:focus {
-  @apply text-[var(--tempely-purple)] scale-[1.025] shadow-md;
-}
-
-/* Custom animations */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes pulse-glow {
-  0%, 100% {
-    opacity: 0.5;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.8;
-    transform: scale(1.05);
-  }
-}
-
-@keyframes slide-in-from-bottom {
-  0% {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -200px 0;
-  }
-  100% {
-    background-position: calc(200px + 100%) 0;
-  }
-}
-
-/* Animation utility classes */
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 3s ease-in-out infinite;
-}
-
-.animate-slide-in {
-  animation: slide-in-from-bottom 0.6s ease-out;
-}
-
-.animate-fade-in {
-  animation: fade-in 0.5s ease-out;
-}
-
-.shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-  background-size: 200px 100%;
-  animation: shimmer 2s infinite;
-}
-
-/* Glassmorphism effects */
+/* Glassmorphism Utilities */
 .glass {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--glass);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
 }
-
 .glass-strong {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(25px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--glass-strong);
+  backdrop-filter: blur(28px);
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow);
 }
 
-/* Hover effects */
-.hover-lift {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* Premium Buttons */
+.btn-premium {
+  background: linear-gradient(90deg, var(--primary), var(--accent-2));
+  color: #fff;
+  font-weight: 700;
+  border-radius: 1.5rem;
+  padding: 0.75rem 2.5rem;
+  font-size: 1.15rem;
+  box-shadow: 0 4px 24px 0 rgba(127, 90, 240, 0.18);
+  transition: all 0.2s cubic-bezier(.4,0,.2,1);
+}
+.btn-premium:hover, .btn-premium:focus {
+  background: linear-gradient(90deg, var(--accent-2), var(--primary));
+  color: #fff;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 8px 32px 0 rgba(127, 90, 240, 0.28);
 }
 
-.hover-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+/* Card Utilities */
+.card-premium {
+  background: linear-gradient(135deg, var(--glass-strong) 60%, var(--primary-dark) 100%);
+  border-radius: 2rem;
+  box-shadow: var(--shadow);
+  border: 1.5px solid var(--border);
+  padding: 2.5rem 2rem;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.card-premium:hover {
+  box-shadow: 0 12px 48px 0 rgba(127, 90, 240, 0.25);
+  transform: translateY(-4px) scale(1.03);
 }
 
-/* Gradient text animations */
+/* Gradient Text */
 .gradient-text {
-  background: linear-gradient(45deg, #3B82F6, #8B5CF6, #EC4899);
+  background: linear-gradient(45deg, var(--primary), var(--accent-2), var(--accent));
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   animation: gradient-shift 3s ease infinite;
 }
-
 @keyframes gradient-shift {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Animations & Effects (reuse existing, add more as needed) */
+.animate-float { animation: float 6s ease-in-out infinite; }
+.animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+.animate-slide-in { animation: slide-in-from-bottom 0.6s ease-out; }
+.animate-fade-in { animation: fade-in 0.5s ease-out; }
+
+/* Responsive Utilities (Tailwind covers most, but add as needed) */
+@media (max-width: 600px) {
+  h1, .h1 { font-size: 2.1rem; }
+  h2, .h2 { font-size: 1.5rem; }
+  h3, .h3 { font-size: 1.1rem; }
+  .card-premium { padding: 1.2rem 0.7rem; }
 }
