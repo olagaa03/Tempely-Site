@@ -1,18 +1,31 @@
-import Link from 'next/link';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 export default function SignInPage() {
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0F0F1C] via-[#18122B] to-[#4B2067]">
-      <section className="card-premium flex flex-col items-center gap-6 w-full max-w-md p-10 animate-fade-in">
-        <h1 className="h1 text-4xl font-extrabold gradient-text mb-2">Welcome Back</h1>
-        <p className="text-white/80 text-lg mb-4">Sign in to your Tempely account</p>
-        <form className="w-full flex flex-col gap-4">
-          <input type="email" placeholder="Email" className="rounded-xl px-4 py-3 bg-black/30 border border-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-accent-2/40 transition-all duration-200" />
-          <input type="password" placeholder="Password" className="rounded-xl px-4 py-3 bg-black/30 border border-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-accent-2/40 transition-all duration-200" />
-          <button type="submit" className="btn-premium w-full mt-2">Sign In</button>
-        </form>
-        <p className="text-white/60 text-base mt-4">Don’t have an account? <Link href="/sign-up" className="text-accent-2 font-bold hover:underline">Sign up</Link></p>
+    <main className="min-h-screen bg-neutral-950 flex flex-col justify-between">
+      <Header />
+      <section className="flex flex-col items-center justify-center py-24 px-6 w-full max-w-md mx-auto animate-fade-in">
+        <h1 className="h1 text-4xl md:text-5xl font-extrabold mb-8 text-white drop-shadow-xl">Sign In</h1>
+        <div className="glass-strong border border-white/10 rounded-2xl p-8 shadow-xl flex flex-col gap-6 w-full animate-fade-in delay-100">
+          <form className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <label className="text-white/80 font-medium">Email</label>
+              <input type="email" className="input-premium" placeholder="your@email.com" />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-white/80 font-medium">Password</label>
+              <input type="password" className="input-premium" placeholder="••••••••" />
+            </div>
+            <button type="submit" className="btn-premium mt-4">Sign In</button>
+          </form>
+          <div className="text-center">
+            <span className="text-white/60">Don't have an account? </span>
+            <a href="/sign-up" className="text-accent-2 hover:text-accent transition-colors">Sign up</a>
+          </div>
+        </div>
       </section>
+      <Footer />
     </main>
   );
 }

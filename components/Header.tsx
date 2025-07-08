@@ -4,22 +4,27 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { User, ChevronDown, Sun, Moon } from 'lucide-react';
 
+function LightningBoltIcon() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M13 2L3 14H12L11 22L21 10H13L13 2Z" fill="#fff" stroke="#7f5af0" strokeWidth="1.5"/>
+    </svg>
+  );
+}
+
 export default function Header() {
   const [profileOpen, setProfileOpen] = useState(false);
-  // Placeholder for theme toggle
   const [darkMode, setDarkMode] = useState(true);
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 glass-strong shadow-xl backdrop-blur-lg border-b border-white/10">
+    <header className="fixed top-0 left-0 w-full z-50 glass-strong shadow-lg backdrop-blur-lg border-b border-white/10">
       <nav className="max-w-7xl mx-auto flex items-center justify-between px-6 py-3">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
-          <span className="block w-8 h-8 rounded-full bg-gradient-to-br from-[#7f5af0] via-[#ff6bcb] to-[#fbbf24] flex items-center justify-center shadow-lg">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#fff"/>
-            </svg>
+          <span className="block w-8 h-8 rounded-full bg-neutral-900 flex items-center justify-center shadow-lg border border-white/10">
+            <LightningBoltIcon />
           </span>
-          <span className="font-extrabold text-2xl tracking-tight gradient-text group-hover:scale-105 transition-transform duration-200">Tempely</span>
+          <span className="font-extrabold text-2xl tracking-tight text-white group-hover:text-accent transition-colors duration-200">Tempely</span>
         </Link>
         {/* Nav Links */}
         <ul className="hidden md:flex items-center gap-2 lg:gap-6 text-lg font-semibold">
@@ -31,9 +36,9 @@ export default function Header() {
             { href: '/templates', label: 'Templates' },
           ].map(({ href, label }) => (
             <li key={href} className="relative group">
-              <Link href={href} className="px-3 py-1 rounded-xl transition-colors duration-200 text-white/90 hover:text-accent">
+              <Link href={href} className="px-3 py-1 rounded-xl transition-colors duration-200 text-white/80 hover:text-accent focus:text-accent">
                 {label}
-                <span className="absolute left-1/2 -bottom-1 w-0 h-1 bg-gradient-to-r from-accent to-accent-2 rounded-full group-hover:w-full group-hover:left-0 transition-all duration-300"></span>
+                <span className="absolute left-1/2 -bottom-1 w-0 h-0.5 bg-accent rounded-full group-hover:w-full group-hover:left-0 transition-all duration-300"></span>
               </Link>
             </li>
           ))}
@@ -42,7 +47,7 @@ export default function Header() {
         <div className="flex items-center gap-2 relative">
           {/* Theme Toggle */}
           <button
-            className="p-2 rounded-full bg-black/20 hover:bg-black/40 transition-colors duration-200 text-white mr-2"
+            className="p-2 rounded-full bg-black/10 hover:bg-black/30 transition-colors duration-200 text-white mr-2"
             aria-label="Toggle theme"
             onClick={() => setDarkMode(!darkMode)}
           >
@@ -51,7 +56,7 @@ export default function Header() {
           {/* Profile Dropdown */}
           <div className="relative">
             <button
-              className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gradient-to-r from-primary to-accent-2 text-white font-bold shadow hover:scale-105 transition-all duration-200"
+              className="flex items-center gap-2 px-3 py-2 rounded-xl bg-neutral-900 text-white font-bold shadow hover:scale-105 transition-all duration-200 border border-white/10"
               onClick={() => setProfileOpen((v) => !v)}
               aria-haspopup="true"
               aria-expanded={profileOpen}
@@ -61,9 +66,9 @@ export default function Header() {
               <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${profileOpen ? 'rotate-180' : ''}`} />
             </button>
             {profileOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-surface glass-strong rounded-2xl shadow-2xl py-3 z-50 animate-fade-in">
-                <Link href="/account" className="block px-5 py-2 text-white/90 hover:bg-primary/10 transition rounded-xl">Profile</Link>
-                <Link href="/account" className="block px-5 py-2 text-white/90 hover:bg-primary/10 transition rounded-xl">Settings</Link>
+              <div className="absolute right-0 mt-2 w-48 bg-neutral-900 glass-strong rounded-2xl shadow-2xl py-3 z-50 animate-fade-in border border-white/10">
+                <Link href="/account" className="block px-5 py-2 text-white/90 hover:bg-accent/10 transition rounded-xl">Profile</Link>
+                <Link href="/account" className="block px-5 py-2 text-white/90 hover:bg-accent/10 transition rounded-xl">Settings</Link>
                 <Link href="/sign-out" className="block px-5 py-2 text-danger hover:bg-danger/10 transition rounded-xl">Sign Out</Link>
               </div>
             )}
