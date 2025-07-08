@@ -50,7 +50,7 @@ Goal: ${goal}
         `.trim();
       case 'hooks':
         return `
-Write 3 attention-grabbing hooks for use as openers in Reels or TikToks. Leverage curiosity, pain points, or controversy.
+Write 3 attention-grabbing hooks for use as openers in Reels or TikToks. Leverage curiosity, pain points, or controversy. If the input is unclear or unusual, still generate best-practice hooks for a general audience. Never return an empty or generic response—always provide 3 bold, actionable hooks.
 
 Niche: ${niche}
 Platform: ${platform}
@@ -62,14 +62,14 @@ Pain Point: ${pain}
         `.trim();
       case 'ideas':
         return `
-You are a world-class viral content strategist. Generate 3 original, non-generic content ideas or angles for creators in the ${niche} niche, targeting ${audience} on ${platform}. Each idea should be bold, trend-aware, and have viral potential. Avoid generic advice—reference real trends, pain points, or audience desires. Format: 1-2 sentence idea per line.
+You are a world-class viral content strategist. Generate 3 original, non-generic content ideas or angles for creators in the ${niche} niche, targeting ${audience} on ${platform}. Each idea should be bold, trend-aware, and have viral potential. Avoid generic advice—reference real trends, pain points, or audience desires. If the input is unclear or unusual, still generate 3 best-practice ideas for a general audience. Never return an empty or generic response—always provide 3 actionable ideas.
 
 Tone: ${tone}
 Goal: ${goal}
         `.trim();
       case 'template':
         return `
-You are a top-tier scriptwriter. Provide a reusable, high-converting video script template for the ${niche} niche on ${platform}, targeting ${audience}. The template should include labeled sections (e.g., [HOOK], [VALUE], [CTA]) and be adaptable for different topics. Keep it actionable and premium.
+You are a top-tier scriptwriter. Provide a reusable, high-converting video script template for the ${niche} niche on ${platform}, targeting ${audience}. The template should include labeled sections (e.g., [HOOK], [VALUE], [CTA]) and be adaptable for different topics. Keep it actionable and premium. If the input is unclear or unusual, still generate a best-practice template for a general audience. Never return an empty or generic response—always provide a full template.
 
 Tone: ${tone}
 Goal: ${goal}
@@ -127,8 +127,9 @@ Pain Point: ${pain}
 
     const output = response.choices?.[0]?.message?.content?.trim();
 
-    if (!output) {
-      return res.status(200).json({ result: 'Sorry, no content could be generated at this time. Please try again or adjust your input.' });
+    // Fallback for empty or too-short output
+    if (!output || output.length < 20) {
+      return res.status(200).json({ result: 'Sorry, no content could be generated at this time. Please try again with more details or different input.' });
     }
 
     return res.status(200).json({ result: formatOutput(output, section) });

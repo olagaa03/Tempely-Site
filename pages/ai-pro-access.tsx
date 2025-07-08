@@ -68,21 +68,11 @@ export default function AiProAccessPage() {
     vibe: "Bold",
   });
 
-  const [result, setResult] = useState("");
+  const [result, setResult] = useState<any>(null); // Now stores the parsed JSON result
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [sections, setSections] = useState<{ title: string; length: string; vibe: string; goal: string; script: string; caption: string; cta: string }>({
-    title: "",
-    length: "",
-    vibe: "",
-    goal: "",
-    script: "",
-    caption: "",
-    cta: "",
-  });
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
-  const [regeneratingBlock, setRegeneratingBlock] = useState<string | null>(null);
-  const [critique, setCritique] = useState<string | null>(null);
+  const [critique, setCritique] = useState<string[] | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -95,9 +85,8 @@ export default function AiProAccessPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setResult("");
+    setResult(null);
     setError("");
-    setSections({ title: "", length: "", vibe: "", goal: "", script: "", caption: "", cta: "" });
     setCritique(null);
 
     try {
@@ -123,43 +112,13 @@ export default function AiProAccessPage() {
         setError(data.error || "Server error.");
         return;
       }
-      if (!data.result || typeof data.result !== "string" || data.result.trim() === "") {
-        setError(data.error || "No valid result returned from OpenAI.");
-        return;
-      }
-      setResult(data.result);
-      parseSections(data.result);
-      // Show critique if available
+      setResult(data);
       if (data.critique) setCritique(data.critique);
     } catch (err) {
       setError("Failed to connect to OpenAI: " + err);
     } finally {
       setLoading(false);
     }
-  };
-
-  const parseSections = (text: string) => {
-    const extract = (label: string) => {
-      const patterns = [
-        new RegExp(`\\*\\*${label}:\\*\\*\\s*([\\s\\S]*?)(?=\\*\\*|$)`, "i"),
-        new RegExp(`${label}:\\s*([\\s\\S]*?)(\\n\\n|$)`, "i"),
-        new RegExp(`^${label}\\s*\\n([\\s\\S]*?)(\\n\\n|$)`, "im"),
-      ];
-      for (const pattern of patterns) {
-        const match = text.match(pattern);
-        if (match) return match[1].trim();
-      }
-      return "";
-    };
-    setSections({
-      title: extract("Script Title"),
-      length: extract("Length"),
-      vibe: extract("Vibe"),
-      goal: extract("Goal"),
-      script: extract("Script"),
-      caption: extract("Caption"),
-      cta: extract("CTA"),
-    });
   };
 
   const copyToClipboard = async (text: string, key: string) => {
@@ -173,7 +132,7 @@ export default function AiProAccessPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#0F0F1C] via-[#18122B] to-[#4B2067] relative overflow-hidden">
+    <main className="min-h-screen bg-neutral-950 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 right-20 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
@@ -354,155 +313,116 @@ export default function AiProAccessPage() {
         )}
 
         {/* Results Section */}
-        {(sections.title || sections.script || sections.caption || sections.cta) && (
-          <div className="glass-strong rounded-3xl p-8 shadow-2xl space-y-8 animate-slide-in">
+        {result && (
+          <div className="glass-strong rounded-3xl p-8 shadow-2xl space-y-8 animate-slide-in mt-10">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-yellow-300 mb-2 gradient-text">
                 Your Video Script
               </h2>
               <p className="text-gray-400">Copy any piece with one click</p>
             </div>
-            {sections.title && (
-              <div>
-                <h3 className="text-xl font-bold text-pink-400 mb-2 flex items-center gap-2">
-                  <Crown className="w-6 h-6 text-pink-400" />
-                  Script Title
-                </h3>
-                <div className="bg-gradient-to-r from-pink-500/20 to-pink-400/10 border border-pink-400/30 p-4 rounded-xl text-white mb-2 shadow-lg">
-                  <p className="text-lg font-semibold">{sections.title}</p>
-                </div>
-              </div>
-            )}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {sections.length && (
-                <div className="bg-gradient-to-r from-blue-500/20 to-blue-400/10 border border-blue-400/30 p-4 rounded-xl text-white flex items-center gap-2 shadow hover:scale-105 hover:shadow-blue-400/30 transition-all duration-300 animate-fade-in">
-                  <Clock className="w-5 h-5 text-blue-300 animate-pulse-glow" />
-                  <span className="font-bold text-blue-200">Length:</span> {sections.length}
+            {/* Title, Length, Vibe, Goal */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              {result.title && (
+                <div className="bg-neutral-900 border border-pink-400/30 p-4 rounded-xl text-white flex items-center gap-2 shadow">
+                  <Crown className="w-5 h-5 text-pink-300" />
+                  <span className="font-bold text-pink-200">{result.title}</span>
                 </div>
               )}
-              {sections.vibe && (
-                <div className="bg-gradient-to-r from-purple-500/20 to-purple-400/10 border border-purple-400/30 p-4 rounded-xl text-white flex items-center gap-2 shadow hover:scale-105 hover:shadow-purple-400/30 transition-all duration-300 animate-fade-in delay-100">
-                  <Sparkles className="w-5 h-5 text-purple-300 animate-bounce-slow" />
-                  <span className="font-bold text-purple-200">Vibe:</span> {sections.vibe}
+              {result.length && (
+                <div className="bg-neutral-900 border border-blue-400/30 p-4 rounded-xl text-white flex items-center gap-2 shadow">
+                  <Clock className="w-5 h-5 text-blue-300" />
+                  <span className="font-bold text-blue-200">{result.length}</span>
                 </div>
               )}
-              {sections.goal && (
-                <div className="bg-gradient-to-r from-green-500/20 to-green-400/10 border border-green-400/30 p-4 rounded-xl text-white flex items-center gap-2 shadow hover:scale-105 hover:shadow-green-400/30 transition-all duration-300 animate-fade-in delay-200">
-                  <Target className="w-5 h-5 text-green-300 animate-pulse-glow" />
-                  <span className="font-bold text-green-200">Goal:</span> {sections.goal}
+              {result.vibe && (
+                <div className="bg-neutral-900 border border-purple-400/30 p-4 rounded-xl text-white flex items-center gap-2 shadow">
+                  <Sparkles className="w-5 h-5 text-purple-300" />
+                  <span className="font-bold text-purple-200">{result.vibe}</span>
+                </div>
+              )}
+              {result.goal && (
+                <div className="bg-neutral-900 border border-green-400/30 p-4 rounded-xl text-white flex items-center gap-2 shadow">
+                  <Target className="w-5 h-5 text-green-300" />
+                  <span className="font-bold text-green-200">{result.goal}</span>
                 </div>
               )}
             </div>
-            {sections.script && (
+            {/* Script Blocks */}
+            {result.script_blocks && Array.isArray(result.script_blocks) && (
               <div>
-                <h3 className="text-xl font-bold text-blue-400 mb-2 flex items-center gap-2">
+                <h3 className="text-xl font-bold text-blue-400 mb-4 flex items-center gap-2">
                   <PenTool className="w-6 h-6 text-blue-400" />
-                  Script
+                  Script Flow
                 </h3>
-                <div className="bg-gradient-to-r from-blue-500/20 to-blue-400/10 border border-blue-400/30 p-4 rounded-xl text-white font-mono shadow-lg animate-fade-in">
-                  {sections.script.split(/\n/).map((line, idx) => {
-                    // Highlight time blocks like [HOOK | 0–4s]
-                    const match = line.match(/^(\[.*?\])/);
-                    const blockLabel = match ? match[1] : null;
-                    return (
-                      <div key={idx} className="mb-2 flex items-start gap-2 group">
-                        {blockLabel ? (
-                          <span className="font-bold text-yellow-300 mr-2 whitespace-nowrap">{blockLabel}</span>
-                        ) : null}
-                        <span className="flex-1">{line.replace(/^(\[.*?\])/, "")}</span>
-                        {blockLabel && (
-                          <button
-                            className={`ml-2 p-1 rounded-full bg-blue-600/20 hover:bg-blue-600/40 transition ${regeneratingBlock === blockLabel ? 'opacity-60 cursor-wait' : ''}`}
-                            title={`Regenerate ${blockLabel}`}
-                            disabled={regeneratingBlock === blockLabel}
-                            onClick={async () => {
-                              setRegeneratingBlock(blockLabel);
-                              try {
-                                // Parse the script into blocks (label + content)
-                                const scriptBlocks: { label: string; content: string }[] = [];
-                                let currentLabel: string | null = null;
-                                let currentContent: string[] = [];
-                                sections.script.split('\n').forEach(line => {
-                                  const match = line.match(/^(\[.*?\])/);
-                                  if (match) {
-                                    if (currentLabel) {
-                                      scriptBlocks.push({ label: currentLabel, content: currentContent.join('\n').trim() });
-                                    }
-                                    currentLabel = match[1];
-                                    currentContent = [line.replace(/^(\[.*?\])/, '').trim()];
-                                  } else if (currentLabel) {
-                                    currentContent.push(line.trim());
-                                  }
-                                });
-                                if (currentLabel) {
-                                  scriptBlocks.push({ label: currentLabel, content: currentContent.join('\n').trim() });
-                                }
-                                const block = scriptBlocks.find(b => b.label === blockLabel);
-                                const res = await fetch("/api/generate-pro-content", {
-                                  method: "POST",
-                                  headers: { "Content-Type": "application/json" },
-                                  body: JSON.stringify({
-                                    regenerateBlock: blockLabel,
-                                    blockContent: block ? block.content : "",
-                                    scriptContext: { ...sections, tone: formData.tone, goal: formData.goal },
-                                    tone: formData.tone,
-                                    goal: formData.goal,
-                                    framework: formData.framework,
-                                    vibe: formData.vibe,
-                                  }),
-                                });
-                                const data = await res.json();
-                                if (data.result) {
-                                  setResult(data.result);
-                                  parseSections(data.result);
-                                  // Show critique if available
-                                  if (data.critique) setCritique(data.critique);
-                                }
-                              } finally {
-                                setRegeneratingBlock(null);
-                              }
-                            }}
-                          >
-                            <RefreshCw className="w-4 h-4 text-blue-300 group-hover:animate-spin" />
-                          </button>
-                        )}
+                <div className="flex flex-col gap-4">
+                  {result.script_blocks.map((block: any, idx: number) => (
+                    <div key={idx} className="bg-neutral-900 border border-accent/30 p-5 rounded-2xl text-white shadow-lg flex flex-col md:flex-row md:items-center gap-4 animate-fade-in">
+                      <div className="flex items-center gap-2 min-w-[120px]">
+                        <span className="font-bold text-accent text-base">{block.label}</span>
+                        <span className="text-xs text-white/60">{block.time}</span>
                       </div>
-                    );
-                  })}
+                      <span className="flex-1 text-lg">{block.content}</span>
+                      <button
+                        className={`btn-premium px-3 py-1 text-xs ml-auto mt-2 md:mt-0 ${copiedKey === `block-${idx}` ? 'bg-accent/80' : ''}`}
+                        onClick={() => copyToClipboard(block.content, `block-${idx}`)}
+                      >
+                        {copiedKey === `block-${idx}` ? 'Copied!' : 'Copy'}
+                      </button>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
             {/* Critique/Why This Works Section */}
-            {critique && (
+            {critique && Array.isArray(critique) && (
               <div className="mt-8 animate-fade-in delay-200">
                 <h3 className="text-lg font-bold text-green-300 mb-2 flex items-center gap-2">
                   <AlertCircle className="w-5 h-5 text-green-300 animate-bounce-slow" />
                   Why This Works (Expert Breakdown)
                 </h3>
-                <div className="bg-gradient-to-r from-green-500/20 to-green-400/10 border border-green-400/30 p-4 rounded-xl text-white shadow-lg animate-fade-in">
-                  <pre className="whitespace-pre-wrap text-green-100 text-sm">{critique}</pre>
+                <div className="bg-neutral-900 border border-green-400/30 p-4 rounded-xl text-white shadow-lg animate-fade-in">
+                  <ul className="list-disc pl-6 text-green-100 text-sm space-y-1">
+                    {critique.map((point, idx) => (
+                      <li key={idx}>{point}</li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             )}
-            {sections.caption && (
+            {/* Caption */}
+            {result.caption && (
               <div>
                 <h3 className="text-xl font-bold text-green-400 mb-2 flex items-center gap-2">
                   <MessageCircle className="w-6 h-6 text-green-400" />
                   Caption
                 </h3>
-                <div className="bg-gradient-to-r from-green-500/20 to-green-400/10 border border-green-400/30 p-4 rounded-xl text-white shadow-lg">
-                  <p className="text-base leading-relaxed">{sections.caption}</p>
+                <div className="bg-neutral-900 border border-green-400/30 p-4 rounded-xl text-white shadow-lg">
+                  <p className="text-base leading-relaxed">{result.caption}</p>
+                  <button
+                    className={`btn-premium px-3 py-1 text-xs ml-auto mt-2 ${copiedKey === 'caption' ? 'bg-accent/80' : ''}`}
+                    onClick={() => copyToClipboard(result.caption, 'caption')}
+                  >
+                    {copiedKey === 'caption' ? 'Copied!' : 'Copy'}
+                  </button>
                 </div>
               </div>
             )}
-            {sections.cta && (
+            {/* CTA */}
+            {result.cta && (
               <div>
                 <h3 className="text-xl font-bold text-yellow-400 mb-2 flex items-center gap-2">
                   <Megaphone className="w-6 h-6 text-yellow-400" />
                   Call To Action (CTA)
                 </h3>
-                <div className="bg-gradient-to-r from-yellow-500/20 to-yellow-400/10 border border-yellow-400/30 p-4 rounded-xl text-white shadow-lg">
-                  <p className="text-base leading-relaxed">{sections.cta}</p>
+                <div className="bg-neutral-900 border border-yellow-400/30 p-4 rounded-xl text-white shadow-lg">
+                  <p className="text-base leading-relaxed">{result.cta}</p>
+                  <button
+                    className={`btn-premium px-3 py-1 text-xs ml-auto mt-2 ${copiedKey === 'cta' ? 'bg-accent/80' : ''}`}
+                    onClick={() => copyToClipboard(result.cta, 'cta')}
+                  >
+                    {copiedKey === 'cta' ? 'Copied!' : 'Copy'}
+                  </button>
                 </div>
               </div>
             )}

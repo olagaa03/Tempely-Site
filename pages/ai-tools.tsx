@@ -6,7 +6,7 @@ export default function AiToolsPage() {
       <div className="relative z-10 max-w-5xl mx-auto px-6 py-20">
         <h1 className="h1 text-5xl md:text-6xl font-extrabold mb-10 text-white drop-shadow-lg text-center animate-fade-in">
           Tempely AI Tools
-        </h1>
+          </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 animate-fade-in">
           {/* Script Generator */}
           <ToolCard

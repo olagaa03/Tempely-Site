@@ -62,9 +62,9 @@ const RegenerateSchema = z.object({
 });
 
 // --- Helper: Critique & Improve Prompt ---
-async function critiqueAndImprove(prompt: string, output: string) {
+async function critiqueAndImproveJSON(prompt: string, output: string) {
   // Step 1: Critique
-  const critiquePrompt = `You are a world-class content strategist. Critique the following script for originality, engagement, and effectiveness. List 2-3 specific ways it could be improved.\n\nScript:\n${output}`;
+  const critiquePrompt = `You are a world-class content strategist. Critique the following script for originality, engagement, and effectiveness. List 2-3 specific ways it could be improved as bullet points.\n\nScript JSON:\n${output}`;
   const critiqueRes = await openai.chat.completions.create({
     model: 'gpt-4',
     messages: [{ role: 'user', content: critiquePrompt }],
@@ -74,12 +74,12 @@ async function critiqueAndImprove(prompt: string, output: string) {
   const critique = critiqueRes.choices?.[0]?.message?.content?.trim();
 
   // Step 2: Improve
-  const improvePrompt = `You are a world-class content strategist. Here is a critique of a script, followed by the original script. Rewrite the script to address the critique and make it more original, engaging, and effective.\n\nCritique:\n${critique}\n\nOriginal Script:\n${output}\n\nImproved Script:`;
+  const improvePrompt = `You are a world-class content strategist. Here is a critique (as bullet points) of a script, followed by the original script (as JSON). Rewrite the script to address the critique and make it more original, engaging, and effective. Return ONLY a valid JSON object with the following fields:\n\n{\n  title: string,\n  length: string,\n  vibe: string,\n  goal: string,\n  script_blocks: Array<{ label: string, time: string, content: string }>,\n  caption: string,\n  cta: string,\n  critique: string[] // bullet points\n}\n\nCritique:\n${critique}\n\nOriginal Script JSON:\n${output}\n\nImproved Script JSON:`;
   const improveRes = await openai.chat.completions.create({
     model: 'gpt-4',
     messages: [{ role: 'user', content: improvePrompt }],
     temperature: 0.8,
-    max_tokens: 800,
+    max_tokens: 900,
   });
   const improved = improveRes.choices?.[0]?.message?.content?.trim();
   return { critique, improved };
@@ -127,7 +127,38 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     prompt = `You are a world-class video content strategist and scriptwriter.\n\nHere is the current script context:\nScript Title: ${scriptContext.title}\nLength: ${scriptContext.length}\nVibe: ${scriptContext.vibe}\nGoal: ${scriptContext.goal}\nTone: ${tone || scriptContext.tone || ''}\nPlatform: ${platform}\nFormat: ${format}\nTarget Audience: ${audience}\n\nScript:\n${scriptContext.script}\n\nRegenerate ONLY the following block:\nBlock Label: ${regenerateBlock}\nCurrent Block Content: ${blockContent}\n${extraBlockInstructions}`;
   } else {
     // Full script generation (with framework/vibe)
-    prompt = `\nYou are a world-class video content strategist and scriptwriter.\n\nYour job is to create a high-converting, visually organized video script for the following:\n- Niche: ${niche}\n- Format: ${format}\n- Target Audience: ${audience}\n- Platform: ${platform}\n- Tone: ${tone || ''}\n- Goal: ${goal || ''}\n- Framework: ${framework || 'Best for this content'}\n- Vibe: ${vibe || 'Best for this audience'}\n${extra ? `- Extra Instructions: ${extra}` : ''}\n\nDELIVER THE FOLLOWING SECTIONS (use clear section headers, bolded with **, and keep the order):\n\n**Script Title:**\nGive a punchy, creative title for the script.\n\n**Length:**\nEstimate the video length in seconds.\n\n**Vibe:**\nDescribe the style/tone (e.g., bold, punchy, educational, fun, disruptive).\n\n**Goal:**\nState the main goal of the script (e.g., drive engagement, educate, inspire action).\n\n**Script:**\nBreak the script into labeled time blocks (e.g., [HOOK | 0–4s], [TRUTH DROP | 4–12s], [REALITY CHECK | 12–21s], [CTA | 21–27s]). Use clear labels and keep each block concise and actionable. Use line breaks for clarity.\n\n**Caption:**\nWrite a compelling caption for posting this video on ${platform}. Include relevant hashtags if appropriate.\n\n**CTA:**\nWrite a strong call to action for the end of the video or for the caption.`;
+    prompt = `
+You are a world-class video content strategist and scriptwriter.
+Your job is to create a high-converting, visually organized video script for the following:
+- Niche: ${niche}
+- Format: ${format}
+- Target Audience: ${audience}
+- Platform: ${platform}
+- Tone: ${tone || ''}
+- Goal: ${goal || ''}
+- Framework: ${framework || 'Best for this content'}
+- Vibe: ${vibe || 'Best for this audience'}
+${extra ? `- Extra Instructions: ${extra}` : ''}
+
+DELIVER ONLY a valid JSON object with the following fields:
+{
+  title: string,
+  length: string,
+  vibe: string,
+  goal: string,
+  script_blocks: Array<{ label: string, time: string, content: string }>,
+  caption: string,
+  cta: string,
+  critique: string[] // bullet points
+}
+
+- For script_blocks, break the script into labeled time blocks (e.g., [HOOK | 0–4s], [TRUTH DROP | 4–12s], [REALITY CHECK | 12–21s], [CTA | 21–27s]).
+- Use clear labels and keep each block concise and actionable.
+- Use line breaks for clarity in the 'content' field.
+- Make the script bold, original, and trend-aware. Avoid generic advice or “AI-sounding” lines.
+- The critique field should be an array of bullet points (not a paragraph).
+- Do NOT include any explanation or text outside the JSON object.
+`;
   }
 
   try {
@@ -143,15 +174,31 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(500).json({ error: 'No content returned from OpenAI.' });
     }
 
-    // Step 2: Critique & Improve
-    const { critique, improved } = await critiqueAndImprove(prompt, output);
+    // Step 2: Critique & Improve (JSON)
+    const { critique, improved } = await critiqueAndImproveJSON(prompt, output);
 
-    if (regenerateBlock && scriptContext) {
-      // Return only the regenerated block (improved)
-      return res.status(200).json({ result: improved, critique });
+    // Parse the improved JSON
+    if (!improved || typeof improved !== 'string') {
+      return res.status(500).json({ error: 'No improved script JSON returned from OpenAI.' });
+    }
+    let parsedResult;
+    try {
+      parsedResult = JSON.parse(improved);
+    } catch (e) {
+      // Try to extract JSON from code block if GPT wraps it
+      const match = improved.match(/\{[\s\S]*\}/);
+      if (match && typeof match[0] === 'string') {
+        try {
+          parsedResult = JSON.parse(match[0]);
+        } catch (err) {
+          return res.status(500).json({ error: 'Failed to parse improved script JSON.' });
+        }
+      } else {
+        return res.status(500).json({ error: 'No valid JSON returned from OpenAI.' });
+      }
     }
 
-    return res.status(200).json({ result: improved, critique });
+    return res.status(200).json(parsedResult);
   } catch (error: any) {
     console.error('❌ Pro API error:', error?.message || error);
     return res.status(500).json({ error: 'Pro content generation failed.' });
