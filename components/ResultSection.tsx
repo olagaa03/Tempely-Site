@@ -20,6 +20,7 @@ type ResultSectionProps = {
 };
 
 export default function ResultSection({
+  rawText,
   captions,
   hooks,
   tip,
@@ -74,14 +75,14 @@ export default function ResultSection({
     <div className="w-full max-w-2xl mx-auto mt-10">
       <div className="glass-strong border border-accent/30 rounded-3xl shadow-2xl p-8 flex flex-col gap-10 animate-fade-in">
         {/* Script Section */}
-        {userInput && (
+        {rawText && (
           <SectionHeader icon={<ClipboardCopy className="w-6 h-6 text-accent" />} label="Script" onRegenerate={() => handleRegenerate('why')} loading={loadingSection === 'why'} />
         )}
-        {userInput && (
+        {rawText && (
           <div className="mb-6">
-            <pre className="whitespace-pre-wrap text-lg text-white font-mono leading-relaxed" dangerouslySetInnerHTML={{ __html: highlightScript(userInput.rawText || '') }} />
+            <pre className="whitespace-pre-wrap text-lg text-white font-mono leading-relaxed" dangerouslySetInnerHTML={{ __html: highlightScript(rawText || '') }} />
             <button
-              onClick={() => copyToClipboard(userInput.rawText || '', 'script')}
+              onClick={() => copyToClipboard(rawText || '', 'script')}
               className={`btn-premium mt-3 px-4 py-2 text-sm ${copied === 'script' ? 'bg-accent/80' : ''}`}
             >
               {copied === 'script' ? 'Copied!' : 'Copy Script'}
