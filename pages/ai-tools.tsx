@@ -1,3 +1,4 @@
+import { useUser } from '@clerk/nextjs';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { Lightbulb, FileText, PenTool, Sparkles, BadgeCheck, Lock } from 'lucide-react';
@@ -55,6 +56,7 @@ const tools = [
 ];
 
 export default function AiToolsPage() {
+  const { isSignedIn, isLoaded } = useUser();
   return (
     <main className="min-h-screen bg-neutral-950 flex flex-col justify-between">
       <Header />
@@ -72,7 +74,7 @@ export default function AiToolsPage() {
       {/* Tools List */}
       <section className="max-w-3xl mx-auto w-full px-4 py-16 flex flex-col gap-12 animate-fade-in">
         {tools.map((tool) => (
-          <ToolCard key={tool.title} {...tool} />
+          <ToolCard key={tool.title} {...tool} isSignedIn={isSignedIn} />
         ))}
       </section>
       <Footer />
@@ -80,7 +82,8 @@ export default function AiToolsPage() {
   );
 }
 
-function ToolCard({ icon, title, description, href, badges, features }: { icon: React.ReactNode; title: string; description: string; href: string; badges: string[]; features: string[] }) {
+function ToolCard({ icon, title, description, href, badges, features, isSignedIn }: { icon: React.ReactNode; title: string; description: string; href: string; badges: string[]; features: string[]; isSignedIn: boolean }) {
+  const buttonHref = isSignedIn ? href : `/sign-in?redirect=${href}`;
   return (
     <div className="card-premium flex flex-col md:flex-row items-center gap-8 p-8 md:p-12 min-h-[200px] shadow-xl hover:scale-[1.02] hover:shadow-2xl transition-all duration-300">
       <div className="flex flex-col items-center md:items-start gap-3 min-w-[120px]">
@@ -102,7 +105,7 @@ function ToolCard({ icon, title, description, href, badges, features }: { icon: 
         </ul>
       </div>
       <div className="flex flex-col items-center md:items-end w-full md:w-auto mt-6 md:mt-0">
-        <Link href={`/sign-in?redirect=${href}`} className="btn-premium text-lg px-8 py-3 w-full md:w-auto text-center">Try Now →</Link>
+        <Link href={buttonHref} className="btn-premium text-lg px-8 py-3 w-full md:w-auto text-center">Try Now →</Link>
       </div>
     </div>
   );
