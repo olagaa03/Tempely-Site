@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { User, ChevronDown, Sun, Moon } from 'lucide-react';
+import Image from 'next/image';
 
 function LightningBoltIcon() {
   return (
@@ -21,8 +22,8 @@ export default function Header() {
       <nav className="max-w-7xl mx-auto flex items-center justify-between px-6 py-3">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
-          <span className="block w-8 h-8 rounded-full bg-neutral-900 flex items-center justify-center shadow-lg border border-white/10">
-            <LightningBoltIcon />
+          <span className="block w-8 h-8 rounded-full bg-neutral-900 flex items-center justify-center shadow-lg border border-white/10 overflow-hidden">
+            <Image src="/branding/tempely-logo-transparent.png" alt="Tempely Logo" width={28} height={28} priority />
           </span>
           <span className="font-extrabold text-2xl tracking-tight text-white group-hover:text-accent transition-colors duration-200">Tempely</span>
         </Link>
