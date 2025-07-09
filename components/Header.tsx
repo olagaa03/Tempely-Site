@@ -29,11 +29,9 @@ export default function Header() {
         {/* Nav Links */}
         <ul className="hidden md:flex items-center gap-2 lg:gap-6 text-lg font-semibold">
           {[
-            { href: '/home', label: 'Home' },
-            { href: '/products', label: 'Products' },
+            { href: '/', label: 'Home' },
             { href: '/about', label: 'About' },
             { href: '/ai-tools', label: 'AI Tools' },
-            { href: '/templates', label: 'Templates' },
           ].map(({ href, label }) => (
             <li key={href} className="relative group">
               <Link href={href} className="px-3 py-1 rounded-xl transition-colors duration-200 text-white/80 hover:text-accent focus:text-accent">
