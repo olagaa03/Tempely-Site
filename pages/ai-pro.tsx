@@ -54,7 +54,7 @@ export default function AiProPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-[#0F0F1C] via-[#18122B] to-[#4B2067] relative overflow-hidden">
-      <div className="relative z-10 max-w-3xl mx-auto px-6 py-16 pt-24">
+      <div className="relative z-10 max-w-3xl mx-auto px-6 py-16 pt-36"> {/* Increased pt-36 for more space below header */}
         <h1 className="text-5xl md:text-6xl font-extrabold mb-10 gradient-text drop-shadow-lg text-center animate-fade-in">
           Tempely Pro Tools
         </h1>
