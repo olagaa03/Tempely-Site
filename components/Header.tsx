@@ -20,12 +20,11 @@ export default function Header() {
   return (
     <header className="fixed top-0 left-0 w-full z-50 glass-strong shadow-lg backdrop-blur-lg border-b border-white/10">
       <nav className="max-w-7xl mx-auto flex items-center justify-between px-6 py-3">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-3 group">
-          <span className="flex items-center justify-center" style={{height: 36}}>
-            <Image src="/branding/tempely-logo-transparent.png" alt="Tempely Logo" width={36} height={36} priority style={{background: 'none', boxShadow: '0 2px 12px 0 rgba(127,90,240,0.10)', borderRadius: 8}} />
+        {/* Logo Only */}
+        <Link href="/" className="flex items-center group">
+          <span className="flex items-center justify-center" style={{height: 48}}>
+            <Image src="/branding/tempely-logo-transparent.png" alt="Tempely Logo" width={48} height={48} priority style={{background: 'none', boxShadow: '0 2px 16px 0 rgba(127,90,240,0.12)', borderRadius: 12}} />
           </span>
-          <span className="font-extrabold text-3xl tracking-tight text-white group-hover:text-accent transition-colors duration-200" style={{lineHeight: 1}}>Tempely</span>
         </Link>
         {/* Nav Links */}
         <ul className="hidden md:flex items-center gap-2 lg:gap-6 text-lg font-semibold">
