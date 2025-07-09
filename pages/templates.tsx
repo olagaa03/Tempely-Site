@@ -10,24 +10,24 @@ const templates = [
     description: 'A proven template for viral, high-retention hooks that grab attention instantly.',
     href: '/products/hooked',
     cover: '/screenshots/hooked-cover.png',
-    lemonUrl: 'https://tempely.lemonsqueezy.com/buy/0cf347b0-00b4-4c72-a726-365d080439e4',
-    price: '$49/month',
+    lemonUrl: '', // TODO: Add correct LemonSqueezy link for Hooked
+    price: '$9.99',
   },
   {
     title: 'Posted',
     description: 'A template for structuring posts that drive engagement and sharing.',
     href: '/products/posted',
     cover: '/screenshots/posted-cover.png',
-    lemonUrl: 'https://tempely.lemonsqueezy.com/buy/9fcbd47a-9c87-4d31-9639-2e38b5a84326',
-    price: '$39/month',
+    lemonUrl: '', // TODO: Add correct LemonSqueezy link for Posted
+    price: '$14.99',
   },
   {
     title: 'Tracked',
     description: 'A template for tracking content performance and iterating for growth.',
     href: '/products/tracked',
     cover: '/screenshots/tracked-cover.png',
-    lemonUrl: 'https://tempely.lemonsqueezy.com/buy/2e7b5e2e-6b7e-4b2e-8e2e-2e7b5e2e6b7e',
-    price: '$29/month',
+    lemonUrl: '', // TODO: Add correct LemonSqueezy link for Tracked
+    price: '$14.99',
   },
 ];
 
