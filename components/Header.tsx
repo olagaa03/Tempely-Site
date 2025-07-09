@@ -18,8 +18,8 @@ export default function Header() {
   const [darkMode, setDarkMode] = useState(true);
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 glass-strong shadow-lg backdrop-blur-lg border-b border-white/10">
-      <nav className="max-w-7xl mx-auto flex items-center justify-between px-6 py-3">
+    <header className="fixed top-0 left-0 w-full z-50 glass-strong shadow-lg backdrop-blur-lg border-b border-white/10" style={{background: 'rgba(24,18,43,0.72)'}}>
+      <nav className="max-w-7xl mx-auto flex items-center justify-between px-6 py-1">
         {/* Large Logo Only */}
         <Link href="/" className="flex items-center group">
           <span className="flex items-center justify-center" style={{height: 72}}>
