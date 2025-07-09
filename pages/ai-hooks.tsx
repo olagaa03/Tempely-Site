@@ -1,9 +1,19 @@
-import { useState } from 'react';
+import { useUser } from '@clerk/nextjs';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { Sparkles, Megaphone, AlertCircle } from 'lucide-react';
 
 export default function AiHooksPage() {
+  const { isSignedIn, isLoaded } = useUser();
+  const router = useRouter();
+  useEffect(() => {
+    if (isLoaded && !isSignedIn) {
+      router.replace('/sign-in?redirect=/ai-hooks');
+    }
+  }, [isLoaded, isSignedIn, router]);
+
   const [formData, setFormData] = useState({
     niche: '',
     platform: '',
