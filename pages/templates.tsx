@@ -1,23 +1,33 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Link from 'next/link';
+import Image from 'next/image';
 import { FileText } from 'lucide-react';
 
 const templates = [
   {
     title: 'Hooked',
     description: 'A proven template for viral, high-retention hooks that grab attention instantly.',
-    href: '/templates/hooked',
+    href: '/products/hooked',
+    cover: '/screenshots/hooked-cover.png',
+    lemonUrl: 'https://tempely.lemonsqueezy.com/buy/0cf347b0-00b4-4c72-a726-365d080439e4',
+    price: '$49/month',
   },
   {
     title: 'Posted',
     description: 'A template for structuring posts that drive engagement and sharing.',
-    href: '/templates/posted',
+    href: '/products/posted',
+    cover: '/screenshots/posted-cover.png',
+    lemonUrl: 'https://tempely.lemonsqueezy.com/buy/9fcbd47a-9c87-4d31-9639-2e38b5a84326',
+    price: '$39/month',
   },
   {
     title: 'Tracked',
     description: 'A template for tracking content performance and iterating for growth.',
-    href: '/templates/tracked',
+    href: '/products/tracked',
+    cover: '/screenshots/tracked-cover.png',
+    lemonUrl: 'https://tempely.lemonsqueezy.com/buy/2e7b5e2e-6b7e-4b2e-8e2e-2e7b5e2e6b7e',
+    price: '$29/month',
   },
 ];
 
@@ -35,10 +45,13 @@ export default function TemplatesPage() {
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 w-full">
           {templates.map((tpl) => (
-            <div key={tpl.title} className="card-premium flex flex-col items-center gap-6 p-8 min-h-[220px] shadow-xl hover:scale-[1.02] hover:shadow-2xl transition-all duration-300">
-              <h2 className="text-2xl font-extrabold text-accent mb-2 gradient-text drop-shadow-lg">{tpl.title}</h2>
-              <p className="text-white/90 text-base mb-4 text-center">{tpl.description}</p>
-              <Link href={tpl.href} className="btn-premium text-lg px-8 py-3 w-full text-center">View Template →</Link>
+            <div key={tpl.title} className="card-premium flex flex-col items-center gap-6 p-8 min-h-[420px] shadow-xl hover:scale-[1.02] hover:shadow-2xl transition-all duration-300">
+              <Link href={tpl.href} className="w-full flex flex-col items-center group">
+                <Image src={tpl.cover} alt={tpl.title + ' cover'} width={320} height={180} className="rounded-xl mb-4 shadow-lg group-hover:scale-105 transition-transform duration-200" />
+                <h2 className="text-2xl font-extrabold text-accent mb-2 gradient-text drop-shadow-lg">{tpl.title}</h2>
+                <p className="text-white/90 text-base mb-4 text-center">{tpl.description}</p>
+              </Link>
+              <a href={tpl.lemonUrl} target="_blank" rel="noopener noreferrer" className="btn-premium text-lg px-8 py-3 w-full text-center mt-auto">Buy Now – {tpl.price}</a>
             </div>
           ))}
         </div>
