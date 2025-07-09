@@ -74,7 +74,7 @@ export default function AiToolsPage() {
       {/* Tools List */}
       <section className="max-w-3xl mx-auto w-full px-4 py-16 flex flex-col gap-12 animate-fade-in">
         {tools.map((tool) => (
-          <ToolCard key={tool.title} {...tool} isSignedIn={isSignedIn} />
+          <ToolCard key={tool.title} {...tool} isSignedIn={!!isSignedIn} />
         ))}
       </section>
       <Footer />
