@@ -32,6 +32,7 @@ export default function Header() {
             { href: '/', label: 'Home' },
             { href: '/about', label: 'About' },
             { href: '/ai-tools', label: 'AI Tools' },
+            { href: '/templates', label: 'Templates' },
           ].map(({ href, label }) => (
             <li key={href} className="relative group">
               <Link href={href} className="px-3 py-1 rounded-xl transition-colors duration-200 text-white/80 hover:text-accent focus:text-accent">

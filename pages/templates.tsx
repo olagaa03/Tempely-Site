@@ -1,19 +1,10 @@
-import { useUser } from '@clerk/nextjs';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { FileText, Sparkles, AlertCircle } from 'lucide-react';
 
-export default function AiTemplatesPage() {
-  const { isSignedIn, isLoaded } = useUser();
-  const router = useRouter();
-  useEffect(() => {
-    if (isLoaded && !isSignedIn) {
-      router.replace('/sign-in?redirect=/ai-templates');
-    }
-  }, [isLoaded, isSignedIn, router]);
-
+export default function TemplatesPage() {
+  // Remove Clerk and router imports and useEffect for auth redirect
   const [formData, setFormData] = useState({
     niche: '',
     platform: '',
