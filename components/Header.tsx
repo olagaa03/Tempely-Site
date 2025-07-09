@@ -6,8 +6,8 @@ import { User, ChevronDown, Sun, Moon } from 'lucide-react';
 
 function LightningBoltIcon() {
   return (
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M13 2L3 14H12L11 22L21 10H13L13 2Z" fill="#fff" stroke="#7f5af0" strokeWidth="1.5"/>
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M13.5 2L4 16H13L11 26L24 10H15L13.5 2Z" fill="#fff" stroke="#7f5af0" strokeWidth="2" strokeLinejoin="round"/>
     </svg>
   );
 }
