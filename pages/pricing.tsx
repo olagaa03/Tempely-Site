@@ -108,12 +108,12 @@ export default function PricingPage() {
       <Head>
         <title>Pricing – Tempely</title>
       </Head>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-purple-50 flex flex-col items-center justify-start pt-6 pb-16 px-1 md:px-4 animate-fade-in">
-        <div className="w-full max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-2 text-center">Pricing Plans</h1>
-          <p className="text-base md:text-lg text-gray-700 mb-8 text-center max-w-xl mx-auto">Unlock the full power of Tempely. Choose the plan that fits your needs and scale your creativity with AI credits, tools, and more. <span className='font-semibold text-purple-700'>Coming soon: Buy extra credits anytime!</span></p>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-purple-50 flex flex-col items-start justify-start pt-2 pb-12 px-1 md:px-8 animate-fade-in">
+        <div className="w-full max-w-3xl">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-2 text-left">Pricing Plans</h1>
+          <p className="text-base md:text-lg text-gray-700 mb-8 text-left max-w-xl">Unlock the full power of Tempely. Choose the plan that fits your needs and scale your creativity with AI credits, tools, and more. <span className='font-semibold text-purple-700'>Coming soon: Buy extra credits anytime!</span></p>
           {/* Toggle */}
-          <div className="flex items-center justify-center gap-4 mb-10">
+          <div className="flex items-center gap-4 mb-10">
             <span className={`font-semibold text-sm md:text-base ${!yearly ? 'text-purple-700' : 'text-gray-400'}`}>Monthly</span>
             <button
               className={`w-12 h-7 rounded-full bg-purple-200 relative transition-colors duration-200 focus:outline-none`}
@@ -127,7 +127,7 @@ export default function PricingPage() {
             <span className={`font-semibold text-sm md:text-base ${yearly ? 'text-purple-700' : 'text-gray-400'}`}>Yearly <span className="text-xs font-normal">(Save 17%)</span></span>
           </div>
           {/* Pricing Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 w-full mb-14">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full mb-14">
             {plans.map((plan, idx) => (
               <div
                 key={plan.name}
@@ -159,7 +159,7 @@ export default function PricingPage() {
           </div>
           {/* Feature Comparison Table */}
           <div className="w-full bg-white/80 rounded-xl shadow-lg p-6 mb-12 overflow-x-auto">
-            <h3 className="text-xl font-bold text-purple-700 mb-4 text-center">Compare Features</h3>
+            <h3 className="text-xl font-bold text-purple-700 mb-4 text-left">Compare Features</h3>
             <table className="w-full text-left border-separate border-spacing-y-1 text-sm">
               <thead>
                 <tr>
@@ -182,8 +182,8 @@ export default function PricingPage() {
             </table>
           </div>
           {/* Feature List */}
-          <div className="w-full max-w-2xl mx-auto bg-white/70 rounded-xl shadow p-5 mb-6">
-            <h3 className="text-lg font-bold text-purple-700 mb-2">All plans include:</h3>
+          <div className="w-full max-w-2xl bg-white/70 rounded-xl shadow p-5 mb-6">
+            <h3 className="text-lg font-bold text-purple-700 mb-2 text-left">All plans include:</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 text-sm">
               <div>
                 <span className="font-semibold">AI Audio, AI Chat, AI Design, AI Writer</span> and more
@@ -194,7 +194,7 @@ export default function PricingPage() {
             </div>
           </div>
           {/* Coming soon: Buy credits */}
-          <div className="w-full flex justify-center mt-6">
+          <div className="w-full flex justify-start mt-6">
             <div className="flex items-center gap-3 px-6 py-4 rounded-2xl shadow-lg bg-gradient-to-r from-purple-100 via-purple-50 to-pink-100 border border-purple-200">
               <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
               <span className="font-bold text-purple-700 text-base md:text-lg">Need more credits?</span>
