@@ -1,122 +1,153 @@
 import Link from 'next/link';
+import { useUser } from '@clerk/nextjs';
+import { Mic, MessageSquare, Palette, PenTool, FileText, Sparkles, User, Image, Type, Volume2, Video } from 'lucide-react';
 
 export default function HomePage() {
-  return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-neutral-950 relative overflow-hidden">
-      {/* Subtle Animated Background */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120vw] h-[60vh] bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-950 rounded-full blur-3xl opacity-40"></div>
-        <div className="absolute bottom-0 right-0 w-1/2 h-1/3 bg-gradient-to-br from-neutral-900 to-neutral-950 rounded-full blur-2xl opacity-20"></div>
+  const { isSignedIn, user } = useUser();
+
+  if (!isSignedIn) {
+    // Public landing page for guests
+    return (
+      <div className="max-w-4xl mx-auto pt-24 pb-20 text-center">
+        <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6">Tempely: AI Tools for Creators</h1>
+        <p className="text-xl text-gray-700 mb-10 max-w-2xl mx-auto">Design, write, and create faster with premium AI tools. Sign up to unlock your creative power.</p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+          <Link href="/sign-up" className="btn-premium text-lg px-10 py-4">Sign Up Free</Link>
+          <Link href="/sign-in" className="btn-outline text-lg px-10 py-4">Log In</Link>
+        </div>
+        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-8">
+          <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">All-in-one AI Toolkit</h2>
+            <p className="text-gray-700 text-base mb-2">Access 11+ powerful tools for content, design, and media.</p>
+          </div>
+          <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Premium, Modern Design</h2>
+            <p className="text-gray-700 text-base mb-2">A beautiful, fast, and intuitive platform for creators and teams.</p>
+          </div>
+        </div>
       </div>
-      {/* Hero Section */}
-      <section className="relative z-10 flex flex-col items-center justify-center text-center py-32 px-6 w-full max-w-3xl animate-fade-in">
-        <h1 className="h1 text-5xl md:text-7xl font-extrabold mb-6 text-white drop-shadow-xl animate-slide-in">
-          Unleash AI Creativity <br /> with <span className="text-accent">Tempely</span>
-        </h1>
-        <p className="text-xl md:text-2xl text-white/80 mb-8 max-w-2xl mx-auto animate-fade-in delay-100">
-          The world’s most advanced AI content studio for creators, brands, and visionaries. Instantly generate viral scripts, ideas, hooks, and templates—crafted for real results.
-        </p>
-        <Link href="/ai-tools" className="btn-premium text-xl px-10 py-4 mt-2 animate-fade-in delay-200">
-          Try Tempely AI Tools →
-        </Link>
-      </section>
-      {/* AI Tools Preview */}
-      <section className="relative z-10 w-full max-w-5xl mx-auto mt-16 animate-fade-in delay-300">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <DemoCard
-            title="Script Generator"
-            desc="Generate high-converting, creative video scripts tailored to your niche, audience, and platform."
-            href="/ai-pro-access"
-          />
-          <DemoCard
-            title="Ideas Generator"
-            desc="Get bold, viral content ideas and angles based on real trends and audience psychology."
-            href="/ai-ideas"
-          />
-          <DemoCard
-            title="Templates Generator"
-            desc="Access reusable, proven script templates for any platform or content goal."
-            href="/ai-templates"
-          />
-          <DemoCard
-            title="Hooks Generator"
-            desc="Craft scroll-stopping hooks and openers that grab attention instantly."
-            href="/ai-hooks"
-          />
-        </div>
-      </section>
-      {/* Why Tempely Section */}
-      <section className="relative z-10 w-full max-w-5xl mx-auto mt-24 animate-fade-in delay-400">
-        <h2 className="h2 text-center mb-8 text-white">Why Tempely?</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <WhyCard
-            title="Truly Original Content"
-            desc="No more generic, AI-sounding scripts. Every output is bold, creative, and tailored to your brand."
-          />
-          <WhyCard
-            title="Built for Creators"
-            desc="Tempely is designed by and for creators—every tool is optimized for real-world results and engagement."
-          />
-          <WhyCard
-            title="Premium Experience"
-            desc="From UI to output, everything feels world-class. Fast, beautiful, and a joy to use on any device."
-          />
-        </div>
-      </section>
-      {/* Testimonials Section */}
-      <section className="relative z-10 w-full max-w-5xl mx-auto mt-24 animate-fade-in delay-500">
-        <h2 className="h2 text-center mb-8 text-white">What Creators Say</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <TestimonialCard
-            name="Alex Rivera"
-            handle="@alexcreates"
-            text="Tempely is a game-changer. My content is sharper, more original, and my audience is growing faster than ever."
-            avatarUrl="/public/branding/Profile_Avatar.png"
-          />
-          <TestimonialCard
-            name="Jules Kim"
-            handle="@julesmakes"
-            text="I’ve tried every AI tool out there—Tempely is the only one that actually feels like a creative partner."
-            avatarUrl="/public/branding/Profile_Avatar.png"
-          />
-          <TestimonialCard
-            name="Samir Patel"
-            handle="@samirwrites"
-            text="The UI is stunning, the scripts are next-level, and the support is incredible. Highly recommend!"
-            avatarUrl="/public/branding/Profile_Avatar.png"
-          />
-        </div>
-      </section>
-    </main>
-  );
-}
+    );
+  }
 
-function DemoCard({ title, desc, href }: { title: string; desc: string; href: string }) {
-  return (
-    <Link href={href} className="glass-strong border border-white/10 rounded-2xl p-8 shadow-xl hover:scale-105 hover:shadow-xl transition-all duration-300 flex flex-col gap-3 animate-fade-in">
-      <h3 className="h3 text-2xl font-bold mb-1 text-white drop-shadow-lg">{title}</h3>
-      <p className="text-white/80 text-lg mb-2">{desc}</p>
-      <span className="btn-premium w-fit mt-auto self-end text-base px-6 py-2">Try Now →</span>
-    </Link>
-  );
-}
+  // Dashboard for signed-in users
+  const userName = user?.firstName || user?.username || 'User';
+  const aiTools = [
+    {
+      id: 'audio',
+      title: 'AI Audio',
+      description: 'Text-to-speech voice generation with natural-sounding voices',
+      icon: Mic,
+      href: '/ai-tools/audio',
+      color: 'bg-gradient-to-tr from-purple-400 to-pink-400',
+      new: true
+    },
+    {
+      id: 'chat',
+      title: 'AI Chat',
+      description: 'LLM chat with different model options for various use cases',
+      icon: MessageSquare,
+      href: '/ai-tools/chat',
+      color: 'bg-gradient-to-tr from-blue-400 to-cyan-400',
+      new: true
+    },
+    {
+      id: 'design',
+      title: 'AI Design',
+      description: 'Layouts, styles, and design templates for any project',
+      icon: Palette,
+      href: '/ai-tools/design',
+      color: 'bg-gradient-to-tr from-green-400 to-emerald-400'
+    },
+    {
+      id: 'draw',
+      title: 'AI Draw',
+      description: 'Sketch-to-image generator for creative visual content',
+      icon: PenTool,
+      href: '/ai-tools/draw',
+      color: 'bg-gradient-to-tr from-orange-400 to-red-400'
+    },
+    {
+      id: 'writer',
+      title: 'AI Writer',
+      description: 'SEO writing, ad copy, scripts, and content generation',
+      icon: FileText,
+      href: '/ai-tools/writer',
+      color: 'bg-gradient-to-tr from-indigo-400 to-purple-400'
+    },
+    {
+      id: 'design-maker',
+      title: 'Design Maker',
+      description: 'Dynamic visual content generator for marketing materials',
+      icon: Sparkles,
+      href: '/ai-tools/design-maker',
+      color: 'bg-gradient-to-tr from-pink-400 to-rose-400'
+    },
+    {
+      id: 'face-swapper',
+      title: 'Face Swapper',
+      description: 'Images/videos face-swapping with advanced AI technology',
+      icon: User,
+      href: '/ai-tools/face-swapper',
+      color: 'bg-gradient-to-tr from-yellow-400 to-orange-400'
+    },
+    {
+      id: 'image-maker',
+      title: 'Image Maker',
+      description: 'AI-generated visuals with custom prompts and styles',
+      icon: Image,
+      href: '/ai-tools/image-maker',
+      color: 'bg-gradient-to-tr from-teal-400 to-cyan-400'
+    },
+    {
+      id: 'logo-maker',
+      title: 'Logo Maker',
+      description: 'Auto-branding tool with logo packs and customization',
+      icon: Type,
+      href: '/ai-tools/logo-maker',
+      color: 'bg-gradient-to-tr from-violet-400 to-purple-400'
+    },
+    {
+      id: 'speech-maker',
+      title: 'Speech Maker',
+      description: 'Voiceovers, accents, and multilingual audio content',
+      icon: Volume2,
+      href: '/ai-tools/speech-maker',
+      color: 'bg-gradient-to-tr from-emerald-400 to-green-400'
+    },
+    {
+      id: 'video-maker',
+      title: 'Video Maker',
+      description: 'Instant video ads and social media clips generation',
+      icon: Video,
+      href: '/ai-tools/video-maker',
+      color: 'bg-gradient-to-tr from-red-400 to-pink-400'
+    }
+  ];
 
-function WhyCard({ title, desc }: { title: string; desc: string }) {
   return (
-    <div className="glass-strong border border-white/10 rounded-2xl p-8 shadow-xl flex flex-col items-center text-center gap-3 animate-fade-in">
-      <h3 className="h3 text-xl font-bold text-white mb-1">{title}</h3>
-      <p className="text-white/80 text-base">{desc}</p>
-    </div>
-  );
-}
-
-function TestimonialCard({ name, handle, text, avatarUrl }: { name: string; handle: string; text: string; avatarUrl: string }) {
-  return (
-    <div className="glass-strong border border-white/10 rounded-2xl p-8 shadow-xl flex flex-col items-center text-center gap-3 animate-fade-in">
-      <img src={avatarUrl} alt={name} className="w-14 h-14 rounded-full border-2 border-accent-2 shadow mb-2" />
-      <p className="text-white/90 text-base mb-2">“{text}”</p>
-      <span className="font-bold text-accent-2">{name}</span>
-      <span className="text-white/60 text-sm">{handle}</span>
+    <div className="max-w-7xl mx-auto pt-10 pb-20">
+      {/* Greeting */}
+      <div className="mb-10 mt-8">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-2">Welcome, {userName}. What would you like to do today?</h1>
+        <p className="text-lg text-gray-700 font-medium">Choose a tool below to get started.</p>
+      </div>
+      {/* Tool Cards Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {aiTools.map((tool) => (
+          <Link key={tool.id} href={tool.href} className="group block rounded-2xl bg-white shadow-md border border-gray-200 hover:shadow-xl transition-all p-6 relative">
+            {/* New badge */}
+            {tool.new && (
+              <span className="absolute top-4 right-4 bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full">NEW</span>
+            )}
+            <div className={`w-16 h-16 rounded-xl flex items-center justify-center mb-6 ${tool.color} text-white shadow-lg`}>
+              <tool.icon className="w-8 h-8" />
+            </div>
+            <h2 className="text-2xl font-extrabold text-gray-900 mb-2 leading-tight" style={{opacity: 1, color: '#111827'}}>{tool.title}</h2>
+            <p className="text-gray-700 text-base mb-4 min-h-[48px]">{tool.description}</p>
+            <span className="inline-block mt-2 text-purple-600 font-semibold group-hover:underline">Open {tool.title}</span>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

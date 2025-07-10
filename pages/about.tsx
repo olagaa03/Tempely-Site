@@ -1,33 +1,18 @@
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-neutral-950 flex flex-col justify-between">
-      <Header />
-      <section className="flex flex-col items-center justify-center text-center py-24 px-6 w-full max-w-3xl mx-auto animate-fade-in">
-        <h1 className="h1 text-5xl md:text-6xl font-extrabold mb-6 text-white drop-shadow-xl">About Tempely</h1>
-        <p className="text-xl text-white/80 mb-8 max-w-2xl mx-auto animate-fade-in delay-100">
-          Tempely is on a mission to empower creators with the world’s most advanced, creative, and premium AI content tools.
+    <div className="max-w-2xl mx-auto pt-16 pb-20">
+      <h1 className="text-4xl md:text-5xl font-extrabold mb-8 text-gray-900">About Tempely</h1>
+      <div className="bg-white border border-gray-100 rounded-2xl p-10 shadow-lg flex flex-col gap-6">
+        <p className="text-lg text-gray-700">
+          Tempely is a premium AI tools platform for creators, marketers, and teams. Our mission is to empower you to design, write, and create faster and smarter with the latest in generative AI technology.
         </p>
-        <div className="glass-strong border border-white/10 rounded-2xl p-8 shadow-xl flex flex-col gap-6 items-center text-center animate-fade-in delay-200">
-          <h2 className="h2 text-2xl font-bold text-white mb-2">Our Story</h2>
-          <p className="text-white/90 text-lg max-w-xl">
-            Founded by creators, for creators—Tempely was born out of frustration with generic, uninspired AI tools. We set out to build something different: a platform that feels like a creative partner, not just a robot.
-          </p>
-          <h2 className="h2 text-2xl font-bold text-white mb-2 mt-6">Our Mission</h2>
-          <p className="text-white/90 text-lg max-w-xl">
-            To help every creator, brand, and visionary unlock their full potential with AI that’s bold, original, and truly useful.
-          </p>
-          <h2 className="h2 text-2xl font-bold text-white mb-2 mt-6">Our Values</h2>
-          <ul className="text-white/80 text-lg flex flex-col gap-2 list-disc list-inside">
-            <li><span className="font-bold text-accent">Creativity First:</span> Every tool is designed to inspire, not replace, human creativity.</li>
-            <li><span className="font-bold text-accent-2">Quality Over Quantity:</span> We focus on outputs that are truly valuable, not just fast.</li>
-            <li><span className="font-bold text-primary">For Everyone:</span> Tempely is built to empower all creators, no matter their background or audience size.</li>
-          </ul>
-        </div>
-      </section>
-      <Footer />
-    </main>
+        <p className="text-base text-gray-500">
+          We believe in clean, modern design and a seamless user experience. Every tool is built to be powerful, intuitive, and beautiful—so you can focus on what matters: your ideas.
+        </p>
+        <p className="text-base text-gray-500">
+          Whether you’re a solo creator or a growing business, Tempely gives you the creative edge you need to stand out.
+        </p>
+      </div>
+    </div>
   );
 }
