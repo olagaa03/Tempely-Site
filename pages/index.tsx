@@ -8,23 +8,73 @@ export default function HomePage() {
   if (!isSignedIn) {
     // Public landing page for guests
     return (
-      <div className="max-w-4xl mx-auto pt-24 pb-20 text-center">
-        <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6">Tempely: AI Tools for Creators</h1>
-        <p className="text-xl text-gray-700 mb-10 max-w-2xl mx-auto">Design, write, and create faster with premium AI tools. Sign up to unlock your creative power.</p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-          <Link href="/sign-up" className="btn-premium text-lg px-10 py-4">Sign Up Free</Link>
-          <Link href="/sign-in" className="btn-outline text-lg px-10 py-4">Log In</Link>
-        </div>
-        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-8">
-          <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">All-in-one AI Toolkit</h2>
-            <p className="text-gray-700 text-base mb-2">Access 11+ powerful tools for content, design, and media.</p>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-purple-50 flex flex-col justify-between">
+        {/* Hero Section */}
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between pt-24 pb-16 px-4 md:px-0">
+          {/* Text Content */}
+          <div className="flex-1 text-center md:text-left">
+            <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6 leading-tight animate-fade-in">
+              Unleash Your Creativity<br className="hidden md:block" /> with <span className="text-purple-600">AI Superpowers</span>
+            </h1>
+            <p className="text-xl text-gray-700 mb-8 max-w-xl animate-fade-in delay-100">
+              Design, write, and create faster with 11+ premium AI tools. Join thousands of creators using Tempely to unlock their creative power—free forever, no credit card required.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mb-8 animate-fade-in delay-200">
+              <Link href="/sign-up" className="bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-full px-10 py-4 text-lg shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2">Sign Up Free</Link>
+              <Link href="/sign-in" className="border-2 border-purple-600 text-purple-600 hover:bg-purple-50 font-bold rounded-full px-10 py-4 text-lg transition-all">Log In</Link>
+            </div>
+            {/* Trusted by logos */}
+            <div className="mt-6 flex flex-col items-center md:items-start animate-fade-in delay-300">
+              <span className="text-gray-500 text-sm mb-2">Trusted by creators at</span>
+              <div className="flex gap-6 opacity-80">
+                {/* Placeholder logos, replace with real ones if available */}
+                <span className="font-bold text-gray-400 text-lg">CreatorHub</span>
+                <span className="font-bold text-gray-400 text-lg">Designly</span>
+                <span className="font-bold text-gray-400 text-lg">MediaPro</span>
+              </div>
+            </div>
           </div>
-          <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Premium, Modern Design</h2>
-            <p className="text-gray-700 text-base mb-2">A beautiful, fast, and intuitive platform for creators and teams.</p>
+          {/* Hero Illustration - Use user's logo */}
+          <div className="flex-1 flex justify-center md:justify-end mt-12 md:mt-0 animate-fade-in delay-200">
+            <img
+              src="/branding/tempely-logo%20(SVG).svg"
+              alt="Tempely Logo"
+              className="w-[220px] h-auto md:w-[320px] md:h-auto drop-shadow-xl rounded-xl bg-white/80 p-4"
+              style={{ maxWidth: '340px', maxHeight: '260px' }}
+            />
           </div>
         </div>
+        {/* Features Section */}
+        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4 md:px-0 mt-4 mb-20 animate-fade-in delay-300">
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 flex flex-col items-center hover:shadow-2xl transition-all">
+            <Sparkles className="w-10 h-10 text-purple-500 mb-4" />
+            <h2 className="text-xl font-bold text-gray-900 mb-2">All-in-one AI Toolkit</h2>
+            <p className="text-gray-600 text-base">Access 11+ powerful tools for content, design, and media—all in one place.</p>
+          </div>
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 flex flex-col items-center hover:shadow-2xl transition-all">
+            <Palette className="w-10 h-10 text-pink-500 mb-4" />
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Premium, Modern Design</h2>
+            <p className="text-gray-600 text-base">A beautiful, fast, and intuitive platform for creators and teams.</p>
+          </div>
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 flex flex-col items-center hover:shadow-2xl transition-all">
+            <User className="w-10 h-10 text-blue-500 mb-4" />
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Free Forever Plan</h2>
+            <p className="text-gray-600 text-base">Get started for free—no credit card required. Upgrade anytime for more power.</p>
+          </div>
+        </div>
+        {/* Subtle fade-in animation keyframes */}
+        <style jsx>{`
+          @keyframes fade-in {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: none; }
+          }
+          .animate-fade-in {
+            animation: fade-in 1s cubic-bezier(0.4,0,0.2,1) both;
+          }
+          .delay-100 { animation-delay: 0.1s; }
+          .delay-200 { animation-delay: 0.2s; }
+          .delay-300 { animation-delay: 0.3s; }
+        `}</style>
       </div>
     );
   }
