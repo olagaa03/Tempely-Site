@@ -36,7 +36,7 @@ export default function Sidebar() {
       <aside
         className={`
           fixed top-0 left-0 h-screen bg-white border-r border-gray-200 shadow-sm z-40
-          flex flex-col py-6 px-4 transition-all duration-300
+          flex flex-col py-8 px-5 transition-all duration-300
           ${open ? 'w-64' : 'w-20'}
           ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}
           md:translate-x-0
@@ -51,24 +51,33 @@ export default function Sidebar() {
         >
           <X className="w-6 h-6 text-gray-700" />
         </button>
-        <div className={`flex items-center gap-2 mb-10 px-2 transition-all ${open ? '' : 'justify-center'}`}>
-          <Image src="/branding/tempely-logo-transparent.png" alt="Tempely Logo" width={open ? 40 : 32} height={open ? 40 : 32} />
+        <div className={`flex items-center gap-3 mb-12 px-2 transition-all ${open ? '' : 'justify-center'}`}>
+          <Image src="/branding/tempely-logo-transparent.png" alt="Tempely Logo" width={open ? 48 : 36} height={open ? 48 : 36} />
           {open && <span className="font-extrabold text-2xl text-gray-900 tracking-tight">Tempely</span>}
         </div>
-        <nav className="flex flex-col gap-2">
+        <nav className="flex flex-col gap-3 mb-6">
           {navLinks.map(({ href, label, icon: Icon }) => (
             <Link
               key={href}
               href={href}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg text-lg font-medium text-gray-700 hover:bg-[#f5f6fa] transition group ${open ? '' : 'justify-center px-2'}`}
+              className={`flex items-center gap-4 px-4 py-3 rounded-lg text-lg font-medium text-gray-700 hover:bg-[#f5f6fa] transition group ${open ? '' : 'justify-center px-2'}`}
             >
               <Icon className="w-5 h-5 text-purple-500 group-hover:text-purple-700" />
               {open && <span>{label}</span>}
             </Link>
           ))}
         </nav>
-        <div className="flex-1" />
-        <div className={`text-xs text-gray-400 px-2 pt-8 ${open ? '' : 'text-center'}`}>© {new Date().getFullYear()} Tempely</div>
+        {/* Pricing link at the bottom */}
+        <div className="mt-auto mb-8">
+          <Link
+            href="/pricing"
+            className={`flex items-center gap-3 px-4 py-3 rounded-lg text-lg font-semibold text-purple-700 bg-purple-50 hover:bg-purple-100 transition ${open ? '' : 'justify-center px-2'}`}
+          >
+            <span className="material-symbols-outlined text-purple-500">local_offer</span>
+            {open && <span>Pricing</span>}
+          </Link>
+        </div>
+        <div className={`text-xs text-gray-400 px-2 pt-4 pb-2 ${open ? '' : 'text-center'}`}>© {new Date().getFullYear()} Tempely</div>
       </aside>
       {/* Overlay for mobile */}
       {mobileOpen && (

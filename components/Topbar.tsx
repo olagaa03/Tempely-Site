@@ -31,10 +31,11 @@ export default function Topbar() {
         <span className="font-extrabold text-xl text-gray-900 tracking-tight">Tempely</span>
       </div>
       {/* Navigation links */}
-      <nav className="hidden md:flex gap-6 text-lg font-semibold text-gray-700">
+      <nav className="hidden md:flex gap-8 text-lg font-semibold text-gray-700 ml-8">
         <Link href="/" className="hover:text-purple-600 transition">Home</Link>
         <Link href="/ai-tools" className="hover:text-purple-600 transition">AI Tools</Link>
         <Link href="/about" className="hover:text-purple-600 transition">About</Link>
+        <Link href="/pricing" className="hover:text-purple-700 text-purple-700 bg-purple-50 px-4 py-1 rounded-full font-bold transition ml-2">Pricing</Link>
       </nav>
       <div className="flex items-center gap-3">
         {/* Theme toggle */}
