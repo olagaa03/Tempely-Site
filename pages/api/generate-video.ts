@@ -1,17 +1,18 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
+const RUNWAY_API_URL = 'https://api.runwayml.com/v1';
+const POLL_INTERVAL = 4000; // ms
+const MAX_POLLS = 15; // ~60 seconds
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).end();
 
   const { script, style } = req.body;
   if (!script) return res.status(400).json({ error: 'Missing script.' });
 
-  // RunwayML Gen-2 text-to-video endpoint
-  // Docs: https://docs.runwayml.com/docs/gen-2-api
-  const endpoint = 'https://api.runwayml.com/v1/generate';
-
   try {
-    const runwayRes = await fetch(endpoint, {
+    // 1. Submit the generation job
+    const genRes = await fetch(`${RUNWAY_API_URL}/generate`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${process.env.RUNWAY_API_KEY}`,
@@ -19,22 +20,43 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
       body: JSON.stringify({
         prompt: script + (style ? ` Style: ${style}` : ''),
-        // You can add more parameters here if needed (e.g., seed, output_format)
       }),
     });
 
-    if (!runwayRes.ok) {
-      const error = await runwayRes.text();
+    if (!genRes.ok) {
+      const error = await genRes.text();
       return res.status(500).json({ error });
     }
 
-    const data = await runwayRes.json();
-    // The response will contain a video URL or a job ID for polling
-    // For simplicity, assume synchronous (video_url in response)
-    // If async, you may need to poll for completion
-    const videoUrl = data.video_url || data.result?.video || null;
-    if (!videoUrl) return res.status(500).json({ error: 'No video URL returned from RunwayML.' });
-    res.status(200).json({ videoUrl });
+    const genData = await genRes.json();
+    const jobId = genData.id || genData.job_id;
+    if (!jobId) return res.status(500).json({ error: 'No job ID returned from RunwayML.' });
+
+    // 2. Poll for job completion
+    let videoUrl = null;
+    let status = '';
+    for (let i = 0; i < MAX_POLLS; i++) {
+      await new Promise(r => setTimeout(r, POLL_INTERVAL));
+      const pollRes = await fetch(`${RUNWAY_API_URL}/jobs/${jobId}`, {
+        headers: {
+          'Authorization': `Bearer ${process.env.RUNWAY_API_KEY}`,
+        },
+      });
+      if (!pollRes.ok) continue;
+      const pollData = await pollRes.json();
+      status = pollData.status;
+      videoUrl = pollData.result?.video || pollData.video_url || null;
+      if (status === 'succeeded' && videoUrl) break;
+      if (status === 'failed') break;
+    }
+
+    if (status === 'succeeded' && videoUrl) {
+      return res.status(200).json({ videoUrl });
+    } else if (status === 'failed') {
+      return res.status(500).json({ error: 'Video generation failed.' });
+    } else {
+      return res.status(500).json({ error: 'Video generation timed out. Please try again later.' });
+    }
   } catch (err) {
     res.status(500).json({ error: 'Failed to generate video.' });
   }
