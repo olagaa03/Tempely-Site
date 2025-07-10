@@ -11,8 +11,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!script) return res.status(400).json({ error: 'Missing script.' });
 
   try {
-    // 1. Submit the generation job
-    const genRes = await fetch(`${RUNWAY_API_URL}/generate`, {
+    // 1. Submit the generation job to the correct endpoint
+    const genRes = await fetch(`${RUNWAY_API_URL}/generate/text-to-video`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${process.env.RUNWAY_API_KEY}`,
@@ -25,12 +25,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (!genRes.ok) {
       const errorText = await genRes.text();
-      console.error('RunwayML /generate error:', errorText);
+      console.error('RunwayML /generate/text-to-video error:', errorText);
       return res.status(500).json({ error: errorText });
     }
 
     const genData = await genRes.json();
-    console.log('RunwayML /generate response:', genData);
+    console.log('RunwayML /generate/text-to-video response:', genData);
     const jobId = genData.id || genData.job_id;
     if (!jobId) {
       console.error('No job ID returned from RunwayML:', genData);
