@@ -9,10 +9,18 @@ export default function HomePage() {
     // Public landing page for guests
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-purple-50 flex flex-col justify-between">
-        {/* Hero Section */}
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between pt-24 pb-16 px-4 md:px-0">
+        {/* Hero Section with background logo watermark */}
+        <div className="relative max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between pt-24 pb-16 px-4 md:px-0 overflow-visible">
+          {/* Watermark Logo */}
+          <img
+            src="/branding/tempely-logo%20(SVG).svg"
+            alt="Tempely Logo Watermark"
+            aria-hidden="true"
+            className="pointer-events-none select-none absolute right-0 top-1/2 -translate-y-1/2 md:translate-y-0 md:top-0 md:bottom-0 md:my-auto w-[340px] max-w-[60vw] opacity-10 md:opacity-10 blur-sm md:blur-0 z-0"
+            style={{ filter: 'grayscale(1)', objectFit: 'contain' }}
+          />
           {/* Text Content */}
-          <div className="flex-1 text-center md:text-left">
+          <div className="flex-1 text-center md:text-left z-10 relative">
             <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6 leading-tight animate-fade-in">
               Unleash Your Creativity<br className="hidden md:block" /> with <span className="text-purple-600">AI Superpowers</span>
             </h1>
@@ -33,15 +41,6 @@ export default function HomePage() {
                 <span className="font-bold text-gray-400 text-lg">MediaPro</span>
               </div>
             </div>
-          </div>
-          {/* Hero Illustration - Use user's logo */}
-          <div className="flex-1 flex justify-center md:justify-end mt-12 md:mt-0 animate-fade-in delay-200">
-            <img
-              src="/branding/tempely-logo%20(SVG).svg"
-              alt="Tempely Logo"
-              className="w-[220px] h-auto md:w-[320px] md:h-auto drop-shadow-xl rounded-xl bg-white/80 p-4"
-              style={{ maxWidth: '340px', maxHeight: '260px' }}
-            />
           </div>
         </div>
         {/* Features Section */}
