@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 const RUNWAY_API_URL = 'https://api.runwayml.com/v1';
 const POLL_INTERVAL = 4000; // ms
 const MAX_POLLS = 15; // ~60 seconds
+const MODEL_NAME = 'gen-2'; // Update if your RunwayML dashboard uses a different model name
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).end();
@@ -11,26 +12,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!script) return res.status(400).json({ error: 'Missing script.' });
 
   try {
-    // 1. Submit the generation job to the correct endpoint
-    const genRes = await fetch(`${RUNWAY_API_URL}/generate/text-to-video`, {
+    // 1. Submit the generation job to the correct endpoint and payload
+    const genRes = await fetch(`${RUNWAY_API_URL}/inferences`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${process.env.RUNWAY_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        prompt: script + (style ? ` Style: ${style}` : ''),
+        model: MODEL_NAME,
+        input: {
+          prompt: script + (style ? ` Style: ${style}` : ''),
+        },
       }),
     });
 
     if (!genRes.ok) {
       const errorText = await genRes.text();
-      console.error('RunwayML /generate/text-to-video error:', errorText);
+      console.error('RunwayML /inferences error:', errorText);
       return res.status(500).json({ error: errorText });
     }
 
     const genData = await genRes.json();
-    console.log('RunwayML /generate/text-to-video response:', genData);
+    console.log('RunwayML /inferences response:', genData);
     const jobId = genData.id || genData.job_id;
     if (!jobId) {
       console.error('No job ID returned from RunwayML:', genData);
@@ -42,20 +46,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     let status = '';
     for (let i = 0; i < MAX_POLLS; i++) {
       await new Promise(r => setTimeout(r, POLL_INTERVAL));
-      const pollRes = await fetch(`${RUNWAY_API_URL}/jobs/${jobId}`, {
+      const pollRes = await fetch(`${RUNWAY_API_URL}/inferences/${jobId}`, {
         headers: {
           'Authorization': `Bearer ${process.env.RUNWAY_API_KEY}`,
         },
       });
       if (!pollRes.ok) {
         const pollError = await pollRes.text();
-        console.error(`RunwayML /jobs/${jobId} error:`, pollError);
+        console.error(`RunwayML /inferences/${jobId} error:`, pollError);
         continue;
       }
       const pollData = await pollRes.json();
-      console.log(`RunwayML /jobs/${jobId} poll response:`, pollData);
+      console.log(`RunwayML /inferences/${jobId} poll response:`, pollData);
       status = pollData.status;
-      videoUrl = pollData.result?.video || pollData.video_url || null;
+      videoUrl = pollData.output?.[0] || pollData.result?.video || pollData.video_url || null;
       if (status === 'succeeded' && videoUrl) break;
       if (status === 'failed') break;
     }
