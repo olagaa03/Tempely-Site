@@ -1,11 +1,16 @@
 import { useState } from 'react';
-import { Mic, Download, Sparkles } from 'lucide-react';
+import { Mic, Download, Sparkles, Loader } from 'lucide-react';
+import { toast, Toaster } from 'react-hot-toast';
 
 export default function AISpeechMakerPage() {
   const [topic, setTopic] = useState('');
   const [tone, setTone] = useState('inspiring');
   const [isGenerating, setIsGenerating] = useState(false);
   const [speech, setSpeech] = useState('');
+  const [error, setError] = useState('');
+
+  // TODO: Insert your Speech Generation API key below
+  const SPEECH_API_KEY = process.env.NEXT_PUBLIC_SPEECH_API_KEY || '';
 
   const tones = [
     { id: 'inspiring', name: 'Inspiring' },
@@ -16,14 +21,26 @@ export default function AISpeechMakerPage() {
   ];
 
   const handleGenerate = async () => {
+    setError('');
     if (!topic.trim()) return;
     setIsGenerating(true);
-    setTimeout(() => {
-      setSpeech(
-        `Ladies and gentlemen,\n\nToday, we gather to celebrate the power of AI and creativity. Together, we can achieve greatness. Thank you!`
-      );
+    setSpeech('');
+    try {
+      const response = await fetch('/api/generate-speech', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ topic, tone }),
+      });
+      if (!response.ok) throw new Error('Failed to generate speech');
+      const data = await response.json();
+      setSpeech(data.speech);
+      toast.success('Speech generated!');
+    } catch (err: any) {
+      setError(err.message || 'Failed to generate speech.');
+      toast.error('Failed to generate speech.');
+    } finally {
       setIsGenerating(false);
-    }, 2000);
+    }
   };
 
   const handleDownload = () => {
@@ -32,63 +49,69 @@ export default function AISpeechMakerPage() {
     a.href = URL.createObjectURL(blob);
     a.download = 'ai-speech.txt';
     a.click();
+    toast.success('Downloaded!');
   };
 
   return (
-    <main className="min-h-screen bg-[var(--background)]">
+    <main className="min-h-screen bg-gradient-to-br from-green-50 via-white to-purple-50 relative">
+      <Toaster position="top-right" />
+      {/* Decorative background shapes */}
+      <div className="absolute -top-32 -left-32 w-96 h-96 bg-green-100 rounded-full opacity-30 blur-3xl z-0" />
+      <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-purple-100 rounded-full opacity-30 blur-3xl z-0" />
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-16 px-4 sm:px-6 lg:px-8">
-        <div className="hero-bg" />
+      <section className="relative overflow-hidden py-16 px-4 sm:px-6 lg:px-8 z-10">
         <div className="relative max-w-3xl mx-auto flex items-center gap-4 mb-8">
-          <div className="w-14 h-14 rounded-full border-2 border-[var(--accent)] flex items-center justify-center bg-[var(--surface)]">
-            <Mic className="w-7 h-7 text-[var(--accent)]" />
+          <div className="w-14 h-14 rounded-full border-2 border-green-400 flex items-center justify-center bg-white shadow-lg">
+            <Mic className="w-7 h-7 text-green-500" />
           </div>
           <div>
-            <h1 className="h1 text-3xl md:text-4xl font-extrabold mb-1">AI Speech Maker</h1>
-            <p className="text-lg text-[var(--text-muted)]">Craft powerful speeches in seconds</p>
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-1 text-gray-900 drop-shadow">AI Speech Maker</h1>
+            <p className="text-lg text-gray-500">Craft powerful speeches in seconds</p>
           </div>
         </div>
       </section>
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 z-10 relative">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {/* Input Section */}
           <div className="space-y-6">
-            <div className="card-premium">
-              <h2 className="text-xl font-bold mb-6 text-[var(--accent-3)]">Speech Settings</h2>
+            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 flex flex-col gap-6">
+              <h2 className="text-xl font-bold mb-2 text-green-600">Speech Settings</h2>
               {/* Topic Input */}
-              <div className="mb-6">
-                <label className="block text-[var(--accent-3)] font-semibold mb-3">Speech Topic</label>
+              <div>
+                <label className="block text-green-700 font-semibold mb-2">Speech Topic</label>
                 <input
                   value={topic}
                   onChange={e => setTopic(e.target.value)}
                   placeholder="e.g., The future of AI, Overcoming adversity..."
-                  className="w-full bg-[var(--glass)] border border-[var(--border)] rounded-xl p-4 text-[var(--text-main)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--accent)] transition-colors"
+                  className="w-full bg-green-50 border border-green-200 rounded-xl p-4 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-400 transition-colors"
                 />
               </div>
               {/* Tone Selection */}
-              <div className="mb-6">
-                <label className="block text-[var(--accent-3)] font-semibold mb-3">Tone</label>
+              <div>
+                <label className="block text-green-700 font-semibold mb-2">Tone</label>
                 <div className="grid grid-cols-2 gap-3">
                   {tones.map(t => (
                     <button
                       key={t.id}
                       onClick={() => setTone(t.id)}
-                      className={`btn-outline text-left ${tone === t.id ? 'bg-[var(--accent)] text-white border-[var(--accent)]' : ''}`}
+                      className={`rounded-lg border px-4 py-3 text-left transition-all font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-green-300 ${tone === t.id ? 'bg-green-500 text-white border-green-500' : 'bg-white text-gray-900 border-gray-200 hover:bg-green-50'}`}
                     >
                       <div className="font-semibold">{t.name}</div>
                     </button>
                   ))}
                 </div>
               </div>
+              {/* Error Message */}
+              {error && <div className="text-red-500 text-sm font-semibold mt-2">{error}</div>}
               {/* Generate Button */}
               <button
                 onClick={handleGenerate}
                 disabled={!topic.trim() || isGenerating}
-                className="btn-premium w-full flex items-center justify-center gap-3"
+                className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 to-purple-500 text-white font-bold rounded-xl py-4 shadow-lg hover:from-green-600 hover:to-purple-600 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {isGenerating ? (
                   <>
-                    <Sparkles className="w-5 h-5 animate-spin" />
+                    <Loader className="w-5 h-5 animate-spin" />
                     Generating Speech...
                   </>
                 ) : (
@@ -100,9 +123,9 @@ export default function AISpeechMakerPage() {
               </button>
             </div>
             {/* Features */}
-            <div className="card-premium">
-              <h3 className="text-lg font-bold mb-4 text-[var(--accent-3)]">Features</h3>
-              <ul className="space-y-2 text-[var(--text-muted)]">
+            <div className="bg-gradient-to-r from-green-50 to-purple-50 rounded-2xl shadow border border-green-100 p-6">
+              <h3 className="text-lg font-bold mb-2 text-green-600">Features</h3>
+              <ul className="space-y-1 text-gray-500">
                 <li>Multiple speech tones</li>
                 <li>Instant speech generation</li>
                 <li>Download as text</li>
@@ -112,43 +135,43 @@ export default function AISpeechMakerPage() {
           </div>
           {/* Output Section */}
           <div className="space-y-6">
-            <div className="card-premium">
-              <h2 className="text-xl font-bold mb-6 text-[var(--accent-3)]">Generated Speech</h2>
+            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+              <h2 className="text-xl font-bold mb-6 text-green-600">Generated Speech</h2>
               {speech ? (
                 <div className="space-y-4">
-                  <pre className="bg-[var(--glass)] border border-[var(--border)] rounded-xl p-6 whitespace-pre-wrap text-[var(--text-main)] text-base font-medium min-h-[180px]">{speech}</pre>
+                  <pre className="bg-green-50 border border-green-200 rounded-xl p-6 whitespace-pre-wrap text-gray-900 text-base font-medium min-h-[180px]">{speech}</pre>
                   <button
                     onClick={handleDownload}
-                    className="btn-outline flex items-center gap-2"
+                    className="flex items-center gap-2 border border-green-400 text-green-900 font-semibold rounded-xl py-2 px-4 bg-white hover:bg-green-50 transition-all"
                   >
                     <Download className="w-4 h-4" />
                     Download
                   </button>
                 </div>
               ) : (
-                <div className="bg-[var(--glass)] border border-[var(--border)] rounded-xl p-12 text-center">
-                  <Mic className="w-16 h-16 text-[var(--text-muted)] mx-auto mb-4" />
-                  <p className="text-[var(--text-muted)]">
+                <div className="bg-green-50 border border-green-200 rounded-xl p-12 text-center">
+                  <Mic className="w-16 h-16 text-green-200 mx-auto mb-4" />
+                  <p className="text-gray-400">
                     Your generated speech will appear here. Start by entering a topic.
                   </p>
                 </div>
               )}
             </div>
             {/* Use Cases */}
-            <div className="card-premium">
-              <h3 className="text-lg font-bold mb-4 text-[var(--accent-3)]">Perfect For</h3>
+            <div className="bg-gradient-to-r from-green-50 to-purple-50 rounded-2xl shadow border border-green-100 p-6">
+              <h3 className="text-lg font-bold mb-2 text-green-600">Perfect For</h3>
               <div className="grid grid-cols-1 gap-4">
-                <div className="p-4 bg-[var(--glass)] rounded-lg">
-                  <h4 className="font-semibold text-[var(--accent-3)] mb-2">Events</h4>
-                  <p className="text-sm text-[var(--text-muted)]">Craft memorable event speeches</p>
+                <div className="p-4 bg-green-50 rounded-lg">
+                  <h4 className="font-semibold text-green-600 mb-2">Events</h4>
+                  <p className="text-sm text-gray-500">Craft memorable event speeches</p>
                 </div>
-                <div className="p-4 bg-[var(--glass)] rounded-lg">
-                  <h4 className="font-semibold text-[var(--accent-3)] mb-2">Business</h4>
-                  <p className="text-sm text-[var(--text-muted)]">Create persuasive business talks</p>
+                <div className="p-4 bg-green-50 rounded-lg">
+                  <h4 className="font-semibold text-green-600 mb-2">Business</h4>
+                  <p className="text-sm text-gray-500">Create persuasive business talks</p>
                 </div>
-                <div className="p-4 bg-[var(--glass)] rounded-lg">
-                  <h4 className="font-semibold text-[var(--accent-3)] mb-2">Education</h4>
-                  <p className="text-sm text-[var(--text-muted)]">Write inspiring lectures</p>
+                <div className="p-4 bg-green-50 rounded-lg">
+                  <h4 className="font-semibold text-green-600 mb-2">Education</h4>
+                  <p className="text-sm text-gray-500">Write inspiring lectures</p>
                 </div>
               </div>
             </div>
