@@ -11,12 +11,12 @@ export default function HomePage() {
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-purple-50 flex flex-col justify-between">
         {/* Hero Section with background logo watermark */}
         <div className="relative max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between pt-24 pb-16 px-4 md:px-0 overflow-visible">
-          {/* Watermark Logo */}
+          {/* Watermark Logo - refined for best look */}
           <img
             src="/branding/tempely-logo%20(SVG).svg"
             alt="Tempely Logo Watermark"
             aria-hidden="true"
-            className="pointer-events-none select-none absolute right-0 top-1/2 -translate-y-1/2 md:translate-y-0 md:top-0 md:bottom-0 md:my-auto w-[340px] max-w-[60vw] opacity-10 md:opacity-10 blur-sm md:blur-0 z-0"
+            className="pointer-events-none select-none absolute left-2 top-2 md:left-8 md:top-8 w-[160px] md:w-[260px] max-w-[40vw] opacity-10 blur-sm z-0"
             style={{ filter: 'grayscale(1)', objectFit: 'contain' }}
           />
           {/* Text Content */}
