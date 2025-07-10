@@ -140,12 +140,12 @@ export default function HomePage() {
       color: 'bg-gradient-to-tr from-yellow-400 to-orange-400'
     },
     {
-      id: 'image-maker',
-      title: 'Image Maker',
-      description: 'AI-generated visuals with custom prompts and styles',
+      id: 'visual-lab',
+      title: 'Visual Lab',
+      description: 'Unified tool for text-to-image, image-to-video, and video upscaling. Clean, professional, and easy to use.',
       icon: Image,
-      href: '/ai-tools/image-maker',
-      color: 'bg-gradient-to-tr from-teal-400 to-cyan-400'
+      href: '/ai-tools/visual-lab',
+      color: 'bg-gradient-to-tr from-neutral-700 to-neutral-900'
     },
     {
       id: 'logo-maker',
@@ -162,14 +162,6 @@ export default function HomePage() {
       icon: Volume2,
       href: '/ai-tools/speech-maker',
       color: 'bg-gradient-to-tr from-emerald-400 to-green-400'
-    },
-    {
-      id: 'video-maker',
-      title: 'Video Maker',
-      description: 'Instant video ads and social media clips generation',
-      icon: Video,
-      href: '/ai-tools/video-maker',
-      color: 'bg-gradient-to-tr from-red-400 to-pink-400'
     }
   ];
 
