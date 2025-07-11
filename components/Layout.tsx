@@ -6,11 +6,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <SignedIn>
-        <div className="flex min-h-screen bg-[#f9f9fb]">
+        <div className="flex min-h-screen bg-[#f9f9fb] dark:bg-neutral-900">
           <Sidebar />
-          <div className="flex-1 flex flex-col min-h-screen">
+          <div className="flex-1 flex flex-col min-h-screen bg-[#f9f9fb] dark:bg-neutral-900 text-gray-900 dark:text-gray-100">
             <Topbar />
-            <main className="flex-1 pt-20 px-4 md:px-8 bg-[#f9f9fb]">{children}</main>
+            <main className="flex-1 pt-20 px-4 md:px-8 bg-[#f9f9fb] dark:bg-neutral-900 text-gray-900 dark:text-gray-100">{children}</main>
           </div>
         </div>
       </SignedIn>

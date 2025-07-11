@@ -2,7 +2,6 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 const ENDPOINT = 'https://api.dev.runwayml.com/v1/text_to_image';
 const RUNWAY_VERSION = '2024-11-06'; // Update if needed from docs
-const MODEL = 'gen-4-image'; // Use the model you have access to
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).end();
@@ -17,8 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         'X-Runway-Version': RUNWAY_VERSION,
       },
       body: JSON.stringify({
-        prompt,
-        model: MODEL,
+        prompt
       }),
     });
     if (!runwayRes.ok) {

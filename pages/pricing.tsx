@@ -108,8 +108,8 @@ export default function PricingPage() {
       <Head>
         <title>Pricing – Tempely</title>
       </Head>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-purple-50 flex flex-col items-start justify-start pt-2 pb-12 px-1 md:px-8 animate-fade-in">
-        <div className="w-full max-w-3xl">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-purple-50 flex flex-col items-start justify-start pt-2 pb-12 px-1 md:pl-12 md:pr-4 animate-fade-in">
+        <div className="w-full max-w-3xl ml-0">
           <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-2 text-left">Pricing Plans</h1>
           <p className="text-base md:text-lg text-gray-700 mb-8 text-left max-w-xl">Unlock the full power of Tempely. Choose the plan that fits your needs and scale your creativity with AI credits, tools, and more. <span className='font-semibold text-purple-700'>Coming soon: Buy extra credits anytime!</span></p>
           {/* Toggle */}
