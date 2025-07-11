@@ -16,7 +16,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         'X-Runway-Version': RUNWAY_VERSION,
       },
       body: JSON.stringify({
-        prompt
+        prompt,
+        model: 'gen4_turbo'
       }),
     });
     if (!runwayRes.ok) {
