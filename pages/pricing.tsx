@@ -108,13 +108,13 @@ export default function PricingPage() {
       <Head>
         <title>Pricing – Tempely</title>
       </Head>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-purple-50 flex flex-col items-start justify-start pt-2 pb-12 px-1 md:pl-12 md:pr-4 animate-fade-in">
+      <div className="min-h-screen flex flex-col items-start justify-start pt-2 pb-12 px-1 md:pl-12 md:pr-4 animate-fade-in bg-[var(--background)]">
         <div className="w-full max-w-3xl ml-0">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-2 text-left">Pricing Plans</h1>
-          <p className="text-base md:text-lg text-gray-700 mb-8 text-left max-w-xl">Unlock the full power of Tempely. Choose the plan that fits your needs and scale your creativity with AI credits, tools, and more. <span className='font-semibold text-purple-700'>Coming soon: Buy extra credits anytime!</span></p>
+          <h1 className="text-4xl md:text-5xl font-extrabold text-[var(--text-main)] mb-2 text-left">Pricing Plans</h1>
+          <p className="text-base md:text-lg text-[var(--text-muted)] mb-8 text-left max-w-xl">Unlock the full power of Tempely. Choose the plan that fits your needs and scale your creativity with AI credits, tools, and more. <span className='font-semibold text-purple-400'>Coming soon: Buy extra credits anytime!</span></p>
           {/* Toggle */}
           <div className="flex items-center gap-4 mb-10">
-            <span className={`font-semibold text-sm md:text-base ${!yearly ? 'text-purple-700' : 'text-gray-400'}`}>Monthly</span>
+            <span className={`font-semibold text-sm md:text-base ${!yearly ? 'text-purple-400' : 'text-[var(--text-muted)]'}`}>Monthly</span>
             <button
               className={`w-12 h-7 rounded-full bg-purple-200 relative transition-colors duration-200 focus:outline-none`}
               onClick={() => setYearly((v) => !v)}
@@ -124,7 +124,7 @@ export default function PricingPage() {
                 className={`absolute top-1 left-1 w-5 h-5 rounded-full bg-white shadow transition-transform duration-200 ${yearly ? 'translate-x-5' : ''}`}
               />
             </button>
-            <span className={`font-semibold text-sm md:text-base ${yearly ? 'text-purple-700' : 'text-gray-400'}`}>Yearly <span className="text-xs font-normal">(Save 17%)</span></span>
+            <span className={`font-semibold text-sm md:text-base ${yearly ? 'text-purple-400' : 'text-[var(--text-muted)]'}`}>Yearly <span className="text-xs font-normal">(Save 17%)</span></span>
           </div>
           {/* Pricing Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full mb-14">
@@ -182,9 +182,9 @@ export default function PricingPage() {
             </table>
           </div>
           {/* Feature List */}
-          <div className="w-full max-w-2xl bg-white/70 rounded-xl shadow p-5 mb-6">
-            <h3 className="text-lg font-bold text-purple-700 mb-2 text-left">All plans include:</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 text-sm">
+          <div className="w-full max-w-2xl bg-[var(--surface)] rounded-xl shadow p-5 mb-6">
+            <h3 className="text-lg font-bold text-purple-400 mb-2 text-left">All plans include:</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-[var(--text-main)] text-sm">
               <div>
                 <span className="font-semibold">AI Audio, AI Chat, AI Design, AI Writer</span> and more
               </div>
@@ -195,10 +195,10 @@ export default function PricingPage() {
           </div>
           {/* Coming soon: Buy credits */}
           <div className="w-full flex justify-start mt-6">
-            <div className="flex items-center gap-3 px-6 py-4 rounded-2xl shadow-lg bg-gradient-to-r from-purple-100 via-purple-50 to-pink-100 border border-purple-200">
-              <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              <span className="font-bold text-purple-700 text-base md:text-lg">Need more credits?</span>
-              <span className="text-purple-700 font-semibold text-base md:text-lg">Buy extra credits <span className="opacity-70 font-normal">(coming soon)</span></span>
+            <div className="flex items-center gap-3 px-6 py-4 rounded-2xl shadow-lg bg-gradient-to-r from-purple-900/40 via-purple-800/30 to-pink-900/30 border border-purple-900/30">
+              <svg className="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              <span className="font-bold text-purple-400 text-base md:text-lg">Need more credits?</span>
+              <span className="text-purple-400 font-semibold text-base md:text-lg">Buy extra credits <span className="opacity-70 font-normal">(coming soon)</span></span>
             </div>
           </div>
         </div>
