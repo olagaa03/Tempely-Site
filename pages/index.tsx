@@ -8,7 +8,7 @@ export default function HomePage() {
   if (!isSignedIn) {
     // Public landing page for guests
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-purple-50 flex flex-col justify-between">
+      <div className="min-h-screen bg-[var(--background)] flex flex-col justify-between">
         {/* Hero Section with background logo watermark */}
         <div className="relative max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between pt-24 pb-16 px-4 md:px-0 overflow-visible">
           {/* Watermark Logo - always in margin, never behind text */}
@@ -21,10 +21,10 @@ export default function HomePage() {
           />
           {/* Text Content */}
           <div className="flex-1 text-center md:text-left z-10 relative">
-            <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6 leading-tight animate-fade-in">
+            <h1 className="text-5xl md:text-6xl font-extrabold text-[var(--text-main)] mb-6 leading-tight animate-fade-in">
               Unleash Your Creativity<br className="hidden md:block" /> with <span className="text-purple-600">AI Superpowers</span>
             </h1>
-            <p className="text-xl text-gray-700 mb-8 max-w-xl animate-fade-in delay-100">
+            <p className="text-xl text-[var(--text-muted)] mb-8 max-w-xl animate-fade-in delay-100">
               Design, write, and create faster with 11+ premium AI tools. Join thousands of creators using Tempely to unlock their creative power—free forever, no credit card required.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mb-8 animate-fade-in delay-200">
@@ -33,32 +33,32 @@ export default function HomePage() {
             </div>
             {/* Trusted by logos */}
             <div className="mt-6 flex flex-col items-center md:items-start animate-fade-in delay-300">
-              <span className="text-gray-500 text-sm mb-2">Trusted by creators at</span>
+              <span className="text-[var(--text-muted)] text-sm mb-2">Trusted by creators at</span>
               <div className="flex gap-6 opacity-80">
                 {/* Placeholder logos, replace with real ones if available */}
-                <span className="font-bold text-gray-400 text-lg">CreatorHub</span>
-                <span className="font-bold text-gray-400 text-lg">Designly</span>
-                <span className="font-bold text-gray-400 text-lg">MediaPro</span>
+                <span className="font-bold text-[var(--text-muted)] text-lg">CreatorHub</span>
+                <span className="font-bold text-[var(--text-muted)] text-lg">Designly</span>
+                <span className="font-bold text-[var(--text-muted)] text-lg">MediaPro</span>
               </div>
             </div>
           </div>
         </div>
         {/* Features Section */}
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4 md:px-0 mt-4 mb-20 animate-fade-in delay-300">
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 flex flex-col items-center hover:shadow-2xl transition-all">
+          <div className="bg-[var(--surface)] rounded-2xl shadow-lg border border-[var(--border)] p-8 flex flex-col items-center hover:shadow-2xl transition-all">
             <Sparkles className="w-10 h-10 text-purple-500 mb-4" />
-            <h2 className="text-xl font-bold text-gray-900 mb-2">All-in-one AI Toolkit</h2>
-            <p className="text-gray-600 text-base">Access 11+ powerful tools for content, design, and media—all in one place.</p>
+            <h2 className="text-xl font-bold text-[var(--text-main)] mb-2">All-in-one AI Toolkit</h2>
+            <p className="text-[var(--text-muted)] text-base">Access 11+ powerful tools for content, design, and media—all in one place.</p>
           </div>
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 flex flex-col items-center hover:shadow-2xl transition-all">
+          <div className="bg-[var(--surface)] rounded-2xl shadow-lg border border-[var(--border)] p-8 flex flex-col items-center hover:shadow-2xl transition-all">
             <Palette className="w-10 h-10 text-pink-500 mb-4" />
-            <h2 className="text-xl font-bold text-gray-900 mb-2">Premium, Modern Design</h2>
-            <p className="text-gray-600 text-base">A beautiful, fast, and intuitive platform for creators and teams.</p>
+            <h2 className="text-xl font-bold text-[var(--text-main)] mb-2">Premium, Modern Design</h2>
+            <p className="text-[var(--text-muted)] text-base">A beautiful, fast, and intuitive platform for creators and teams.</p>
           </div>
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 flex flex-col items-center hover:shadow-2xl transition-all">
+          <div className="bg-[var(--surface)] rounded-2xl shadow-lg border border-[var(--border)] p-8 flex flex-col items-center hover:shadow-2xl transition-all">
             <User className="w-10 h-10 text-blue-500 mb-4" />
-            <h2 className="text-xl font-bold text-gray-900 mb-2">Free Forever Plan</h2>
-            <p className="text-gray-600 text-base">Get started for free—no credit card required. Upgrade anytime for more power.</p>
+            <h2 className="text-xl font-bold text-[var(--text-main)] mb-2">Free Forever Plan</h2>
+            <p className="text-[var(--text-muted)] text-base">Get started for free—no credit card required. Upgrade anytime for more power.</p>
           </div>
         </div>
         {/* Subtle fade-in animation keyframes */}
@@ -169,13 +169,13 @@ export default function HomePage() {
     <div className="max-w-7xl mx-auto pt-10 pb-20">
       {/* Greeting */}
       <div className="mb-10 mt-8">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-2">Welcome, {userName}. What would you like to do today?</h1>
-        <p className="text-lg text-gray-700 font-medium">Choose a tool below to get started.</p>
+        <h1 className="text-4xl md:text-5xl font-extrabold text-[var(--text-main)] mb-2">Welcome, {userName}. What would you like to do today?</h1>
+        <p className="text-lg text-[var(--text-muted)] font-medium">Choose a tool below to get started.</p>
       </div>
       {/* Tool Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {aiTools.map((tool) => (
-          <Link key={tool.id} href={tool.href} className="group block rounded-2xl bg-white shadow-md border border-gray-200 hover:shadow-xl transition-all p-6 relative">
+          <Link key={tool.id} href={tool.href} className="group block rounded-2xl bg-[var(--surface)] shadow-md border border-[var(--border)] hover:shadow-xl transition-all p-6 relative">
             {/* New badge */}
             {tool.new && (
               <span className="absolute top-4 right-4 bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full">NEW</span>
@@ -183,8 +183,8 @@ export default function HomePage() {
             <div className={`w-16 h-16 rounded-xl flex items-center justify-center mb-6 ${tool.color} text-white shadow-lg`}>
               <tool.icon className="w-8 h-8" />
             </div>
-            <h2 className="text-2xl font-extrabold text-gray-900 mb-2 leading-tight" style={{opacity: 1, color: '#111827'}}>{tool.title}</h2>
-            <p className="text-gray-700 text-base mb-4 min-h-[48px]">{tool.description}</p>
+            <h2 className="text-2xl font-extrabold text-[var(--text-main)] mb-2 leading-tight" style={{opacity: 1}}>{tool.title}</h2>
+            <p className="text-[var(--text-muted)] text-base mb-4 min-h-[48px]">{tool.description}</p>
             <span className="inline-block mt-2 text-purple-600 font-semibold group-hover:underline">Open {tool.title}</span>
           </Link>
         ))}

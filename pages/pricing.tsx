@@ -131,20 +131,20 @@ export default function PricingPage() {
             {plans.map((plan, idx) => (
               <div
                 key={plan.name}
-                className={`flex flex-col items-center rounded-2xl shadow-xl border-2 transition-all duration-300 p-7 bg-white/90 backdrop-blur-2xl ${plan.highlight ? 'border-purple-600 scale-100 z-10' : 'border-gray-100'} hover:scale-102 hover:shadow-2xl max-w-xs mx-auto`}
+                className={`flex flex-col items-center rounded-2xl shadow-xl border-2 transition-all duration-300 p-7 bg-[var(--surface)] backdrop-blur-2xl ${plan.highlight ? 'border-purple-600 scale-100 z-10' : 'border-[var(--border)]'} hover:scale-102 hover:shadow-2xl max-w-xs mx-auto`}
               >
                 {plan.highlight && (
                   <div className="mb-2 px-3 py-1 rounded-full bg-purple-600 text-white text-xs font-bold tracking-wide uppercase shadow">Most Popular</div>
                 )}
-                <h2 className="text-xl font-extrabold text-gray-900 mb-1">{plan.name}</h2>
+                <h2 className="text-xl font-extrabold text-[var(--text-main)] mb-1">{plan.name}</h2>
                 <div className="flex items-end gap-1 mb-1">
                   <span className="text-3xl font-extrabold text-purple-700">${yearly ? plan.priceYearly : plan.priceMonthly}</span>
-                  <span className="text-sm text-gray-500 font-semibold mb-0.5">/ {yearly ? 'year' : 'month'}</span>
+                  <span className="text-sm text-[var(--text-muted)] font-semibold mb-0.5">/ {yearly ? 'year' : 'month'}</span>
                 </div>
-                <div className="text-xs text-gray-400 mb-1">{yearly ? `${plan.creditsYearly.toLocaleString()} credits/year` : `${plan.creditsMonthly.toLocaleString()} credits/month`}</div>
-                <div className="text-xs text-gray-400 mb-3">Billed {yearly ? 'yearly' : 'monthly'}</div>
-                <p className="text-gray-700 mb-4 text-center min-h-[36px] text-sm">{plan.description}</p>
-                <ul className="text-gray-700 text-sm mb-6 space-y-1 w-full">
+                <div className="text-xs text-[var(--text-muted)] mb-1">{yearly ? `${plan.creditsYearly.toLocaleString()} credits/year` : `${plan.creditsMonthly.toLocaleString()} credits/month`}</div>
+                <div className="text-xs text-[var(--text-muted)] mb-3">Billed {yearly ? 'yearly' : 'monthly'}</div>
+                <p className="text-[var(--text-muted)] mb-4 text-center min-h-[36px] text-sm">{plan.description}</p>
+                <ul className="text-[var(--text-main)] text-sm mb-6 space-y-1 w-full">
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-center gap-2"><span className="text-purple-500">✓</span> {f}</li>
                   ))}
@@ -158,12 +158,12 @@ export default function PricingPage() {
             ))}
           </div>
           {/* Feature Comparison Table */}
-          <div className="w-full bg-white/80 rounded-xl shadow-lg p-6 mb-12 overflow-x-auto">
+          <div className="w-full bg-[var(--surface)] rounded-xl shadow-lg p-6 mb-12 overflow-x-auto">
             <h3 className="text-xl font-bold text-purple-700 mb-4 text-left">Compare Features</h3>
             <table className="w-full text-left border-separate border-spacing-y-1 text-sm">
               <thead>
                 <tr>
-                  <th className="font-bold text-gray-700">Main Features</th>
+                  <th className="font-bold text-[var(--text-main)]">Main Features</th>
                   <th className="font-bold text-purple-700 text-center">Basic</th>
                   <th className="font-bold text-purple-700 text-center">Pro</th>
                   <th className="font-bold text-purple-700 text-center">Enterprise</th>
@@ -172,7 +172,7 @@ export default function PricingPage() {
               <tbody>
                 {featureTable.map((row) => (
                   <tr key={row.feature} className="border-b border-gray-100">
-                    <td className="py-2 pr-3 font-medium text-gray-700">{row.feature}</td>
+                    <td className="py-2 pr-3 font-medium text-[var(--text-main)]">{row.feature}</td>
                     <td className="py-2 text-center">{row.basic === true ? <span className="text-green-500 font-bold">✓</span> : row.basic === false ? <span className="text-gray-400">—</span> : row.basic}</td>
                     <td className="py-2 text-center">{row.pro === true ? <span className="text-green-500 font-bold">✓</span> : row.pro === false ? <span className="text-gray-400">—</span> : row.pro}</td>
                     <td className="py-2 text-center">{row.enterprise === true ? <span className="text-green-500 font-bold">✓</span> : row.enterprise === false ? <span className="text-gray-400">—</span> : row.enterprise}</td>
