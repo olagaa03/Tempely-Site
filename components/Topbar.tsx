@@ -9,14 +9,14 @@ export default function Topbar() {
   const { darkMode, toggleTheme } = useTheme();
 
   return (
-    <header className="fixed left-0 top-0 w-full md:pl-64 z-30 bg-white border-b border-gray-200 shadow-sm h-20 flex items-center">
+    <header className="fixed left-0 top-0 w-full md:pl-64 z-30 bg-[var(--surface)] border-b border-[var(--border)] shadow-sm h-20 flex items-center">
       {/* Logo for mobile */}
       <div className="flex items-center gap-2 md:hidden">
         <Image src="/branding/tempely-logo-transparent.png" alt="Tempely Logo" width={36} height={36} />
-        <span className="font-extrabold text-xl text-gray-900 tracking-tight">Tempely</span>
+        <span className="font-extrabold text-xl text-[var(--text-main)] tracking-tight">Tempely</span>
       </div>
       {/* Navigation links */}
-      <nav className="hidden md:flex gap-8 text-lg font-semibold text-gray-700 ml-8">
+      <nav className="hidden md:flex gap-8 text-lg font-semibold text-[var(--text-main)] ml-8">
         <Link href="/" className="hover:text-purple-600 transition">Home</Link>
         <Link href="/ai-tools" className="hover:text-purple-600 transition">AI Tools</Link>
         <Link href="/about" className="hover:text-purple-600 transition">About</Link>
@@ -24,7 +24,7 @@ export default function Topbar() {
       </nav>
       {/* Theme toggle */}
       <button
-        className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors text-gray-700"
+        className="p-2 rounded-full bg-[var(--background-alt)] hover:bg-[var(--background)] transition-colors text-[var(--text-main)]"
         aria-label="Toggle theme"
         onClick={toggleTheme}
       >
@@ -32,11 +32,11 @@ export default function Topbar() {
       </button>
       {/* Account menu for signed-in users */}
       <SignedIn>
-        <Link href="/account" className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold transition">
+        <Link href="/account" className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[var(--background-alt)] hover:bg-[var(--background)] text-[var(--text-main)] font-bold transition">
           <User className="w-5 h-5" />
           <span className="hidden sm:inline">Account</span>
         </Link>
-        <Link href="/sign-out" className="ml-2 px-5 py-2 rounded-full bg-gray-200 text-gray-700 font-bold shadow hover:bg-gray-300 transition text-base">
+        <Link href="/sign-out" className="ml-2 px-5 py-2 rounded-full bg-[var(--background)] text-[var(--text-main)] font-bold shadow hover:bg-[var(--background-alt)] transition text-base">
           Sign Out
         </Link>
       </SignedIn>
@@ -45,7 +45,7 @@ export default function Topbar() {
         <Link href="/sign-in" className="ml-2 px-5 py-2 rounded-full bg-purple-600 text-white font-bold shadow hover:bg-purple-700 transition text-base">
           Sign In
         </Link>
-        <Link href="/sign-up" className="ml-2 px-5 py-2 rounded-full bg-gray-100 text-purple-700 font-bold shadow hover:bg-gray-200 transition text-base border border-purple-600">
+        <Link href="/sign-up" className="ml-2 px-5 py-2 rounded-full bg-[var(--background-alt)] text-purple-700 font-bold shadow hover:bg-[var(--background)] transition text-base border border-purple-600">
           Sign Up
         </Link>
       </SignedOut>
