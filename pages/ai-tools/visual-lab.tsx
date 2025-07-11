@@ -43,7 +43,14 @@ export default function VisualLab() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt: imgPrompt }),
       });
-      if (!res.ok) throw new Error('Failed to generate image');
+      if (!res.ok) {
+        let errorMsg = 'Failed to generate image';
+        try {
+          const errData = await res.json();
+          if (errData && errData.error) errorMsg = errData.error;
+        } catch {}
+        throw new Error(errorMsg);
+      }
       const data = await res.json();
       setImgResult(data.imageUrl);
       toast.success('Image generated!');

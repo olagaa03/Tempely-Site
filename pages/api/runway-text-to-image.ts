@@ -22,6 +22,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!runwayRes.ok) {
       const errorText = await runwayRes.text();
       console.error('RunwayML text-to-image error:', errorText);
+      // Improved error handling for moderation/invalid prompt
+      if (errorText.includes('Invalid value') || errorText.toLowerCase().includes('moderation')) {
+        return res.status(400).json({ error: 'Your prompt was blocked by our safety filters. Please try a different description.' });
+      }
       return res.status(500).json({ error: errorText });
     }
     const data = await runwayRes.json();
